@@ -28,6 +28,7 @@ public class LevelManager : MonoBehaviour
     }
     public string scenesPath;
     public List<string> scenes;
+    public List<Scenes> levels;
 
     public static string[] Scenes
     {
@@ -107,4 +108,11 @@ public class LevelManager : MonoBehaviour
         }
         return scenes.ToArray();
     }
+}
+
+[Serializable]
+public class Scenes
+{
+    [LevelSelector]
+    public string sceneName;
 }

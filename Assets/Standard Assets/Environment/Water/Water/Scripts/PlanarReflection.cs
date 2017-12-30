@@ -198,7 +198,12 @@ namespace UnityStandardAssets.Water
             Vector3 euler = cam.transform.eulerAngles;
             reflectCamera.transform.eulerAngles = new Vector3(-euler.x, euler.y, euler.z);
 
-            reflectCamera.Render();
+            try
+            {
+                //reflectCamera.Render();
+            }
+            catch(Exception ex) { Debug.Log(ex.Message); }
+
 
             GL.invertCulling = false;
         }
@@ -206,10 +211,14 @@ namespace UnityStandardAssets.Water
 
         void SaneCameraSettings(Camera helperCam)
         {
-            helperCam.depthTextureMode = DepthTextureMode.None;
-            helperCam.backgroundColor = Color.black;
-            helperCam.clearFlags = CameraClearFlags.SolidColor;
-            helperCam.renderingPath = RenderingPath.Forward;
+            try
+            {
+                helperCam.depthTextureMode = DepthTextureMode.None;
+                helperCam.backgroundColor = Color.black;
+                helperCam.clearFlags = CameraClearFlags.SolidColor;
+                helperCam.renderingPath = RenderingPath.Forward;
+            }
+            catch { }
         }
 
 

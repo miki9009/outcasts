@@ -6,6 +6,10 @@ public class GameInit : MonoBehaviour
 {
     [LevelSelector]
     public string firstScene;
+    [LevelSelector]
+    public string benchmarkScene;
+    public bool disableFirstRunInEditor;
+
     private void Awake()
     {
         DontDestroyOnLoad(transform.gameObject);        
@@ -36,6 +40,24 @@ public class GameInit : MonoBehaviour
             DataManager.Loaded += () =>
             {
                 var settings = (SettingsContainer.Settings)DataManager.Instance.GetData("Settings");
+#if UNITY_EDITOR
+                if (!disableFirstRunInEditor)
+                {
+                    if (!settings.runBenchmark)
+                    {
+                        Screen.SetResolution((int)settings.resolution.x, (int)settings.resolution.y, true);
+                        LevelManager.Instance.GoToScene(firstScene);
+                    }
+                    else
+                    {
+                        LevelManager.Instance.GoToScene(benchmarkScene);
+                    }
+                }
+                else
+                {
+                    LevelManager.Instance.GoToScene(firstScene);
+                }
+#else
                 if (!settings.runBenchmark)
                 {
                     Screen.SetResolution((int)settings.resolution.x, (int)settings.resolution.y, true);
@@ -43,11 +65,12 @@ public class GameInit : MonoBehaviour
                 }
                 else
                 {
-                    LevelManager.Instance.GoToScene("benchmark");
+                    LevelManager.Instance.GoToScene(benchmarkScene);
                 }
-
+#endif
             };
         }
     }
+
 
 }

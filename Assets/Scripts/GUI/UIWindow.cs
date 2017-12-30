@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Engine.GUI
 {
@@ -32,7 +33,7 @@ namespace Engine.GUI
         {
             get
             {
-                return rect.anchoredPosition.x;
+                return rect.anchoredPosition.y;
             }
         }
         public bool visibleOnStart;
@@ -42,8 +43,10 @@ namespace Engine.GUI
         public float slideSpeed = 50;
         public float fadeSpeed = 10;
 
+        
         RectTransform rect;
         Vector2 desiredPos;
+        Vector2 startPos;
         CanvasGroup canvasGroup;
 
         private void OnEnable()
@@ -55,13 +58,35 @@ namespace Engine.GUI
         private void OnDisable()
         {
             windows.Remove(this);
+            Debug.Log("Disabled: " + name);
+            rect.anchoredPosition = startPos;
         }
 
         private void Start()
         {
+            canvasGroup = GetComponent<CanvasGroup>();
+            SetStartPos();
+            if (visibleOnStart)
+            {
+                rect.anchoredPosition = desiredPos;
+            }
+            else
+            {
+                gameObject.SetActive(false);
+                canvasGroup.alpha = 0;
+            }
+            if (anchor == Anchor.None)
+            {
+                rect.anchoredPosition = Vector2.zero;
+            }
+            startPos = rect.anchoredPosition;
+        }
+
+        void SetStartPos()
+        {
             if (anchor == Anchor.Bottom)
             {
-                rect.anchoredPosition = new Vector2(Screen.height, 0);
+                rect.anchoredPosition = new Vector2(0, -Screen.height);
             }
             else if (anchor == Anchor.Left)
             {
@@ -74,21 +99,6 @@ namespace Engine.GUI
             else if (anchor == Anchor.Top)
             {
                 rect.anchoredPosition = new Vector2(0, -Screen.height);
-            }
-            canvasGroup = GetComponent<CanvasGroup>();
-
-            if (visibleOnStart)
-            {
-                rect.anchoredPosition = desiredPos;
-            }
-            else
-            {
-                enabled = false;
-                canvasGroup.alpha = 0;
-            }
-            if (anchor == Anchor.None)
-            {
-                rect.anchoredPosition = Vector2.zero;
             }
         }
 
@@ -138,7 +148,7 @@ namespace Engine.GUI
             switch (anchor)
             {
                 case Anchor.Left:
-                    while (X < 0)
+                    while (X <= 0)
                     {
                         rect.anchoredPosition += Vector2.right * slideSpeed;
                         if (canvasGroup.alpha < 1) { canvasGroup.alpha += Time.deltaTime * slideSpeed / 10; }
@@ -146,7 +156,7 @@ namespace Engine.GUI
                     }
                     break;
                 case Anchor.Right:
-                    while (X > 0)
+                    while (X >= 0)
                     {
                         rect.anchoredPosition -= Vector2.right * slideSpeed;
                         if (canvasGroup.alpha < 1) { canvasGroup.alpha += Time.deltaTime * slideSpeed / 10; }
@@ -154,14 +164,6 @@ namespace Engine.GUI
                     }
                     break;
                 case Anchor.Bottom:
-                    while (Y > 0)
-                    {
-                        rect.anchoredPosition += Vector2.down * slideSpeed;
-                        if (canvasGroup.alpha < 1) { canvasGroup.alpha += Time.deltaTime * slideSpeed / 10; }
-                        yield return null;
-                    }
-                    break;
-                case Anchor.Top:
                     while (Y < 0)
                     {
                         rect.anchoredPosition += Vector2.up * slideSpeed;
@@ -169,9 +171,18 @@ namespace Engine.GUI
                         yield return null;
                     }
                     break;
+                case Anchor.Top:
+                    while (Y > 0)
+                    {
+                        rect.anchoredPosition += Vector2.down * slideSpeed;
+                        if (canvasGroup.alpha < 1) { canvasGroup.alpha += Time.deltaTime * slideSpeed / 10; }
+                        yield return null;
+                    }
+                    break;
                 default:
                     yield break;
             }
+            canvasGroup.alpha = 1;
             rect.anchoredPosition = desiredPos;
             yield return null;
         }
@@ -197,14 +208,6 @@ namespace Engine.GUI
                     }
                     break;
                 case Anchor.Bottom:
-                    while (Y < Screen.height)
-                    {
-                        rect.anchoredPosition += Vector2.up * slideSpeed;
-                        if (canvasGroup.alpha > 0) { canvasGroup.alpha -= Time.deltaTime * slideSpeed / 10; }
-                        yield return null;
-                    }
-                    break;
-                case Anchor.Top:
                     while (Y > -Screen.height)
                     {
                         rect.anchoredPosition += Vector2.down * slideSpeed;
@@ -212,9 +215,19 @@ namespace Engine.GUI
                         yield return null;
                     }
                     break;
+                case Anchor.Top:
+                    while (Y < Screen.height)
+                    {
+                        rect.anchoredPosition += Vector2.up * slideSpeed;
+                        if (canvasGroup.alpha > 0) { canvasGroup.alpha -= Time.deltaTime * slideSpeed / 10; }
+                        yield return null;
+                    }
+                    Debug.Log(Y);
+                    break;
                 default:
                     yield break;
             }
+            canvasGroup.alpha = 0;
             gameObject.SetActive(false);
             yield return null;
         }
@@ -227,6 +240,33 @@ namespace Engine.GUI
         public void GamePaseLeave()
         {
             Engine.Pause.Instance.PauseLeave();
+        }
+
+        public void GoToMenu()
+        {
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+            //Camera.main.gameObject.SetActive(true);
+        }
+
+        public void RestartLevel()
+        {
+            levelName = SceneManager.GetActiveScene().name;
+            SceneManager.UnloadSceneAsync(levelName);
+            SceneManager.sceneUnloaded += Restart;
+
+        }
+
+        void Restart(Scene scene)
+        {
+            SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
+            SceneManager.sceneLoaded += SetActiveScene;
+        }
+
+        string levelName;
+        void SetActiveScene(Scene scene, LoadSceneMode mode)
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(levelName));
+            SceneManager.sceneLoaded -= SetActiveScene;
         }
 
     }

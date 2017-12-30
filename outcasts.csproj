@@ -291,6 +291,7 @@
     <Compile Include="Assets\Scripts\GameInit.cs" />
     <Compile Include="Assets\Scripts\GUI\GUIAttach.cs" />
     <Compile Include="Assets\Scripts\GUI\LevelButton.cs" />
+    <Compile Include="Assets\Scripts\GUI\MenuManager.cs" />
     <Compile Include="Assets\Scripts\GUI\MovementButton.cs" />
     <Compile Include="Assets\Scripts\GUI\UIWindow.cs" />
     <Compile Include="Assets\Scripts\IDestructible.cs" />

@@ -40,7 +40,8 @@ namespace Engine
 
         private void Awake()
         {
-            if (GameGUI.Instance == null)
+            Debug.Log("GameGUI Instance Awake");
+            if (Instance == null)
             {
                 Instance = this;
             }

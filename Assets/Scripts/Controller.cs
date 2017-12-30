@@ -65,10 +65,7 @@ public class Controller : MonoBehaviour
         }
     }
 
-    void Restart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+
 
 
     private void OnGUI()
