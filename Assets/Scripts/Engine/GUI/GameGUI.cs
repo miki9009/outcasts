@@ -11,7 +11,7 @@ namespace Engine
     [RequireComponent(typeof(CanvasScaler))]
     public class GameGUI : MonoBehaviour
     {
-        public static List<Button> buttons = new List<Button>();
+        public static List<Engine.GUI.Button> buttons = new List<Engine.GUI.Button>();
         public static GameGUI Instance { get; private set; }
 
         public delegate void GUITouch(Vector3 pos);
@@ -116,7 +116,7 @@ namespace Engine
             #endif
         }
 
-        public static Button GetButtonByName(string buttonName)
+        public static Engine.GUI.Button GetButtonByName(string buttonName)
         {
             try
             {

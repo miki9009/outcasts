@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace Engine
+namespace Engine.Threads
 {
     public sealed class Host
     {        

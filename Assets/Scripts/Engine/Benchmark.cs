@@ -12,6 +12,8 @@ namespace Engine
     {
         [LevelSelector]
         public string nextLevel;
+        public Text text;
+
         Vector2 resolution;
         Vector2 curResolution;
         float curResFactor = 1;
@@ -20,6 +22,7 @@ namespace Engine
             resolution = new Vector2(Screen.width, Screen.height);
             Debug.Log(resolution);
             StartCoroutine(Test());
+            StartCoroutine(Timer());
         }
 
         IEnumerator Test()
@@ -52,6 +55,17 @@ namespace Engine
             yield return new WaitForEndOfFrame();
             LevelManager.Instance.GoToScene(nextLevel);
             yield return null;
+        }
+
+        IEnumerator Timer()
+        {
+            int timer = 100;
+            while (timer > 0)
+            {
+                timer--;
+                text.text = string.Format("{0}%", 100 - timer);
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
         private void Update()

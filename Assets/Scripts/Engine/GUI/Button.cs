@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.Events;
 
-namespace Engine
+namespace Engine.GUI
 {
     [ExecuteInEditMode]
     [RequireComponent(typeof(RectTransform))]

@@ -1,19 +1,16 @@
-﻿using Engine;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GUIAttach : MonoBehaviour
+namespace Engine.GUI
 {
-    public bool destroyOnLevelEnd;
-
-    void Start()
+    public class GUIAttach : MonoBehaviour
     {
-        var rect = GetComponent<RectTransform>();
-        transform.parent = GameGUI.Instance.transform;
-        rect.anchoredPosition = Vector2.zero;
-        rect.localScale = Vector3.one;
-        if (destroyOnLevelEnd)
-        {
 
+        void Start()
+        {
+            var rect = GetComponent<RectTransform>();
+            transform.parent = GameGUI.Instance.transform;
+            rect.anchoredPosition = Vector2.zero;
+            rect.localScale = Vector3.one;
         }
     }
 }

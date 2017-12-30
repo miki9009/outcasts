@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Engine;
+using Engine.GUI;
 
 public class CharacterMovement : MonoBehaviour, IStateAnimator
 {

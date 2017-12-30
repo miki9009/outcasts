@@ -5,7 +5,7 @@ using Engine;
 using System;
 using System.Linq;
 
-namespace Engine
+namespace Engine.Threads
 {
     [DefaultExecutionOrder(-100)]
     public class HostInitializer : MonoBehaviour

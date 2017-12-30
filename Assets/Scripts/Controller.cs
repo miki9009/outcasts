@@ -44,11 +44,12 @@ public class Controller : MonoBehaviour
         Application.targetFrameRate = 60;
         defaultResolution = new Vector2(Screen.width, Screen.height);
         aspectRatio = (float)Screen.width / (float)Screen.height;
-        try
-        {
-            GameGUI.GetButtonByName("ButtonRestart").OnTapPressed.AddListener(Restart);
-        }
-        catch { }
+        //try
+        //{
+        //    //GameGUI.GetButtonByName("ButtonRestart").OnTapPressed.AddListener(Restart);
+        //    //GameGUI.GetButtonByName("ButtonPause").OnTapPressed.AddListener(Restart);
+        //}
+        //catch { }
         startResolution = new Vector2(Screen.width, Screen.height);
         GameManager.OnLevelLoaded += DeactivateActionButton;
         

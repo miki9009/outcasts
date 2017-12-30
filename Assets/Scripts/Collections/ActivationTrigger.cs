@@ -1,4 +1,5 @@
 ﻿using Engine;
+using Engine.GUI;
 using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]

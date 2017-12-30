@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 
 
-namespace Engine
+namespace Engine.Threads
 {
     [DefaultExecutionOrder(-95)]
     public class MonoBehaviourHost : MonoBehaviour
