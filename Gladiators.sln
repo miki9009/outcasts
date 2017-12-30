@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gladiators", "Gladiators.csproj", "{19A45498-CA6A-8B18-A072-DDCE7ABEBF77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gladiators.Plugins", "Gladiators.Plugins.csproj", "{10B8C5B3-4045-EB56-DEE0-39EC4DF13FCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gladiators.Editor", "Gladiators.Editor.csproj", "{0A786DB6-63B5-6AFC-1004-F2EFDDA066BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19A45498-CA6A-8B18-A072-DDCE7ABEBF77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19A45498-CA6A-8B18-A072-DDCE7ABEBF77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19A45498-CA6A-8B18-A072-DDCE7ABEBF77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19A45498-CA6A-8B18-A072-DDCE7ABEBF77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10B8C5B3-4045-EB56-DEE0-39EC4DF13FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B8C5B3-4045-EB56-DEE0-39EC4DF13FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10B8C5B3-4045-EB56-DEE0-39EC4DF13FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10B8C5B3-4045-EB56-DEE0-39EC4DF13FCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A786DB6-63B5-6AFC-1004-F2EFDDA066BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A786DB6-63B5-6AFC-1004-F2EFDDA066BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A786DB6-63B5-6AFC-1004-F2EFDDA066BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A786DB6-63B5-6AFC-1004-F2EFDDA066BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
