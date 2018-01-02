@@ -8,9 +8,11 @@ public class GameManager : MonoBehaviour
 {
     public static event Action OnLevelLoaded;
     public static event Action OnLevelChanged;
+    public static event Action OnGameFinished;
     public static bool LevelLoaded { get; private set; }
     public static bool isLevel;
     
+    public static GameManager Instance { get; private set; }
 
     private string currentName;
     public string LevelName
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         SceneManager.sceneLoaded += SceneLoaded;
         SceneManager.activeSceneChanged += LevelChanged;
     }
@@ -34,6 +37,10 @@ public class GameManager : MonoBehaviour
 
     void LevelChanged(Scene scene, Scene scene2)
     {
+        if (OnLevelChanged != null)
+        {
+            OnLevelChanged();
+        }
         Debug.Log("Game Manager: Level Changed to: " + LevelName);
     }
 
@@ -53,6 +60,21 @@ public class GameManager : MonoBehaviour
         }
         yield return null;
 
+    }
+
+
+    public void GameFinished()
+    {
+        var data = (CollectionsContainer.CollectionData)DataManager.Instance.GetData("Collections");
+        data.coins += CollectionManager.Instance.GetCollection(Controller.Instance.character.ID, CollectionType.Coin);
+        Debug.Log("Coins = " + data.coins);
+        DataManager.Instance.SaveData();
+        Debug.Log("Game Saved");
+        CollectionManager.Instance.ResetCollections();
+        if (OnGameFinished != null)
+        {
+            OnGameFinished();
+        }
     }
 
 

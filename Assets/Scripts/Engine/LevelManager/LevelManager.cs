@@ -26,9 +26,11 @@ public class LevelManager : MonoBehaviour
             instance = value;
         }
     }
+    public int levelIndex;
     public string scenesPath;
     public List<string> scenes;
     public List<Scenes> levels;
+    public string currentLevel;
 
     public static string[] Scenes
     {
@@ -46,7 +48,21 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-
+        GameManager.OnLevelLoaded += () =>
+        {
+            currentLevel = SceneManager.GetActiveScene().name;
+            bool isLevel = levels.Exists(x => x.sceneName == currentLevel);
+            if (isLevel)
+            {
+                for (int i = 0; i < levels.Count; i++)
+                {
+                    if (levels[i].sceneName == currentLevel)
+                    {
+                        levelIndex = i;
+                    }
+                }
+            }
+        };
     }
 
     public void GoToScene(string sceneName)
@@ -107,6 +123,16 @@ public class LevelManager : MonoBehaviour
             Debug.LogError("Make sure that /Scenes exist, and that scenes are inside of it");
         }
         return scenes.ToArray();
+    }
+
+    public string NextLevel()
+    {
+        int index = 0;
+        if (levelIndex+1 < levels.Count)
+        {
+            index = levelIndex + 1;
+        }
+        return levels[index].sceneName;
     }
 }
 

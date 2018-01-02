@@ -9,7 +9,7 @@ public class CharacterHealth : MonoBehaviour
 
     CharacterStatistics stats;
 
-    private void Start()
+    private void Awake()
     {
         GameManager.OnLevelLoaded += AssignHealth;
     }

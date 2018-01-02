@@ -12,12 +12,22 @@ public class ClockGUI : MonoBehaviour
     void Start()
     {
         text = GetComponentInChildren<Text>();
-        GameManager.OnLevelLoaded += () =>
-        {
-            instance = GameTime.Instance;
-            instance.OnTimeElapsed += SetTime;
-            instance.OnTimeAdded += DisplayChild;
-        };
+        GameManager.OnLevelLoaded += Prepare;
+    }
+
+    void Prepare()
+    {
+        //showTime = 3;
+        //StopAllCoroutines();
+        //childText.enabled = false;
+
+        instance = GameTime.Instance;
+        instance.OnTimeElapsed += SetTime;
+        instance.OnTimeAdded += DisplayChild;
+        childText.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        childText.enabled = false;
+        showTime = 3;
+       // GameManager.OnLevelLoaded -= Prepare;
     }
 
     void SetTime()
@@ -56,6 +66,7 @@ public class ClockGUI : MonoBehaviour
         coroutine = null;
         childColor.a = 0;
         childText.enabled = false;
+        showTime = 3;
         yield return null;
     }
 

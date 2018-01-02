@@ -37,11 +37,21 @@ namespace Engine.GUI
             }
         }
         public bool visibleOnStart;
-        public static List<UIWindow> windows = new List<UIWindow>();
+        static List<UIWindow> windows = new List<UIWindow>();
         public string ID;
         public Anchor anchor;
         public float slideSpeed = 50;
         public float fadeSpeed = 10;
+
+        public static UIWindow GetWindow(string ID)
+        {
+            var window = windows.SingleOrDefault(x => x.ID == ID);
+            if (window == null)
+            {
+                Debug.LogError("Window with ID: " + ID + " not found.");
+            }
+            return window;
+        }
 
         
         RectTransform rect;
@@ -49,15 +59,23 @@ namespace Engine.GUI
         Vector2 startPos;
         CanvasGroup canvasGroup;
 
+        private void Awake()
+        {
+            windows.Add(this);
+        }
+
+        private void OnDestroy()
+        {
+            windows.Remove(this);
+        }
+
         private void OnEnable()
         {
             rect = GetComponent<RectTransform>();
-            windows.Add(this);
         }
 
         private void OnDisable()
         {
-            windows.Remove(this);
             Debug.Log("Disabled: " + name);
             rect.anchoredPosition = startPos;
         }
@@ -222,7 +240,6 @@ namespace Engine.GUI
                         if (canvasGroup.alpha > 0) { canvasGroup.alpha -= Time.deltaTime * slideSpeed / 10; }
                         yield return null;
                     }
-                    Debug.Log(Y);
                     break;
                 default:
                     yield break;
@@ -260,6 +277,7 @@ namespace Engine.GUI
         {
             SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
             SceneManager.sceneLoaded += SetActiveScene;
+            SceneManager.sceneUnloaded -= Restart;
         }
 
         string levelName;
@@ -267,6 +285,24 @@ namespace Engine.GUI
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(levelName));
             SceneManager.sceneLoaded -= SetActiveScene;
+        }
+
+        public void GoToNextLevel()
+        {
+            levelName= LevelManager.Instance.NextLevel();
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+            GoToLevel(levelName);
+        }
+
+        public void GoToLevel(string name)
+        {
+            try
+            {
+                Camera.main.gameObject.SetActive(false);
+            }
+            catch { }
+            SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
+            SceneManager.sceneLoaded += SetActiveScene;
         }
 
     }

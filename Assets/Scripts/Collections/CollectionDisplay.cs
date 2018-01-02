@@ -22,6 +22,11 @@ public class CollectionDisplay : MonoBehaviour
         enabled = false;
     }
 
+    private void Start()
+    {
+        GameManager.OnLevelLoaded += () => ammount = 0;
+    }
+
     public void ShowDisplay()
     {
         enabled = true;

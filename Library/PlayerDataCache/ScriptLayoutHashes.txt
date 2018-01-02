@@ -63,6 +63,7 @@ f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 86d36c43c53541d667100dc90b89cfba UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 1b8c02d0aa82fbf036a2b9b2d713eec3 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
 aa13baec1c19c8fa869cb21cb01a3767 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Water.WaterBase
+bb268707dbfd8915c6221268d065998e Assembly-CSharp.dll:.MenuManager
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
 49cd62a578efc0a599b810a2b66cd49c UnityEngine.UI.dll:UnityEngine.UI.Button
@@ -191,7 +192,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 4aadab9e3e4d34f6e069833451e815bb Assembly-CSharp-firstpass.dll:UnityStandardAssets.ImageEffects.CreaseShading
 baef386fbaf1e82b8a7953acbfff959e Assembly-CSharp.dll:.FirePlace
 e2b50e4e1e5006d87e7ebe8a724e8f6d Assembly-CSharp-firstpass.dll:UnityStandardAssets.ImageEffects.ContrastEnhance
-4ea8ce8ad2d426f733ce501a9216df7e Assembly-CSharp.dll:.LevelManager
+5307dde45ff9302eff223910c011aab3 Assembly-CSharp.dll:.LevelManager
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback
 2a56361227def9f56c2cf57a88b32f4d UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.PlaymodeTestsController
 64eb32cc721b1cc68a91ed57461e188c UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.RemoteTestResultSender
@@ -246,4 +247,3 @@ c3249579f45911ff671a45c54bfb5dfa Assembly-CSharp.dll:.CollectionDisplay
 3a0b050e8af0df2dfa7135e6936382f9 Assembly-CSharp.dll:.Enemy
 56bfc18aecc45fb9b2672cd4dc8230ab Assembly-CSharp.dll:.ActiveObject
 e65438f7833954ac91dd9bd77da3230c Assembly-CSharp.dll:.DataManager
-1f5c42689c07d5c5f070cbdad89652c6 Assembly-CSharp.dll:.MenuManager

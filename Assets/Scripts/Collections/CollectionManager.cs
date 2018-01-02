@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Engine;
+using System.Linq;
 
 public class CollectionManager : MonoBehaviour
 {
@@ -84,7 +85,10 @@ public class CollectionManager : MonoBehaviour
         else
         {
             collections.Add(playerID, new CollectionSet(type, playerID));
-            collections[playerID].Collection.Add(type, 0);
+            if (!collections[playerID].Collection.ContainsKey(type))
+            {
+                collections[playerID].Collection.Add(type, 0);
+            }
             return collections[playerID].Collection[type];
         }
     }
@@ -108,6 +112,11 @@ public class CollectionManager : MonoBehaviour
             }
 
         }
+    }
+
+    public void ResetCollections()
+    {
+        collections.Clear();
     }
 
 #if UNITY_EDITOR

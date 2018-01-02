@@ -10,10 +10,6 @@ public class LevelButton : MonoBehaviour
     [LevelSelector]
     public string levelName;
 
-    public void GoToLevel()
-    {
-        SceneManager.LoadSceneAsync(levelName);
-    }
 
     public void GoToLevelAdditive()
     {

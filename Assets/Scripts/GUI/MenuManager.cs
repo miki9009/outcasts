@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Engine.GUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,21 +7,27 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    public GameObject cam;
+    //public GameObject cam;
+    public UIWindow guiWindow;
 
-    public void ActivateCamera()
+    private void Start()
     {
-        if (cam != null)
-        {
-            cam.SetActive(true);
-        }
+        GameManager.OnLevelLoaded += () => guiWindow.FadeIn();
     }
 
-    public void DeactivateCamera()
-    {
-        if (cam != null)
-        {
-            cam.SetActive(false);
-        }
-    }
+    //public void ActivateCamera()
+    //{
+    //    if (cam != null)
+    //    {
+    //        cam.SetActive(true);
+    //    }
+    //}
+
+    //public void DeactivateCamera()
+    //{
+    //    if (cam != null)
+    //    {
+    //        cam.SetActive(false);
+    //    }
+    //}
 }

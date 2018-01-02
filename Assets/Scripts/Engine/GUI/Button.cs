@@ -35,8 +35,12 @@ namespace Engine.GUI
         float height = 0;
         float x;
         float y;
-        
 
+        private void Awake()
+        {
+            if (!Application.isPlaying) return;
+            GameGUI.buttons.Add(this);
+        }
 
         protected void OnEnable()
         {
@@ -55,8 +59,7 @@ namespace Engine.GUI
             height = (rect.rect.height / 2);
             x = rect.anchoredPosition.x;
             y = rect.anchoredPosition.y;
-            if (!Application.isPlaying) return;
-            GameGUI.buttons.Add(this);
+
         }
 
         private void Start()
@@ -65,12 +68,8 @@ namespace Engine.GUI
             {
 
             }
-        }
 
-        protected void OnDisable()
-        {
-            if (!Application.isPlaying) return;
-            GameGUI.buttons.Remove(this);
+
         }
 
 

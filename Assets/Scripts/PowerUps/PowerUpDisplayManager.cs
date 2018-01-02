@@ -31,7 +31,12 @@ public class PowerUpDisplayManager : MonoBehaviour
 
     public void AddDisplay(CollectionType type, int time, PowerUp powerUp)
     {
-        PowerUpDisplay d = displays.SingleOrDefault(x => x.type == type);
+        PowerUpDisplay d = null;
+        try
+        {
+            d = displays.SingleOrDefault(x => x.type == type);
+        }
+        catch { }
         if (d == null)
         {
             var obj = Instantiate(prefab, transform);

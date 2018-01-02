@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using Engine;
+using Engine.GUI;
 
 public class FirePlace : MonoBehaviour
 {
     bool goToNextScene = true;
+    [LevelSelector]
     public string nextLevel;
 
     ParticleSystem particles;
@@ -31,8 +33,22 @@ public class FirePlace : MonoBehaviour
                 OnFirePlacedReached();
             }
 
-            Data.Saved += CanGoToNextLevel;
+            //Data.Saved += CanGoToNextLevel;
+            StartCoroutine(WaitSecond());
         }
+    }
+
+    IEnumerator WaitSecond()
+    {
+        yield return new WaitForSeconds(2);
+        EndGame();
+    }
+
+    void EndGame()
+    {
+        GameManager.Instance.GameFinished();
+        Pause.Instance.PauseEnter();
+        UIWindow.GetWindow("EndGameScreen").Show();
     }
 
     void CanGoToNextLevel()
