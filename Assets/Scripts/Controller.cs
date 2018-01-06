@@ -35,6 +35,10 @@ public class Controller : MonoBehaviour
     {
         Instance = this;
         gameCamera = Camera.main;
+        if (gameCamera == null)
+        {
+            Debug.LogError("Main camera is not set");
+        }
         GUI = transform.parent.gameObject;
     }
 

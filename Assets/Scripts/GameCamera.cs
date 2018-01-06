@@ -42,7 +42,8 @@ public class GameCamera : MonoBehaviour
         {
             if (fixedUpdate && target)
             {
-                if (CheckFreePosition())
+                collide = CheckFreePosition();
+                if (collide)
                 {
                     time = time > 0 ? time - Time.deltaTime : 0;
                     transform.position = Vector3.Lerp(transform.position, target.position + target.forward * z + Vector3.up * y + target.right * x, (time > 0 ?  speed * (2 -time) : speed) * Time.deltaTime);
@@ -73,15 +74,17 @@ public class GameCamera : MonoBehaviour
         transform.position = pos;
     }
 
-
+    public Transform lastCollideObject;
     RaycastHit hit;
     public LayerMask collisionLayer;
+    public bool collide;
     bool CheckFreePosition()
     {
         Vector3 dir = target.forward * z + Vector3.up * y + target.right * x;
         Debug.DrawLine(target.position + Vector3.up * 2, target.position + dir, Color.red);
         if (Physics.SphereCast(target.position + Vector3.up * 2, 0.5f, dir.normalized, out hit, dir.magnitude, collisionLayer.value, QueryTriggerInteraction.Ignore))
         {
+            lastCollideObject = hit.transform;
             Vector3 pos = hit.point - dir.normalized;
             if (pos.y < target.position.y + 2)
             {

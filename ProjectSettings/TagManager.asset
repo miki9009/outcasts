@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Palm
   - Flowers
+  - Block
   layers:
   - Default
   - TransparentFX

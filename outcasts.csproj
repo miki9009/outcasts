@@ -280,6 +280,7 @@
     <Compile Include="Assets\Scripts\Engine\LevelManager\LevelSelector.cs" />
     <Compile Include="Assets\Scripts\Engine\Materials.cs" />
     <Compile Include="Assets\Scripts\Engine\MeshMerge.cs" />
+    <Compile Include="Assets\Scripts\Engine\MeshMergeEditor.cs" />
     <Compile Include="Assets\Scripts\Engine\MeshRendererManager.cs" />
     <Compile Include="Assets\Scripts\Engine\MonoBehaviourHost.cs" />
     <Compile Include="Assets\Scripts\Engine\PathMovement.cs" />
@@ -297,6 +298,7 @@
     <Compile Include="Assets\Scripts\IDestructible.cs" />
     <Compile Include="Assets\Scripts\Mesh\MeshColor.cs" />
     <Compile Include="Assets\Scripts\Mesh\MeshPainter.cs" />
+    <Compile Include="Assets\Scripts\Misc\LightIncrease.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\PowerUps\Magnet.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUp.cs" />

@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: tex_Level0
-  m_Shader: {fileID: 51, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 10703, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -39,8 +39,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: f59680f67e9829f469e970c88b73c591, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 4c0dd2040579a89469b2446e6f1dc5e6, type: 3}
+        m_Scale: {x: 100, y: 75}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}

@@ -176,7 +176,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1741745381642808}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.44, y: 3.48, z: 25.2}
+  m_LocalPosition: {x: 5.68, y: 3.14, z: 70.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4623327186587614}
@@ -257,6 +257,10 @@ MonoBehaviour:
   model: {fileID: 4394097575886336}
   attack: 0
   velocity: {x: 0, y: 0, z: 0}
+  characterHealth: {fileID: 0}
+  collisionLayer:
+    serializedVersion: 2
+    m_Bits: 39168
 --- !u!114 &114479674008454256
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -270,7 +274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     runSpeed: 8
-    health: 0
+    health: 2
     jumpForce: 15
     turningSpeed: 150
     damage: 10
@@ -278,6 +282,10 @@ MonoBehaviour:
   anim: {fileID: 0}
   rb: {fileID: 54795299618832232}
   movement: {fileID: 0}
+  leftUpperArm: {fileID: 0}
+  leftLowerArm: {fileID: 0}
+  rightUpperArm: {fileID: 0}
+  rightLowerArm: {fileID: 0}
 --- !u!135 &135926904139250542
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -325,7 +333,7 @@ SkinnedMeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
-  m_MotionVectors: 1
+  m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
