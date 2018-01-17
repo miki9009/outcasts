@@ -10,7 +10,7 @@ public class Controller : MonoBehaviour
     public GameObject gameUI;
     Vector2 defaultResolution;
     bool defaultRes = true;
-
+    public Color levelColor;
 
     public static Controller Instance
     {

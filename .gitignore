@@ -34,3 +34,8 @@ Library/metadata/b4/b46df540b73bcd044b8d2503bee1bc0b.info
 Library/metadata/b4/b46df540b73bcd044b8d2503bee1bc0b
 .vs/outcasts/v15/Server/sqlite3/storage.ide-wal
 .vs/outcasts/v15/Server/sqlite3/storage.ide-shm
+*.bin
+*.neo
+Temp/
+Library/
+*.meta

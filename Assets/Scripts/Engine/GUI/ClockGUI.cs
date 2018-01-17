@@ -9,7 +9,7 @@ public class ClockGUI : MonoBehaviour
     GameTime instance;
     private int displayTime;
 
-    void Start()
+    void Awake()
     {
         text = GetComponentInChildren<Text>();
         GameManager.OnLevelLoaded += Prepare;

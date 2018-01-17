@@ -84,7 +84,7 @@ MeshRenderer:
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 0
   m_Materials:
   - {fileID: 2100000, guid: 6bfde8876f3ce8b43b37ac691cef2d4f, type: 2}

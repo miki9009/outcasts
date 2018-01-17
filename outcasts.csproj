@@ -260,6 +260,7 @@
     <Compile Include="Assets\Scripts\Enemy\EnemyDeath.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemySpot.cs" />
     <Compile Include="Assets\Scripts\Enemy\GameTime.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Plant.cs" />
     <Compile Include="Assets\Scripts\Engine\AnimatorBehaviour.cs" />
     <Compile Include="Assets\Scripts\Engine\Benchmark.cs" />
     <Compile Include="Assets\Scripts\Engine\ConcurrentDictionary.cs" />
@@ -299,6 +300,7 @@
     <Compile Include="Assets\Scripts\Mesh\MeshColor.cs" />
     <Compile Include="Assets\Scripts\Mesh\MeshPainter.cs" />
     <Compile Include="Assets\Scripts\Misc\LightIncrease.cs" />
+    <Compile Include="Assets\Scripts\Misc\Platform.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\PowerUps\Magnet.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUp.cs" />
