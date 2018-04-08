@@ -43,7 +43,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -88,6 +88,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -184,12 +185,12 @@ Prefab:
     - target: {fileID: 224864435171819502, guid: a64852592e91bf64a946af45def475b7,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: 397
+      value: 211
       objectReference: {fileID: 0}
     - target: {fileID: 224864435171819502, guid: a64852592e91bf64a946af45def475b7,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 248
+      value: 132
       objectReference: {fileID: 0}
     - target: {fileID: 224864435171819502, guid: a64852592e91bf64a946af45def475b7,
         type: 2}
@@ -307,7 +308,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 843380439}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 400, y: -249.87405, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 754185920}
@@ -395,6 +396,11 @@ Prefab:
     - target: {fileID: 4700885017619380, guid: dbe408dd6328ad2488fcbfd418c2673e, type: 2}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114865188061254358, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: day
+      value: Monday
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dbe408dd6328ad2488fcbfd418c2673e, type: 2}

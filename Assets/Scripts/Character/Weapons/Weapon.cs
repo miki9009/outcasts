@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
 
-public class Weapon : MonoBehaviour, IEquipment
+public class Weapon : MonoBehaviour, IRightArmItem
 {
+
+    public GameObject collectionPrefab;
     public ParticleSystem attackParticles;
-    [HideInInspector] public CharacterMovement characterMovement;
+    [HideInInspector] public Character character;
+    public CollectionObject collectionObject;
 
     private void Start()
     {
-        characterMovement = transform.root.GetComponent<CharacterMovement>();
-        characterMovement.MeleeAttack += Attack;
+        character.AddRightArmItem(this);
+        character = transform.root.GetComponent<Character>();
+        character.movement.MeleeAttack += Attack;
     }
 
     void Attack()
@@ -21,13 +25,21 @@ public class Weapon : MonoBehaviour, IEquipment
     {
         Engine.PoolingObject.Recycle(gameObject.GetName(), gameObject, () =>
         {
-            if (characterMovement != null)
-            characterMovement.MeleeAttack -= Attack;
+            if (character != null)
+            character.movement.MeleeAttack -= Attack;
          });
+        Debug.Log("Remove");
+        collectionObject.BackToCollection();
     }
+
+    public void Clear()
+    {
+        Remove();
+    }
+
+
+    
+
+
 }
 
-public interface IEquipment
-{
-    void Remove();
-}

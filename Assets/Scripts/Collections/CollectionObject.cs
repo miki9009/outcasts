@@ -11,8 +11,11 @@ public abstract class CollectionObject : MonoBehaviour
     public int particlesAmmount;
     public bool collected = false;
 
+    private Character character;
+
     public delegate void Collect(GameObject collector);
     public event Collect OnCollected;
+    public event Action<GameObject> OnLeaveTrigger;
     [HideInInspector] public Rigidbody rigid;
 
     public CollectionDisplay display;
@@ -29,13 +32,22 @@ public abstract class CollectionObject : MonoBehaviour
                 OnCollected(obj);
             }
             display.ShowDisplay();
-            int playerID = other.GetComponentInParent<Character>().ID;
+            character = other.GetComponentInParent<Character>();
+            int playerID = character.ID;
             CollectionManager.Instance.SetCollection(playerID, type, val);
             StartCoroutine(Collected());
             if (emmitParticles)
             {
                 CollectionManager.Instance.EmmitParticles(type, transform.position + Vector3.up, particlesAmmount);
             }
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (OnLeaveTrigger != null)
+        {
+            OnLeaveTrigger(other.gameObject);
         }
     }
 
@@ -100,7 +112,32 @@ public abstract class CollectionObject : MonoBehaviour
     public static Vector3 eulers = Vector3.zero;
     public static Quaternion rotation = Quaternion.identity;
 
+    public void BackToCollection()
+    {
+        if (character == null)
+        {
+            Debug.LogError("Character is null");
+            return;
+        }
+        gameObject.SetActive(true);
+        transform.localScale = Vector3.one;
+        collected = true;
+        GetComponent<Collider>().enabled = true;
+        transform.position = character.transform.position;
+        OnLeaveTrigger += SetCollectionObjectActive;
+        int collection = CollectionManager.Instance.GetCollection(character.ID, type);
+        CollectionManager.Instance.SetCollection(character.ID, type, collection - val);
+    }
 
+    void SetCollectionObjectActive(GameObject gameObject)
+    {
+        var character = gameObject.GetComponentInParent<Character>();
+        if (character != null && character == this.character)
+        {
+            collected = false;
+            OnLeaveTrigger -= SetCollectionObjectActive;
+        }
+    }
 }
 
 public enum CollectionType
@@ -110,6 +147,7 @@ public enum CollectionType
     Health = 2,
     Clock = 3,
     Magnet = 4,
-    Weapon = 5
+    Weapon = 5,
+    Throwable = 6
 }
 

@@ -5,12 +5,13 @@ using UnityEngine;
 using Engine;
 using Engine.GUI;
 
-public class CharacterMovement : MonoBehaviour, IStateAnimator
+public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 {
-    public AnimatorBehaviour AnimatorBehaviour { get; set; }
+
     public bool onGound = true;
     public ParticleSystem smoke2;
     public Transform model;
+    public LayerMask enemyLayer;
     protected Character character;
     protected CharacterStatistics stats;
     protected Animator anim;
@@ -37,6 +38,16 @@ public class CharacterMovement : MonoBehaviour, IStateAnimator
     ParticleSystem starsExplosion;
     [HideInInspector] public CharacterHealth characterHealth;
     public Action MeleeAttack;
+    public event Action<IThrowable, Vector3> Thrown;
+    public ThrowableObject ThrowObject { get; set; }
+    int throwAnimationHash;
+
+    public AnimatorBehaviour AnimatorBehaviour
+    {
+        get;set;
+    }
+
+
 
     private void Awake()
     {
@@ -50,6 +61,8 @@ public class CharacterMovement : MonoBehaviour, IStateAnimator
     Button btnJump;
     Button btnAttack;
     Button btnForward;
+    bool buttonsInitialized = true;
+    bool canMove = true;
 
     // Use this for initialization
     void Start ()
@@ -72,10 +85,13 @@ public class CharacterMovement : MonoBehaviour, IStateAnimator
             btnRight = GameGUI.GetButtonByName("ButtonRight");
             btnJump = GameGUI.GetButtonByName("ButtonJump");
             btnForward = GameGUI.GetButtonByName("ButtonForward");
-            GameGUI.GetButtonByName("ButtonAttack").OnTapPressed.AddListener(Attack);
+            btnAttack = GameGUI.GetButtonByName("ButtonAttack");
+            btnAttack.OnTapPressed.AddListener(Attack);
         }
-        catch {
-            this.enabled = false;
+        catch
+        {
+            Debug.Log("Buttons are not initialized, you can still use keyboard for movement");
+            buttonsInitialized = false;
         }
 
     }
@@ -118,20 +134,7 @@ public class CharacterMovement : MonoBehaviour, IStateAnimator
             if (!enemy.dead && enemy.isAttacking)
             {
                 enemy.isAttacking = false;
-                stats.health--;
-                characterHealth.RemoveHealth(stats.health);
-                if (stats.health > 0)
-                {                  
-                    anim.SetTrigger("hit");
-                    rb.AddForce(Vector3.up * 10, ForceMode.VelocityChange);
-                }
-                else
-                {
-                    enemy.target = null;
-                    Die();
-                }
-                starsExplosion.transform.position = transform.position;
-                starsExplosion.Play();
+                Hit(enemy);
             }
 
         }
@@ -143,6 +146,35 @@ public class CharacterMovement : MonoBehaviour, IStateAnimator
                 smoke2.Emit(15);
             }
         }
+    }
+
+    public void Hit(Enemy enemy = null, int hp = 1)
+    {
+        if (stats.health <= 0) return;
+        hp = Mathf.Clamp(hp,1,stats.health);
+
+        for (int i = 0; i < hp; i++)
+        {
+            characterHealth.RemoveHealth(stats.health -i-1);
+        }
+
+        stats.health -= hp;
+
+        if (stats.health > 0)
+        {
+            anim.SetTrigger("hit");
+            rb.AddForce(Vector3.up * 10, ForceMode.VelocityChange);
+        }
+        else
+        {
+            if (enemy != null)
+            {
+                enemy.target = null;
+            }
+            Die();
+        }
+        starsExplosion.transform.position = transform.position;
+        starsExplosion.Play();
     }
 
     // Update is called once per frame
@@ -160,6 +192,7 @@ public class CharacterMovement : MonoBehaviour, IStateAnimator
         Jump();
         if (attack)
         {
+            attack = false;
             AttackCollision();
         }
     }
@@ -180,7 +213,7 @@ public class CharacterMovement : MonoBehaviour, IStateAnimator
         if (timeLastJump < 0.7f && jumpReleased)
         {
             jumpReleased = false;
-            if (jumpInput > 0 && ((onGound && rb.velocity.y < 1) || doubleJump))
+            if (jumpInput > 0 && (Physics.Raycast(transform.position, Vector3.down,1) || doubleJump))
             {
                 timeLastJump = 1;
                 rb.AddForce(Vector3.up * stats.jumpForce, ForceMode.VelocityChange);
@@ -209,33 +242,40 @@ public class CharacterMovement : MonoBehaviour, IStateAnimator
     {
         verInput = 0;
         horInput = 0;
-        if (btnForward.isTouched) verInput = 1;
-
-        if (btnRight.isTouched) horInput = 1;
-        if (btnLeft.isTouched) horInput = -1;
-
         jumpInput = 0;
-        if (btnJump.isTouched) jumpInput = 1;
+        if (canMove)
+        {
+            if (buttonsInitialized)
+            {
+                if (btnForward.isTouched) verInput = 1;
+
+                if (btnRight.isTouched) horInput = 1;
+                if (btnLeft.isTouched) horInput = -1;
+
+                if (btnJump.isTouched) jumpInput = 1;
+            }
 
 #if UNITY_EDITOR
-        if (verInput == 0)
-        {
-            verInput = Input.GetAxisRaw("Vertical");
-        }
-
-        if (horInput == 0)
-        {
-            horInput = Input.GetAxisRaw("Horizontal");
-        }
-
-        if (jumpInput == 0)
-        {
-            if (Input.GetKey(KeyCode.Space))
+            if (verInput == 0)
             {
-                jumpInput = 1;
+                verInput = Input.GetAxisRaw("Vertical");
             }
-        }
+
+            if (horInput == 0)
+            {
+                horInput = Input.GetAxisRaw("Horizontal");
+            }
+
+            if (jumpInput == 0)
+            {
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    jumpInput = 1;
+                }
+            }
 #endif
+        }
+
         anim.SetFloat("vSpeed", velocity.y);
         anim.SetBool("onGround", onGound);
     }
@@ -288,6 +328,7 @@ public class CharacterMovement : MonoBehaviour, IStateAnimator
 
     void Attack()
     {
+        if (!enabled) return;
         if (!onGound && !attack)
         {
             rb.velocity = Vector3.down * stats.attackForce;
@@ -306,6 +347,18 @@ public class CharacterMovement : MonoBehaviour, IStateAnimator
                     MeleeAttack();
                 }
             }
+            if (Thrown != null)
+            {
+                canMove = false;
+                RaycastHit hit;
+                if (Physics.SphereCast(transform.position, 5, transform.forward, out hit, 50, enemyLayer.value,  QueryTriggerInteraction.Ignore))
+                {
+                    Debug.Log(hit.transform.name);
+                    transform.rotation = Engine.Math.RotateTowards(transform.position, hit.point);
+                }
+                anim.Play("Throw");
+                Thrown(this, transform.forward);
+            }
         }
     }
 
@@ -313,12 +366,25 @@ public class CharacterMovement : MonoBehaviour, IStateAnimator
     HashSet<IDestructible> scripts = new HashSet<IDestructible>();
 
 
+    public void StateAnimatorInitialized()
+    {
+        throwAnimationHash = Animator.StringToHash("Throw");
+        AnimatorBehaviour.StateExit += (animatorStateInfo) =>
+        {
+            if (animatorStateInfo.shortNameHash == throwAnimationHash)
+            {
+                canMove = true;
+            }
+        };
+    }
+
     void AttackCollision()
     {
         Ray ray = new Ray(curPos, Vector3.down);
-        RaycastHit[] hits = Physics.SphereCastAll(curPos, 2, Vector3.down, 10, collisionLayer.value,QueryTriggerInteraction.Collide);
+        RaycastHit[] hits = Physics.SphereCastAll(curPos, 2, Vector3.down, 10, collisionLayer.value,QueryTriggerInteraction.Ignore);
         for (int i = 0; i < hits.Length; i++)
         {
+            Debug.Log("Hit: " + hits[i].transform.name);
             scripts.Add(hits[i].collider.transform.root.gameObject.GetComponent<IDestructible>());
         }
         foreach (var script in scripts)

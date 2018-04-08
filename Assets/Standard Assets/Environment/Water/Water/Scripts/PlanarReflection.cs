@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace UnityStandardAssets.Water
 {
+    [ExecuteInEditMode]
     [RequireComponent(typeof(WaterBase))]
     public class PlanarReflection : MonoBehaviour
     {
@@ -66,10 +67,8 @@ namespace UnityStandardAssets.Water
         RenderTexture CreateTextureFor(Camera cam)
         {
             RenderTexture rt = new RenderTexture(Mathf.FloorToInt(cam.pixelWidth * 0.5F),
-                Mathf.FloorToInt(cam.pixelHeight * 0.5F), 24)
-            {
-                hideFlags = HideFlags.DontSave
-            };
+                Mathf.FloorToInt(cam.pixelHeight * 0.5F), 24);
+            rt.hideFlags = HideFlags.DontSave;
             return rt;
         }
 
@@ -198,12 +197,7 @@ namespace UnityStandardAssets.Water
             Vector3 euler = cam.transform.eulerAngles;
             reflectCamera.transform.eulerAngles = new Vector3(-euler.x, euler.y, euler.z);
 
-            try
-            {
-                //reflectCamera.Render();
-            }
-            catch(Exception ex) { Debug.Log(ex.Message); }
-
+            reflectCamera.Render();
 
             GL.invertCulling = false;
         }
@@ -211,14 +205,10 @@ namespace UnityStandardAssets.Water
 
         void SaneCameraSettings(Camera helperCam)
         {
-            try
-            {
-                helperCam.depthTextureMode = DepthTextureMode.None;
-                helperCam.backgroundColor = Color.black;
-                helperCam.clearFlags = CameraClearFlags.SolidColor;
-                helperCam.renderingPath = RenderingPath.Forward;
-            }
-            catch { }
+            helperCam.depthTextureMode = DepthTextureMode.None;
+            helperCam.backgroundColor = Color.black;
+            helperCam.clearFlags = CameraClearFlags.SolidColor;
+            helperCam.renderingPath = RenderingPath.Forward;
         }
 
 

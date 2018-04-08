@@ -9,11 +9,13 @@ public class Crate : MonoBehaviour, IDestructible
     public Transform Transform { get { return transform; } set { Transform = value; } }
     public GameObject collection;
     public int collectionAmmount;
+    public LayerMask layer;
 
     ParticleSystem crateExplosion;
     Renderer rend;
     BoxCollider boxCol;
     SphereCollider sCol;
+
     private void Start()
     {
         crateExplosion = StaticParticles.Instance.crateExploded;
@@ -56,7 +58,9 @@ public class Crate : MonoBehaviour, IDestructible
             for (int j = 0; j < coins.Length; j++)
             {
                 if (coins[j] != null)
-                coins[j].transform.position += dirs[j] * 0.1f;
+                {
+                     coins[j].transform.position += dirs[j] * 0.1f;
+                }
             }
             yield return null;
         }

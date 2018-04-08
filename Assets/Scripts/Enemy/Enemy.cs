@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 
-public class Enemy : MonoBehaviour, IDestructible
+public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected
 {
     public Transform Transform { get { return transform; } set { Transform = value; } }
     PathMovement pathMovement;
@@ -182,6 +182,11 @@ public class Enemy : MonoBehaviour, IDestructible
         starsExplosion.Play();
     }
 
+    public void OnHit()
+    {
+        Hit();
+    }
+
 #if UNITY_EDITOR
 
     private void OnDrawGizmos()
@@ -189,5 +194,7 @@ public class Enemy : MonoBehaviour, IDestructible
         Gizmos.color = new Color(0, 0, 1, 0.3f);
         Gizmos.DrawSphere(transform.position, guardRange);
     }
+
+
 #endif
 }

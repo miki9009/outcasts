@@ -126,6 +126,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collection: {fileID: 1241799106178928, guid: 6890f6590a03a9142b8a099cc3813a12, type: 2}
   collectionAmmount: 8
+  layer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!135 &135505214771711044
 SphereCollider:
   m_ObjectHideFlags: 1

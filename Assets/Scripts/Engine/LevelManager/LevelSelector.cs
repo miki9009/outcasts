@@ -9,10 +9,8 @@ using UnityEngine;
 [SerializableAttribute]
 public class LevelSelector : PopUpAttribute
 {
-
     public LevelSelector()
     {
-
         items = LevelManager.Scenes;
     }
 }

@@ -70,7 +70,10 @@ namespace Engine
 
         public static void Recycle(string name, GameObject gameObject, Action resetMethod)
         {
-            resetMethod();
+            if (resetMethod != null)
+            {
+                resetMethod();
+            }
             AddSpawn(name, gameObject);
         }
     }

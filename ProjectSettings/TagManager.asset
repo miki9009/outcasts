@@ -26,8 +26,8 @@ TagManager:
   - Collector
   - Destructible
   - Magnet
-  - 
-  - 
+  - CutOut
+  - ThrowableObject
   - 
   - 
   - 

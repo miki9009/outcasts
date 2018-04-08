@@ -22,10 +22,21 @@ public class Character : MonoBehaviour
 
     Identification identity;
 
+
     public int ID
     {
         get; private set;
     }
+
+    public void AddRightArmItem(IRightArmItem item)
+    {
+        if (rightArmItem != null)
+        {
+            rightArmItem.Remove();
+        }
+        rightArmItem = item;
+    }
+
 
     private void Awake()
     {
@@ -66,6 +77,11 @@ public class Identification
         id = counter; 
         counter++;
     }
-
-
 }
+
+public interface IEquipment
+{
+    void Remove();
+}
+
+public interface IRightArmItem : IEquipment{ }

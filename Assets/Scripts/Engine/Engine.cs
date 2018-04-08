@@ -67,6 +67,42 @@ namespace Engine
             }
         }
 
+        public static void MoveTowardsPointRotation(UnityEngine.Transform transform, Vector3 currentPosition, Vector3 targetPosition, float speed, float turnSpeed)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetPosition - currentPosition), turnSpeed);
+            transform.position = transform.position + transform.forward * speed;
+        }
+
+        public static void RotateTowards(UnityEngine.Transform transform, Vector3 currentPosition, Vector3 targetPosition, float turnSpeed)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetPosition - currentPosition), Time.deltaTime * turnSpeed);
+        }
+
+        public static Quaternion RotateTowards(Vector3 currentPosition, Vector3 targetPosition)
+        {
+            return Quaternion.LookRotation(targetPosition - currentPosition);
+        }
+
+        public static Quaternion RotateTowards(UnityEngine.Transform transform, Vector3 targetPosition, float turnSpeed)
+        {
+            return Quaternion.LookRotation(targetPosition - transform.position);
+        }
+
+        public static Quaternion ReverseDirection(UnityEngine.Transform transform, Vector3 targetPosition)
+        {
+            return Quaternion.LookRotation(transform.position - targetPosition);
+        }
+
+        public static Quaternion RotateTowardsTopDown(UnityEngine.Transform transform, Vector3 target, float turnSpeed)
+        {
+            return Quaternion.Slerp(Quaternion.Euler(0, transform.eulerAngles.y, 0), Quaternion.LookRotation(target - transform.position), turnSpeed);
+        }
+        public static Quaternion RotateTowardsTopDown(UnityEngine.Transform transform, Vector3 target)
+        {
+            return Quaternion.Euler(0, Quaternion.LookRotation(target - transform.position).y,0);
+        }
+
+
     }
     public abstract class Game : MonoBehaviour
     {
@@ -741,39 +777,6 @@ namespace Engine
         {
             return GetComponents(typeof(T));
         }
-
-        public static void MoveTowardsPointRotation(UnityEngine.Transform transform, Vector3 currentPosition, Vector3 targetPosition, float speed, float turnSpeed)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetPosition - currentPosition), turnSpeed);
-            transform.position = transform.position + transform.forward * speed;
-        }
-
-        public static void RotateTowards(UnityEngine.Transform transform, Vector3 currentPosition, Vector3 targetPosition, float turnSpeed)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetPosition - currentPosition), Time.deltaTime * turnSpeed);
-        }
-
-        public static Quaternion Direction(UnityEngine.Transform transform, Vector3 targetPos)
-        {
-            return Quaternion.LookRotation(targetPos - transform.position);
-        }
-
-        public static Quaternion Direction(ETransform transform, Vector3 targetPos)
-        {
-            return Quaternion.LookRotation(targetPos - transform.LocalPosition);
-        }
-
-        public static Quaternion ReverseDirection(UnityEngine.Transform transform, Vector3 targetPos)
-        {
-            return Quaternion.LookRotation(transform.position - targetPos);
-        }
-
-
-        public static void RotateTowardsTopDown(UnityEngine.Transform transform, Vector3 currentPosition, Vector3 targetPosition, float turnSpeed)
-        {
-            Quaternion thisRotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-            transform.rotation = Quaternion.Slerp(thisRotation, Quaternion.LookRotation(targetPosition - currentPosition), Time.deltaTime * turnSpeed);
-        }
     }
 
     public sealed class Draw
@@ -1143,6 +1146,10 @@ namespace Engine
         public static implicit operator Vector2(Float2 vec)
         {
             return new Vector2(vec.x, vec.y);
+        }
+        public static implicit operator Float2(Vector2 vec)
+        {
+            return new Float2(vec.x, vec.y);
         }
         public override string ToString()
         {

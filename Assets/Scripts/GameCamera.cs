@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Engine;
+using System.Linq;
 
 public class GameCamera : MonoBehaviour
 {
@@ -13,10 +14,11 @@ public class GameCamera : MonoBehaviour
     public float rotationSpeed;
     public float upFactor;
     public float speed;
+    public Transform[] camAnchors;
+    CameraAnchor[] anchorsBase;
 
     public Component vignatteAberration;
     public bool move = true;
-    public Vector3 stayPos;
 
     float time = 0;
 
@@ -25,6 +27,7 @@ public class GameCamera : MonoBehaviour
         try
         {
             target = Controller.Instance.character.transform;
+
         }
         catch
         {
@@ -46,7 +49,7 @@ public class GameCamera : MonoBehaviour
                 if (collide)
                 {
                     time = time > 0 ? time - Time.deltaTime : 0;
-                    transform.position = Vector3.Lerp(transform.position, target.position + target.forward * z + Vector3.up * y + target.right * x, (time > 0 ?  speed * (2 -time) : speed) * Time.deltaTime);
+                    transform.position = Vector3.Lerp(transform.position, target.position + target.forward * z + Vector3.up * y + target.right * x, (time > 0 ? speed * (2 - time) : speed) * Time.deltaTime);
                     slerp = Quaternion.LookRotation(Math.DirectionVector(transform.position, target.position + Vector3.up * upFactor));
                     transform.rotation = Quaternion.Slerp(transform.rotation, slerp, rotationSpeed * Time.deltaTime);
                 }
@@ -55,7 +58,7 @@ public class GameCamera : MonoBehaviour
                     time = 2;
                     transform.rotation = Quaternion.Slerp(transform.rotation, slerp, rotationSpeed * Time.deltaTime);
                 }
-            }
+            }           
         }
         else
         {
@@ -78,6 +81,7 @@ public class GameCamera : MonoBehaviour
     RaycastHit hit;
     public LayerMask collisionLayer;
     public bool collide;
+    bool isMoving = true;
     bool CheckFreePosition()
     {
         Vector3 dir = target.forward * z + Vector3.up * y + target.right * x;
@@ -101,4 +105,6 @@ public class GameCamera : MonoBehaviour
     {
 
     }
+
+
 }

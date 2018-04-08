@@ -14,12 +14,9 @@ public class WeaponCollect : MonoBehaviour
     void CreateWeapon(GameObject obj)
     {
         var character = obj.transform.root.GetComponent<Character>();
-        if (character.rightArmItem != null)
-        {
-            character.rightArmItem.Remove();
-        }
         var weaponObj = Instantiate(weaponPrefab, character.rightLowerArm);
         var weapon = weaponObj.GetComponent<Weapon>();
-        character.rightArmItem = weapon;
+        weapon.character = character;
+        weapon.collectionObject = collection;
     }
 }

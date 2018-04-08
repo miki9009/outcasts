@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Engine;
+using Engine.Config;
 using System.Collections;
 
 public class GameInit : MonoBehaviour
@@ -17,7 +18,7 @@ public class GameInit : MonoBehaviour
 
     private void Start()
     {
-        var data = (SettingsContainer.Settings)DataManager.Instance.GetData("Settings");
+        var data = (Settings.Container)DataManager.Instance.GetData(DataManager.Containers.SETTINGS);
         if (data.firstStart)
         {
             data.firstStart = false;
@@ -39,7 +40,7 @@ public class GameInit : MonoBehaviour
         {
             DataManager.Loaded += () =>
             {
-                var settings = (SettingsContainer.Settings)DataManager.Instance.GetData("Settings");
+                var settings = (Settings.Container)DataManager.Instance.GetData(DataManager.Containers.SETTINGS);
 #if UNITY_EDITOR
                 if (!disableFirstRunInEditor)
                 {

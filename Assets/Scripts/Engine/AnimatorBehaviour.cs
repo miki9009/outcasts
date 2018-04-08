@@ -44,9 +44,9 @@ namespace Engine
         //override public void OnStateMachineExit(Animator animator, int stateMachinePathHash) {
         //
         //}
-        public event Action StateEnter;
+        public event Action<AnimatorStateInfo> StateEnter;
         public event Action StateUpdate;
-        public event Action StateExit;
+        public event Action<AnimatorStateInfo> StateExit;
         public event Action StateMove;
         public event Action StateIK;
         public event Action StateMachineEnter;
@@ -55,6 +55,8 @@ namespace Engine
         [HideInInspector]public GameObject gameObject;
         public IStateAnimator state;
         bool initialized = false;
+
+        
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
         {
@@ -77,12 +79,13 @@ namespace Engine
                 else
                 {
                     state.AnimatorBehaviour = this;
+                    state.StateAnimatorInitialized();
                 }
                 initialized = true;
             }
             if (StateEnter != null)
             {
-                StateEnter();
+                StateEnter(animatorStateInfo);
             }
         }
 
@@ -90,7 +93,7 @@ namespace Engine
         {
             if (StateExit != null)
             {
-                StateExit();
+                StateExit(stateInfo);
             }
         }
 
@@ -137,7 +140,15 @@ namespace Engine
 
     public interface IStateAnimator
     {
+        /// <summary>
+        /// AnimatorBehaviour from attached Animator
+        /// </summary>
         AnimatorBehaviour AnimatorBehaviour { get; set; }
+
+        /// <summary>
+        /// Method is invoked automaticaly when AnimatorStateMachine is Ready
+        /// </summary>
+        void StateAnimatorInitialized();
     }
 
 }

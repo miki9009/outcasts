@@ -43,6 +43,11 @@ namespace Engine.GUI
         public float slideSpeed = 50;
         public float fadeSpeed = 10;
 
+        public event Action Hidden;
+        public event Action Shown;
+        public event Action BeginHide;
+        public event Action BeginShow;
+
         public static UIWindow GetWindow(string ID)
         {
             var window = windows.SingleOrDefault(x => x.ID == ID);
@@ -163,6 +168,10 @@ namespace Engine.GUI
 
         IEnumerator ShowE()
         {
+            if (BeginShow != null)
+            {
+                BeginShow();
+            }
             switch (anchor)
             {
                 case Anchor.Left:
@@ -202,11 +211,19 @@ namespace Engine.GUI
             }
             canvasGroup.alpha = 1;
             rect.anchoredPosition = desiredPos;
+            if (Shown != null)
+            {
+                Show();
+            }
             yield return null;
         }
 
         IEnumerator HideE()
         {
+            if (BeginHide != null)
+            {
+                BeginHide();
+            }
             switch (anchor)
             {
                 case Anchor.Left:
@@ -246,6 +263,10 @@ namespace Engine.GUI
             }
             canvasGroup.alpha = 0;
             gameObject.SetActive(false);
+            if (Hidden != null)
+            {
+                Hidden();
+            }
             yield return null;
         }
 
