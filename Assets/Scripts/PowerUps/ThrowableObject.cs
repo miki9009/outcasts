@@ -8,8 +8,13 @@ public class ThrowableObject : MonoBehaviour, IRightArmItem
     Rigidbody rb;
     Vector3 dir;
     public float upFactor;
-    [HideInInspector]
-    public CollectionObject collectionObject;
+
+    public CollectionObject CollectionObject
+    {
+        get;
+
+        set;
+    }
 
     void Awake()
     {
@@ -18,13 +23,22 @@ public class ThrowableObject : MonoBehaviour, IRightArmItem
         rb.useGravity = false;
     }
 
-    public void Initialize(Character character)
+    public void Apply()
     {
-        character.AddRightArmItem(this);
-        this.character = character;
         throwable = (IThrowable)character.movement;
         throwable.ThrowObject = this;
         throwable.Thrown += OnThrow;
+    }
+
+    public void BackToCollection()
+    {
+        CollectionObject.BackToCollection();
+    }
+
+    public void Initialize(Character character)
+    {
+        this.character = character;
+        character.AddItem(this);
     }
 
     void OnThrow(IThrowable throwable, Vector3 direction)
@@ -48,12 +62,13 @@ public class ThrowableObject : MonoBehaviour, IRightArmItem
 
     public void Remove()
     {
+        Debug.Log("Remove from Throwable Object");
         rb.useGravity = true;
         rb.isKinematic = false;
         transform.parent = null;
         gameObject.SetActive(false);
         throwable.Thrown -= OnThrow;
-        collectionObject.BackToCollection();
+        BackToCollection();
     }
 
     private void OnDestroy()

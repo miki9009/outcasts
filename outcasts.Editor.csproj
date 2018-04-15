@@ -299,6 +299,10 @@
       <Project>{0A74182B-9E00-22B0-95C4-5F4A5AADC00D}</Project>
       <Name>outcasts</Name>
     </ProjectReference>
+    <ProjectReference Include="outcasts.Editor.Plugins.csproj">
+      <Project>{F24FC544-9061-BD0B-B5AC-190836CAA384}</Project>
+      <Name>outcasts.Editor.Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\OtherAssets\BezierCurves\Editor\BezierCurveEditor.cs" />
@@ -333,6 +337,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\OtherAssets\BezierCurves\readme.txt" />
+    <None Include="Assets\OtherAssets\EffectExamples\Shared\Shaders\SurfaceShader_VC.shader" />
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info snow assets.txt" />
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info.txt" />
     <None Include="Assets\Shaders\3\2ColorSidedShader.shader" />
@@ -468,6 +473,8 @@
     <None Include="Assets\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
     <None Include="Assets\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
     <None Include="Assets\Shaders\frag_ao.cginc" />
+    <None Include="Assets\Standard Assets\Effects\Bloom\Resources\Bloom.cginc" />
+    <None Include="Assets\Standard Assets\Effects\Bloom\Resources\Bloom.shader" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
@@ -536,6 +543,7 @@
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\frag_ao.cginc" />
+    <None Include="Assets\Standard Assets\Effects\LensAberrations\Resources\LensAberrations.shader" />
     <None Include="Assets\Standard Assets\Effects\Projectors\Guidelines.txt" />
     <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
     <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />

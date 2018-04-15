@@ -301,6 +301,12 @@
   <ItemGroup>
     <Compile Include="Assets\OtherAssets\BezierCurves\Scripts\BezierCurve.cs" />
     <Compile Include="Assets\OtherAssets\BezierCurves\Scripts\BezierPoint.cs" />
+    <Compile Include="Assets\OtherAssets\EffectExamples\Shared\Scripts\DecalDestroyer.cs" />
+    <Compile Include="Assets\OtherAssets\EffectExamples\Shared\Scripts\GunAim.cs" />
+    <Compile Include="Assets\OtherAssets\EffectExamples\Shared\Scripts\GunShoot.cs" />
+    <Compile Include="Assets\OtherAssets\EffectExamples\Shared\Scripts\ParticleExamples.cs" />
+    <Compile Include="Assets\OtherAssets\EffectExamples\Shared\Scripts\ParticleMenu.cs" />
+    <Compile Include="Assets\Scripts\Auto.cs" />
     <Compile Include="Assets\Scripts\Benchmark.cs" />
     <Compile Include="Assets\Scripts\CameraAnchor.cs" />
     <Compile Include="Assets\Scripts\CameraAnchorTarget.cs" />
@@ -322,6 +328,7 @@
     <Compile Include="Assets\Scripts\Collections\CollectionManager.cs" />
     <Compile Include="Assets\Scripts\Collections\CollectionObject.cs" />
     <Compile Include="Assets\Scripts\Collections\Crate.cs" />
+    <Compile Include="Assets\Scripts\Collections\CrateJump.cs" />
     <Compile Include="Assets\Scripts\Collections\Health.cs" />
     <Compile Include="Assets\Scripts\Collections\MovingTransform.cs" />
     <Compile Include="Assets\Scripts\Collections\RealtimeAppearance.cs" />
@@ -331,6 +338,7 @@
     <Compile Include="Assets\Scripts\Data\Containers\CollectionsContainer.cs" />
     <Compile Include="Assets\Scripts\Data\Containers\Settings.cs" />
     <Compile Include="Assets\Scripts\Data\DataManager.cs" />
+    <Compile Include="Assets\Scripts\DestroyAfterTime.cs" />
     <Compile Include="Assets\Scripts\Effects.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyDeath.cs" />
@@ -388,13 +396,15 @@
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\PowerUps\Magnet.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUp.cs" />
-    <Compile Include="Assets\Scripts\PowerUps\PowerUpThrowable.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpDisplay.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpDisplayManager.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpMagnet.cs" />
+    <Compile Include="Assets\Scripts\PowerUps\PowerUpThrowable.cs" />
     <Compile Include="Assets\Scripts\PowerUps\ThrowableObject.cs" />
+    <Compile Include="Assets\Scripts\SideCameraParent.cs" />
     <Compile Include="Assets\Scripts\StaticParticles.cs" />
     <Compile Include="Assets\Scripts\Teleport.cs" />
+    <Compile Include="Assets\Scripts\TNT.cs" />
     <Compile Include="Assets\Scripts\Water.cs" />
     <Compile Include="Assets\Scripts\WeaponManager.cs" />
     <Compile Include="Assets\Shaders\3\ImageEffects\NightVision\NightVision.cs" />
@@ -403,6 +413,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\OtherAssets\BezierCurves\readme.txt" />
+    <None Include="Assets\OtherAssets\EffectExamples\Shared\Shaders\SurfaceShader_VC.shader" />
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info snow assets.txt" />
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info.txt" />
     <None Include="Assets\Shaders\3\2ColorSidedShader.shader" />
@@ -538,6 +549,8 @@
     <None Include="Assets\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
     <None Include="Assets\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
     <None Include="Assets\Shaders\frag_ao.cginc" />
+    <None Include="Assets\Standard Assets\Effects\Bloom\Resources\Bloom.cginc" />
+    <None Include="Assets\Standard Assets\Effects\Bloom\Resources\Bloom.shader" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
@@ -606,6 +619,7 @@
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\frag_ao.cginc" />
+    <None Include="Assets\Standard Assets\Effects\LensAberrations\Resources\LensAberrations.shader" />
     <None Include="Assets\Standard Assets\Effects\Projectors\Guidelines.txt" />
     <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
     <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />

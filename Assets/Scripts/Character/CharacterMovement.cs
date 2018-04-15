@@ -12,6 +12,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public ParticleSystem smoke2;
     public Transform model;
     public LayerMask enemyLayer;
+    public ParticleSystem attackParticles;
     protected Character character;
     protected CharacterStatistics stats;
     protected Animator anim;
@@ -113,7 +114,6 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 
     private void OnTriggerStay(Collider other)
     {
-
         if (other.gameObject.layer != 12 && other.gameObject.layer != 13)
         {
             if (!smoke.isPlaying)
@@ -136,17 +136,14 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 enemy.isAttacking = false;
                 Hit(enemy);
             }
-
         }
         else
         {
             onGound = true;
-            if (attack)
-            {
-                smoke2.Emit(15);
-            }
+            smoke2.Emit(15);
         }
     }
+
 
     public void Hit(Enemy enemy = null, int hp = 1)
     {
@@ -201,7 +198,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     void Shoot()
     {
 #if UNITY_EDITOR
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             Attack();
         }
@@ -328,30 +325,23 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 
     void Attack()
     {
-        if (!enabled) return;
-        if (!onGound && !attack)
+        if (!enabled || attack) return;
+        if (!onGound)
         {
             rb.velocity = Vector3.down * stats.attackForce;
             attack = true;
             anim.SetTrigger("attack");
             anim.SetBool("attackStay", true);
+            Debug.Log("Air Attack");
         }
         else
         {
-            if (!attack && character.rightArmItem != null)
-            {
-                attack = true;
-                anim.Play("Attack2");
-                if (MeleeAttack != null)
-                {
-                    MeleeAttack();
-                }
-            }
             if (Thrown != null)
             {
+                Debug.Log("Throw");
                 canMove = false;
                 RaycastHit hit;
-                if (Physics.SphereCast(transform.position, 5, transform.forward, out hit, 50, enemyLayer.value,  QueryTriggerInteraction.Ignore))
+                if (Physics.SphereCast(transform.position, 5, transform.forward, out hit, 50, enemyLayer.value, QueryTriggerInteraction.Ignore))
                 {
                     Debug.Log(hit.transform.name);
                     transform.rotation = Engine.Math.RotateTowards(transform.position, hit.point);
@@ -359,6 +349,18 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 anim.Play("Throw");
                 Thrown(this, transform.forward);
             }
+            else
+            {
+                Debug.Log("Ground Attack");
+                attack = true;
+                anim.Play("Attack");
+                attackParticles.Play();
+                if (MeleeAttack != null)
+                {
+                    MeleeAttack();
+                }
+            }
+
         }
     }
 
@@ -394,7 +396,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 script.Hit();
                 smokeExplosion.transform.position = script.Transform.position;
                 smokeExplosion.Play();
-                attack = false;
+                //attack = false;
             }
         }
         scripts.Clear();

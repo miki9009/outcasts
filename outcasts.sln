@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "outcasts", "outcasts.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "outcasts.Plugins", "outcasts.Plugins.csproj", "{83CFFF9B-977C-A913-6F12-080E1A1E4BEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "outcasts.Editor.Plugins", "outcasts.Editor.Plugins.csproj", "{F24FC544-9061-BD0B-B5AC-190836CAA384}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "outcasts.Editor", "outcasts.Editor.csproj", "{1549942E-71B2-786E-2706-2227BC9F3E91}"
 EndProject
 Global
@@ -21,6 +23,10 @@ Global
 		{83CFFF9B-977C-A913-6F12-080E1A1E4BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83CFFF9B-977C-A913-6F12-080E1A1E4BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83CFFF9B-977C-A913-6F12-080E1A1E4BEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F24FC544-9061-BD0B-B5AC-190836CAA384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F24FC544-9061-BD0B-B5AC-190836CAA384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F24FC544-9061-BD0B-B5AC-190836CAA384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F24FC544-9061-BD0B-B5AC-190836CAA384}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1549942E-71B2-786E-2706-2227BC9F3E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1549942E-71B2-786E-2706-2227BC9F3E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1549942E-71B2-786E-2706-2227BC9F3E91}.Release|Any CPU.ActiveCfg = Release|Any CPU

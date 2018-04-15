@@ -12,11 +12,14 @@ public abstract class CollectionObject : MonoBehaviour
     public bool collected = false;
 
     private Character character;
+    private Vector3 localScale;
 
     public delegate void Collect(GameObject collector);
     public event Collect OnCollected;
     public event Action<GameObject> OnLeaveTrigger;
     [HideInInspector] public Rigidbody rigid;
+
+    protected Coroutine collectedCoroutine;
 
     public CollectionDisplay display;
 
@@ -35,7 +38,7 @@ public abstract class CollectionObject : MonoBehaviour
             character = other.GetComponentInParent<Character>();
             int playerID = character.ID;
             CollectionManager.Instance.SetCollection(playerID, type, val);
-            StartCoroutine(Collected());
+            collectedCoroutine = StartCoroutine(Collected());
             if (emmitParticles)
             {
                 CollectionManager.Instance.EmmitParticles(type, transform.position + Vector3.up, particlesAmmount);
@@ -53,6 +56,7 @@ public abstract class CollectionObject : MonoBehaviour
 
     private void Awake()
     {
+        localScale = transform.localScale;
         if (!GameManager.LevelLoaded)
         {
             GameManager.OnLevelLoaded += AssignDisplayOnLoad;
@@ -100,6 +104,7 @@ public abstract class CollectionObject : MonoBehaviour
 
         yield return new WaitForSeconds(deactivationTime);
         Deactivate();
+        collectedCoroutine = null;
         yield return null;
     }
 
@@ -120,7 +125,11 @@ public abstract class CollectionObject : MonoBehaviour
             return;
         }
         gameObject.SetActive(true);
-        transform.localScale = Vector3.one;
+        if (collectedCoroutine != null)
+        {
+            StopCoroutine(collectedCoroutine);
+            transform.localScale = localScale;
+        }
         collected = true;
         GetComponent<Collider>().enabled = true;
         transform.position = character.transform.position;

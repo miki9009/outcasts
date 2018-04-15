@@ -124,7 +124,7 @@ ModelImporter:
       name: Attack
       takeName: Attack
       firstFrame: -1
-      lastFrame: 10
+      lastFrame: 34
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -292,7 +292,7 @@ ModelImporter:
       name: Attack2
       takeName: Attack2
       firstFrame: -1
-      lastFrame: 29
+      lastFrame: 54
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

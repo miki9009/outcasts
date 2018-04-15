@@ -80,6 +80,22 @@ namespace Engine
                 buttonIsInRange = new bool[buttonsCount];
             }
 
+#if UNITY_EDITOR
+            bool mousePressed = Input.GetMouseButton(0);
+            for (int l = 0; l < buttonsCount; l++)
+            {
+                if (mousePressed && buttons[l].IsInRange(Input.mousePosition))
+                {
+                    
+                    buttons[l].Touch();
+                }
+                else
+                {
+                    buttons[l].NotTouched();
+                }
+            }
+#else
+
             for (int i = 0; i < touchCount; i++)
             {
                 for (int j = 0; j < buttonsCount; j++)
@@ -104,18 +120,7 @@ namespace Engine
                 buttonIsInRange[k] = false;
             }
 
-            #if UNITY_EDITOR
-            if (Input.GetMouseButton(0))
-            {
-                for (int l = 0; l < buttonsCount; l++)
-                {
-                    if (buttons[l].IsInRange(Input.mousePosition))
-                    {
-                        buttons[l].Touch();
-                    }
-                }
-            }
-            #endif
+#endif
         }
 
         public static Engine.GUI.Button GetButtonByName(string buttonName)

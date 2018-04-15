@@ -52,7 +52,7 @@ public class Crate : MonoBehaviour, IDestructible
             coins[i].GetComponent<Collection>().enabled = false;
             yield return null;
         }
-        int steps = 30;
+        int steps = 15;
         for (int i = 0; i < steps; i++)
         {
             for (int j = 0; j < coins.Length; j++)

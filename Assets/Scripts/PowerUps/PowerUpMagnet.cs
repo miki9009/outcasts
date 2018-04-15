@@ -4,6 +4,12 @@ public class PowerUpMagnet : PowerUp
 {
     public GameObject prefab;
     [HideInInspector]public Magnet magnet;
+    public CollectionObject CollectionObject { get; set; }
+
+    public void BackToCollection()
+    {
+
+    }
 
     protected override void Start()
     {
@@ -13,18 +19,18 @@ public class PowerUpMagnet : PowerUp
         {
             col.enabled = false;
             character = obj.GetComponentInParent<Character>();
-            Apply();
+            ApplyPowerUp();
         };
     }
 
-    protected override void Apply()
+    protected override void ApplyPowerUp()
     {
-        base.Apply();
+        base.ApplyPowerUp();
         var obj = Instantiate(prefab, character.leftLowerArm);
         magnet = obj.GetComponent<Magnet>();
-        magnet.lowerArm = character.leftLowerArm;
+        magnet.Character = character;
         magnet.upperArm = character.leftUpperArm;
-        magnet.use = true;
+        magnet.lowerArm = character.leftLowerArm;
     }
 
     public override void Disable()
@@ -35,5 +41,10 @@ public class PowerUpMagnet : PowerUp
         {
             Destroy(magnet.gameObject);
         }
+    }
+
+    public void Remove()
+    {
+        Disable();
     }
 }

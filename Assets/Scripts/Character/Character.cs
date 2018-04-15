@@ -18,7 +18,7 @@ public class Character : MonoBehaviour
     public Transform rightLowerArm;
     
     public IEquipment rightArmItem;
-    public IEquipment leftArmobject;
+    public IEquipment leftArmItem;
 
     Identification identity;
 
@@ -35,6 +35,40 @@ public class Character : MonoBehaviour
             rightArmItem.Remove();
         }
         rightArmItem = item;
+    }
+
+    public void AddItem(IEquipment equipment)
+    {       
+        if (equipment != null)
+        {
+            var types = equipment.GetType().GetInterfaces();
+            for (int i = 0; i < types.Length; i++)
+            {
+                if (types[i] == typeof(IRightArmItem))
+                {
+                    if (rightArmItem != null)
+                    {
+                        rightArmItem.Remove();
+                        Debug.Log("Right Hand item removed");
+                    }
+                    Debug.Log("Right Hand item equipped");
+                    rightArmItem = equipment;
+                    break;
+                }
+                else if (types[i] == typeof(ILefttArmItem))
+                {
+                    if (leftArmItem != null)
+                    {
+                        leftArmItem.Remove();
+                        Debug.Log("Left Hand item removed");
+                    }
+                    Debug.Log("Left Hand item equipped");
+                    leftArmItem = equipment;
+                    break;
+                }
+            }
+            equipment.Apply();
+        }
     }
 
 
@@ -81,7 +115,11 @@ public class Identification
 
 public interface IEquipment
 {
+    CollectionObject CollectionObject { get; set; }
+    void Apply();
     void Remove();
+    void BackToCollection();
 }
 
 public interface IRightArmItem : IEquipment{ }
+public interface ILefttArmItem : IEquipment { }

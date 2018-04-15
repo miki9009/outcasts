@@ -31,7 +31,7 @@ public class PowerUp : MonoBehaviour
     //    }
     //}
 
-    protected virtual void Apply()
+    protected virtual void ApplyPowerUp()
     {
         RemoveDuplicate(type);
         PowerUpDisplayManager.Instance.AddDisplay(type, time, this);

@@ -31,6 +31,7 @@ public class PowerUpDisplayManager : MonoBehaviour
 
     public void AddDisplay(CollectionType type, int time, PowerUp powerUp)
     {
+        if (time <= 0) return;
         PowerUpDisplay d = null;
         try
         {

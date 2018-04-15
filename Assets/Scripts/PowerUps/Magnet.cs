@@ -2,7 +2,7 @@
 using UnityEngine;
 using Engine;
 
-public class Magnet : MonoBehaviour
+public class Magnet : MonoBehaviour, ILefttArmItem
 {
     public bool use;
     [HideInInspector] public Transform upperArm;
@@ -11,13 +11,36 @@ public class Magnet : MonoBehaviour
     public Vector3 lowerRotation;
     public float magnetForce;
     Collider col;
+    public Character Character { get; set; }
 
     List<CollectionObject> coins;
+
+    public CollectionObject CollectionObject
+    {
+        get;
+        set;
+    }
 
     private void Start()
     {
         coins = new List<CollectionObject>();
         col = transform.root.GetComponent<Collider>();
+        Character.AddItem(this);
+    }
+
+    public void Apply()
+    {
+        Debug.Log("Applied Magnet");
+        use = true;
+    }
+
+    public void Remove()
+    {
+        DestroyMe();
+    }
+
+    public void BackToCollection()
+    {
     }
 
     private void OnTriggerEnter(Collider other)
@@ -67,4 +90,6 @@ public class Magnet : MonoBehaviour
             }
         }
     }
+
+
 }

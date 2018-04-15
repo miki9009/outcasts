@@ -6235,7 +6235,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 90054d8d13928b64fae639349dafadf8, type: 3}
   - {fileID: 21300000, guid: c67444a26b71a984d97d72368b812591, type: 3}
   - {fileID: 21300000, guid: 8d985b10b34adfa43a0f6c7d7596966c, type: 3}
-  - {fileID: 21300000, guid: 8d985b10b34adfa43a0f6c7d7596966c, type: 3}
+  - {fileID: 21300000, guid: 210fc2a46ae5f0841b97788d883c9925, type: 3}
   prefab: {fileID: 1915895792084736, guid: 547d458d0ddeb9b4a91708e68573b149, type: 2}
   displayList: []
 --- !u!1 &2110077246

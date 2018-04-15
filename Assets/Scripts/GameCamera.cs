@@ -15,10 +15,11 @@ public class GameCamera : MonoBehaviour
     public float upFactor;
     public float speed;
     public Transform[] camAnchors;
-    CameraAnchor[] anchorsBase;
 
     public Component vignatteAberration;
     public bool move = true;
+
+    public float UpFactorAtStart { get; private set; }
 
     float time = 0;
 
@@ -27,7 +28,7 @@ public class GameCamera : MonoBehaviour
         try
         {
             target = Controller.Instance.character.transform;
-
+            UpFactorAtStart = upFactor;
         }
         catch
         {
@@ -81,7 +82,6 @@ public class GameCamera : MonoBehaviour
     RaycastHit hit;
     public LayerMask collisionLayer;
     public bool collide;
-    bool isMoving = true;
     bool CheckFreePosition()
     {
         Vector3 dir = target.forward * z + Vector3.up * y + target.right * x;

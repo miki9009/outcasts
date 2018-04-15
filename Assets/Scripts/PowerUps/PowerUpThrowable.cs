@@ -15,19 +15,20 @@ public class PowerUpThrowable : PowerUp
         {
             col.enabled = false;
             character = obj.GetComponentInParent<Character>();
-            Apply();
+            ApplyPowerUp();
         };
     }
 
-    protected override void Apply()
+    protected override void ApplyPowerUp()
     {
         var throwable = (IThrowable)character.movement;
-        base.Apply();
+        base.ApplyPowerUp();
         var obj = Instantiate(prefab, character.rightLowerArm);
         throwableObject = obj.GetComponent<ThrowableObject>();
         throwableObject.transform.localPosition = new Vector3(-0.3f, 0.1934f, -0.0378f);
+        throwableObject.CollectionObject = collectionObject;
         throwableObject.Initialize(character);
-        throwableObject.collectionObject = collectionObject;
+
         Disable();
     }
 

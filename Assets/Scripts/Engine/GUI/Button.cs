@@ -99,6 +99,10 @@ namespace Engine.GUI
         {
             if (!isTouched)
             {
+                if (buttonName == "ButtonAttack")
+                {
+                    Debug.Log("ActionButton Touched");
+                }
                 OnTapPressed.Invoke();
             }
             isTouched = true;

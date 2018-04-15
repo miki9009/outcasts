@@ -8,11 +8,11 @@ public class Weapon : MonoBehaviour, IRightArmItem
     [HideInInspector] public Character character;
     public CollectionObject collectionObject;
 
+    public CollectionObject CollectionObject { get; set; }
+
     private void Start()
     {
-        character.AddRightArmItem(this);
-        character = transform.root.GetComponent<Character>();
-        character.movement.MeleeAttack += Attack;
+        character.AddItem(this);
     }
 
     void Attack()
@@ -37,9 +37,15 @@ public class Weapon : MonoBehaviour, IRightArmItem
         Remove();
     }
 
+    public void Apply()
+    {
+        character = transform.root.GetComponent<Character>();
+        character.movement.MeleeAttack += Attack;
+    }
 
-    
-
-
+    public void BackToCollection()
+    {
+        throw new System.NotImplementedException();
+    }
 }
 

@@ -79,7 +79,8 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected
         {
             if (curAttackTime > attackTime)
             {
-                Attack();
+                curAttackTime = 0;
+                Invoke("Attack", 1f);
             }
             if (target == null || Vector3.Distance(transform.position, target.position) > range)
             {
