@@ -320,6 +320,7 @@
     <Compile Include="Assets\Scripts\Collections\ActivationTrigger.cs" />
     <Compile Include="Assets\Scripts\Collections\ActiveObject.cs" />
     <Compile Include="Assets\Scripts\Collections\Chest.cs" />
+    <Compile Include="Assets\Scripts\Collections\ChestSignificant.cs" />
     <Compile Include="Assets\Scripts\Collections\Collection.cs" />
     <Compile Include="Assets\Scripts\Collections\CollectionAnimator.cs" />
     <Compile Include="Assets\Scripts\Collections\CollectionClock.cs" />
@@ -364,6 +365,7 @@
     <Compile Include="Assets\Scripts\Engine\GUI\GameGUI.cs" />
     <Compile Include="Assets\Scripts\Engine\Host.cs" />
     <Compile Include="Assets\Scripts\Engine\HostInitializer.cs" />
+    <Compile Include="Assets\Scripts\Engine\HTTP\Http.cs" />
     <Compile Include="Assets\Scripts\Engine\LevelManager\LevelManager.cs" />
     <Compile Include="Assets\Scripts\Engine\LevelManager\LevelSelector.cs" />
     <Compile Include="Assets\Scripts\Engine\Materials.cs" />
@@ -391,13 +393,19 @@
     <Compile Include="Assets\Scripts\Layers.cs" />
     <Compile Include="Assets\Scripts\Mesh\MeshColor.cs" />
     <Compile Include="Assets\Scripts\Mesh\MeshPainter.cs" />
+    <Compile Include="Assets\Scripts\Misc\DeactivateAfterTime.cs" />
     <Compile Include="Assets\Scripts\Misc\LightIncrease.cs" />
+    <Compile Include="Assets\Scripts\Misc\MovingPlatform.cs" />
     <Compile Include="Assets\Scripts\Misc\Platform.cs" />
+    <Compile Include="Assets\Scripts\Misc\RequiredUI.cs" />
+    <Compile Include="Assets\Scripts\Misc\Statistics.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
+    <Compile Include="Assets\Scripts\PowerUps\InvincibilityParticlesEffect.cs" />
     <Compile Include="Assets\Scripts\PowerUps\Magnet.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUp.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpDisplay.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpDisplayManager.cs" />
+    <Compile Include="Assets\Scripts\PowerUps\PowerUpInvincibility.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpMagnet.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpThrowable.cs" />
     <Compile Include="Assets\Scripts\PowerUps\ThrowableObject.cs" />
@@ -417,6 +425,7 @@
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info snow assets.txt" />
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info.txt" />
     <None Include="Assets\Shaders\3\2ColorSidedShader.shader" />
+    <None Include="Assets\Shaders\3\3DTextShader.shader" />
     <None Include="Assets\Shaders\3\AlphaBright.shader" />
     <None Include="Assets\Shaders\3\ImageEffects\NightVision\NightVision.shader" />
     <None Include="Assets\Shaders\3\ImageEffects\OilPaint\OilPaint.shader" />

@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
   - component: {fileID: 6544856}
+  - component: {fileID: 114279427941038606}
+  - component: {fileID: 135562737680442858}
   m_Layer: 10
   m_Name: Campfire
   m_TagString: Untagged
@@ -125,8 +127,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -214.99792, y: 44.100002, z: 192.38109}
+  m_LocalRotation: {x: 0.66275847, y: 0.24647766, z: 0.24647766, w: 0.66275847}
+  m_LocalPosition: {x: -0.6281047, y: -13.700892, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 441322}
@@ -16995,3 +16997,27 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}
   m_IsPrefabParent: 1
+--- !u!114 &114279427941038606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f246315a11259c14ab016b3263d257e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextLevel: level1
+--- !u!135 &135562737680442858
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Center: {x: 0.036600083, y: 0.18803272, z: -0.012825743}

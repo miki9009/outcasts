@@ -11,12 +11,19 @@ public class Chest : MonoBehaviour, IActivationTrigger
 
     public GameObject collection;
     public int ammount;
+    SphereCollider sphere;
 
-    public void Activate()
+    protected virtual void Awake()
     {
-        if (Activated && !wasUsed)
+        sphere = GetComponent<SphereCollider>();
+    }
+
+    public virtual void Activate()
+    {
+        if (Activated && !wasUsed && Vector3.Distance(transform.position, Character.GetLocalPlayer().transform.position) < sphere.radius)
         {
             wasUsed = true;
+            if (enabled)
             StartCoroutine(OpenChest());
             Used = true;
             GetComponent<ActivationTrigger>().DeactivateTrigger();

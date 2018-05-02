@@ -10,6 +10,7 @@ namespace Engine
     public class DataContainer : MonoBehaviour
     {
         public virtual IData Data { get; set; }
+
     }
 
 

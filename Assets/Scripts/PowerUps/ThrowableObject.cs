@@ -83,12 +83,17 @@ public class ThrowableObject : MonoBehaviour, IRightArmItem
     {
         if (other.gameObject.layer == Layers.Enemy)
         {
-            var affected = other.gameObject.GetComponent<IThrowableAffected>();
+            var affected = other.gameObject.GetComponentInParent<IThrowableAffected>();
             if (affected != null)
             {
                 affected.OnHit();
             }
+            else
+            {
+                Debug.Log("Affected not found");
+            }
         }
+
     }
 
 }

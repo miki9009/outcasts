@@ -24,10 +24,10 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     float verInput = 0;
     float horInput = 0;
     float jumpInput = 0;
-    float shoot = 0;
     Rigidbody rb;
     Vector3 curPos;
     public bool attack;
+    bool isAttacking = false;
 
     public Vector3 velocity;
 
@@ -41,7 +41,13 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public Action MeleeAttack;
     public event Action<IThrowable, Vector3> Thrown;
     public ThrowableObject ThrowObject { get; set; }
+
+    //ANIMATIONS
     int throwAnimationHash;
+    int attackAnimationHash;
+    int attackAnimationHash2;
+
+    public bool Invincible { get; set; }
 
     public AnimatorBehaviour AnimatorBehaviour
     {
@@ -145,9 +151,9 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     }
 
 
-    public void Hit(Enemy enemy = null, int hp = 1)
+    public void Hit(Enemy enemy = null, int hp = 1, bool heavyAttack = false)
     {
-        if (stats.health <= 0) return;
+        if (stats.health <= 0 || Invincible || (isAttacking && !heavyAttack)) return;
         hp = Mathf.Clamp(hp,1,stats.health);
 
         for (int i = 0; i < hp; i++)
@@ -343,7 +349,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 RaycastHit hit;
                 if (Physics.SphereCast(transform.position, 5, transform.forward, out hit, 50, enemyLayer.value, QueryTriggerInteraction.Ignore))
                 {
-                    Debug.Log(hit.transform.name);
+                    //Debug.Log(hit.transform.name);
                     transform.rotation = Engine.Math.RotateTowards(transform.position, hit.point);
                 }
                 anim.Play("Throw");
@@ -351,9 +357,10 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
             }
             else
             {
-                Debug.Log("Ground Attack");
+                //Debug.Log("Ground Attack");
                 attack = true;
                 anim.Play("Attack");
+                isAttacking = true;
                 attackParticles.Play();
                 if (MeleeAttack != null)
                 {
@@ -371,11 +378,16 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public void StateAnimatorInitialized()
     {
         throwAnimationHash = Animator.StringToHash("Throw");
+        attackAnimationHash = Animator.StringToHash("Attack");
         AnimatorBehaviour.StateExit += (animatorStateInfo) =>
         {
             if (animatorStateInfo.shortNameHash == throwAnimationHash)
             {
                 canMove = true;
+            }
+            else if (animatorStateInfo.shortNameHash == attackAnimationHash)
+            {
+                isAttacking = false;
             }
         };
     }

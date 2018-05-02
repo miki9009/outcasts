@@ -45,7 +45,7 @@ public class SettingsWindow : UIWindow
         Screen.SetResolution((int)currentRes.x, (int)currentRes.y,true);
         var settings = (Settings.Container)DataManager.Instance.GetData(DataManager.Containers.SETTINGS);
         settings.resolution = currentRes;
-        DataManager.Instance.SaveData();
+        DataManager.SaveData();
     }
 
     public void ChangeResolution()

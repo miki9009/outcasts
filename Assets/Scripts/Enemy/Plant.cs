@@ -5,7 +5,7 @@ using System.Text;
 using Engine;
 using UnityEngine;
 
-public class Plant : MonoBehaviour, Engine.IStateAnimator
+public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrowableAffected
 {
     public float turnSpeed;
     public float timeBetweenAttacks = 0.75f;
@@ -15,10 +15,18 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator
     bool canAttack = true;
     int animationHash = Animator.StringToHash("Attack");
     SphereCollider sphere;
+    bool dead;
+    EnemyDeath enemyDeath;
+    ParticleSystem starsExplosion;
 
     public AnimatorBehaviour AnimatorBehaviour
     {
         get;set;
+    }
+
+    public Transform Transform
+    {
+        get { return transform; }
     }
 
     public void StateAnimatorInitialized()
@@ -46,24 +54,29 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+        enemyDeath = GetComponent<EnemyDeath>();
         collisionBroadcast = GetComponentInChildren<CollisionBroadcast>();
         sphere = GetComponent<SphereCollider>();
-        collisionBroadcast.CollisionEntered += (collision) =>
+        collisionBroadcast.CollisionEntered += Attack;
+    }
+
+    void Attack(Collision collision)
+    {
+        if (dead) return;
+        if (collision.gameObject.layer == Layers.Character)
         {
-            if (collision.gameObject.layer == Layers.Character)
+            var characterMovement = collision.gameObject.GetComponent<CharacterMovement>();
+            if (characterMovement != null && canAttack)
             {
-                var characterMovement = collision.gameObject.GetComponent<CharacterMovement>();
-                if (characterMovement != null && canAttack)
-                {
-                    canAttack = false;
-                    characterMovement.Hit();
-                }
+                canAttack = false;
+                characterMovement.Hit();
             }
-        };
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (dead) return;
         if (other.gameObject.layer == Layers.Character)
         {
             target = other.transform;
@@ -75,6 +88,7 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator
     public void Start()
     {
         turnSpeed = turnSpeed * Time.deltaTime;
+        starsExplosion = StaticParticles.Instance.starsExplosion;
     }
 
 
@@ -96,13 +110,37 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator
         }
     }
 
+    public void Hit()
+    {
+        starsExplosion.transform.position = transform.position;
+        starsExplosion.Play();
+        collisionBroadcast.CollisionEntered -= Attack;
+        CancelInvoke();
+        Debug.Log("Plant Hit");
+        Invoke("PlayDie", 0.1f);
+        dead = true;
+        sphere.enabled = false;
+        enemyDeath.StartCoroutine(enemyDeath.DestroyMe());
+
+    }
+
+    void PlayDie()
+    {
+        Debug.Log("Played Dead");
+        anim.Play("Die");
+        this.enabled = true;
+    }
+
 
 
     private void Update()
     {
-        if (target != null)
+        if (target != null && !dead)
         transform.rotation = Engine.Math.RotateTowardsTopDown(transform, target.position, turnSpeed);
     }
 
-
+    public void OnHit()
+    {
+        Hit();
+    }
 }

@@ -10,6 +10,8 @@ public class TNT:MonoBehaviour
     public float force = 10;
     public float timeForce = 1;
     public float explosionForce = 100;
+    float blendSwitch = 1;
+    bool expand;
 
     Rigidbody rb;
     SkinnedMeshRenderer mesh;
@@ -26,6 +28,7 @@ public class TNT:MonoBehaviour
         rb = GetComponent<Rigidbody>();
         mesh = GetComponent<SkinnedMeshRenderer>();
         sphere = GetComponent<SphereCollider>();
+        blendSwitch = Random.Range(-1f, 1f);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -49,7 +52,7 @@ public class TNT:MonoBehaviour
                 var movement = other.gameObject.GetComponent<CharacterMovement>();
                 if (movement != null)
                 {
-                    movement.Hit(null,5);
+                    movement.Hit(null,5, true);
                 }
                 else
                 {
@@ -98,11 +101,37 @@ public class TNT:MonoBehaviour
                 timeout = 0;
             }
 
-            float lastShape1 = mesh.GetBlendShapeWeight(0);
-            mesh.SetBlendShapeWeight(0, Mathf.Lerp(lastShape1, Random.Range(0, 100), 0.3f));
+            if (expand)
+            {
+                if (blendSwitch > 0)
+                {
+                    blendSwitch -= Time.deltaTime;
+                    float lastShape1 = mesh.GetBlendShapeWeight(0);
+                    mesh.SetBlendShapeWeight(0, Mathf.Clamp(lastShape1 + Random.Range(-30,30),0,100));
+                }
+                else
+                {
+                    blendSwitch = Random.Range(0.1f, 1);
+                    expand = false;
+                }
+            }
+            else
+            {
+                if (blendSwitch > 0)
+                {
+                    blendSwitch -= Time.deltaTime;
+                    float lastShape2 = mesh.GetBlendShapeWeight(1);
+                    mesh.SetBlendShapeWeight(1, Mathf.Clamp(lastShape2 + Random.Range(-30, 30), 0, 100));
+                }
+                else
+                {
+                    blendSwitch = Random.Range(0.1f, 1);
+                    expand = true;
+                }
+            }
 
-            float lastShape2 = mesh.GetBlendShapeWeight(1);
-            mesh.SetBlendShapeWeight(1, Mathf.Lerp(lastShape1, Random.Range(0, 100), 0.3f));
+
+
             if (timeToExplosion > 0)
             {
                 timeToExplosion -= Time.deltaTime;

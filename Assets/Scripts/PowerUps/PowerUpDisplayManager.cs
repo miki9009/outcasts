@@ -16,21 +16,52 @@ public class PowerUpDisplayManager : MonoBehaviour
     {
         Instance = this;
         displays = new HashSet<PowerUpDisplay>();
-        GameManager.OnLevelLoaded += ClearPowerUps;
+        GameManager.OnLevelLoaded += ClearAllPowerUpsAndDisplays;
     }
 
-    void ClearPowerUps()
+    public PowerUpDisplay GetDisplay(CollectionType type)
     {
-        PowerUp.activePowerUps.Clear();
+        foreach(var d in displays)
+        {
+            if (d.type == type)
+            {
+                Debug.Log("Returned: " + type);
+                return d;
+            }
+        }
+        Debug.Log("No PowerUp display found with type: " + type);
+        return null;
+    }
+
+    public void ResetDisplay(PowerUp pwr)
+    {
+        var display = GetDisplay(pwr.Type);
+        if (display != null)
+        {
+            display.ResetTo(pwr);
+        }
+        else
+        {
+            AddDisplay(pwr);
+        }
+    }
+
+
+    void ClearAllPowerUpsAndDisplays()
+    {
+        PowerUp.activePowerUps = new HashSet<PowerUp>();
+        displays = new HashSet<PowerUpDisplay>();
     }
 
     private void OnDestroy()
     {
-        GameManager.OnLevelLoaded -= ClearPowerUps;
+        GameManager.OnLevelLoaded -= ClearAllPowerUpsAndDisplays;
     }
 
-    public void AddDisplay(CollectionType type, int time, PowerUp powerUp)
+    public void AddDisplay(PowerUp powerUp)
     {
+        int time = powerUp.time;
+        var type = powerUp.Type;
         if (time <= 0) return;
         PowerUpDisplay d = null;
         try
@@ -54,6 +85,15 @@ public class PowerUpDisplayManager : MonoBehaviour
             d.time = time;
             d.ConvertTime();
             d.powerUp = powerUp;
+        }
+    }
+
+    public void RemoveDisplay(CollectionType type)
+    {
+        var display = displays.SingleOrDefault(x => x.type == type);
+        if (display != null)
+        {
+            Destroy(display.gameObject);
         }
     }
 }

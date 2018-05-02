@@ -9,9 +9,6 @@ using System.IO;
 public class DataManager : MonoBehaviour
 {
 
-
-    //[PopUp(new string[] { "jeden", "dwa" })]
-
     static DataManager instance;
     public static event Action Saved;
     public static event Action Loaded;
@@ -44,11 +41,12 @@ public class DataManager : MonoBehaviour
         instance = this;
     }
 
-    public void LoadData()
+    public static void LoadData()
     {
+        Debug.Log("Data Load");
         try
         {
-            datas = (Dictionary<string, IData>)Data.Load(dataFileName);
+            Instance.datas = (Dictionary<string, IData>)Data.Load(Instance.dataFileName);
             Debug.Log("Loaded Succesfully");
         }
         catch (Exception ex)
@@ -61,7 +59,7 @@ public class DataManager : MonoBehaviour
         IData data;
         dataComponents.ForEach(o =>
         {
-            if (datas.TryGetValue(o.Data.ID, out data))
+            if (Instance.datas.TryGetValue(o.Data.ID, out data))
             {
                 o.Data = data;
             }
@@ -73,10 +71,16 @@ public class DataManager : MonoBehaviour
 
     }
 
-    public void SaveData()
+    public static void SaveData()
     {
-        CastData();
-        Data.Save(dataFileName, datas);
+        Debug.Log("Data saved");
+        Instance.CastData();
+        Data.Save(Instance.dataFileName, Instance.datas);
+    }
+
+    public static T GetData<T>() where T : IData
+    {
+        return (T)Instance.datas.SingleOrDefault(x => x.Value.GetType() == typeof(T)).Value;
     }
 
     public IData GetData(string ID)

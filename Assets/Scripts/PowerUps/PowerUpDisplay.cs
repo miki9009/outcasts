@@ -17,6 +17,15 @@ public class PowerUpDisplay : MonoBehaviour
         GameManager.OnLevelChanged += () => time = 0;
     }
 
+    public void ResetTo(PowerUp pwr)
+    {
+        time = pwr.time;
+        powerUp = pwr;
+        curTime = 1;
+        ConvertTime();
+        Debug.Log("Display Reset: Type " + type + " Seconds: " + seconds);
+    }
+
     public void ConvertTime()
     {
         minutes = time / 60;
@@ -36,6 +45,7 @@ public class PowerUpDisplay : MonoBehaviour
             seconds--;
         }
         text.text = string.Format("{0}:{1:00}", minutes, seconds);
+        //Debug.Log(string.Format("{0}:{1:00}", minutes, seconds));
     }
 
     private void FixedUpdate()

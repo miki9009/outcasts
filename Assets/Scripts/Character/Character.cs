@@ -28,6 +28,12 @@ public class Character : MonoBehaviour
         get; private set;
     }
 
+    static Character localPlayer;
+    public static Character GetLocalPlayer()
+    {
+        return localPlayer;
+    }
+
     public void AddRightArmItem(IRightArmItem item)
     {
         if (rightArmItem != null)
@@ -49,9 +55,9 @@ public class Character : MonoBehaviour
                     if (rightArmItem != null)
                     {
                         rightArmItem.Remove();
-                        Debug.Log("Right Hand item removed");
+                        //Debug.Log("Right Hand item removed");
                     }
-                    Debug.Log("Right Hand item equipped");
+                    //Debug.Log("Right Hand item equipped");
                     rightArmItem = equipment;
                     break;
                 }
@@ -60,9 +66,9 @@ public class Character : MonoBehaviour
                     if (leftArmItem != null)
                     {
                         leftArmItem.Remove();
-                        Debug.Log("Left Hand item removed");
+                        //Debug.Log("Left Hand item removed");
                     }
-                    Debug.Log("Left Hand item equipped");
+                    //Debug.Log("Left Hand item equipped");
                     leftArmItem = equipment;
                     break;
                 }
@@ -79,6 +85,7 @@ public class Character : MonoBehaviour
         ID = identity.ID;
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
+        localPlayer = this;
     }
 
     void Start()

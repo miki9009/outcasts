@@ -21,12 +21,16 @@ public class Effects : MonoBehaviour
         }
     }
 
-    public static void ScalePulse(Transform transform, float animationSpeed, int loop)
+    public static void ScalePulse(Transform transform, float animationSpeed, int loop, Action onFinished = null)
     {
         Instance.StartCoroutine(Instance.ScaleEffectC(transform, animationSpeed, loop));
+        if (onFinished != null)
+        {
+            onFinished();
+        }
     }
 
-    public static void ScalePulseVanish(Transform transform, float animationSpeed, int loop, Action onRemove)
+    public static void ScalePulseVanish(Transform transform, float animationSpeed, int loop, Action onRemove = null)
     {
         Instance.StartCoroutine(Instance.ScaleEffectVanishC(transform, animationSpeed, loop, onRemove));
     }

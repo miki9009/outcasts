@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IDestructible
 {
     void Hit();
-    Transform Transform { get; set; }
+    Transform Transform { get;}
 }

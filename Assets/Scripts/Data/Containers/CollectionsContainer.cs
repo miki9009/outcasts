@@ -35,6 +35,9 @@ public class CollectionsContainer : DataContainer
 
         public int coins;
         public int emmeralds;
+        public int goldKeys;
+        public int silverKeys;
+        public int bronzeKeys;
     }
 
 

@@ -67,8 +67,13 @@ public class GameManager : MonoBehaviour
     {
         var data = (CollectionsContainer.Container)DataManager.Instance.GetData("Collections");
         data.coins += CollectionManager.Instance.GetCollection(Controller.Instance.character.ID, CollectionType.Coin);
+        data.emmeralds += CollectionManager.Instance.GetCollection(Controller.Instance.character.ID, CollectionType.Emmerald);
+        data.goldKeys += CollectionManager.Instance.GetCollection(Controller.Instance.character.ID, CollectionType.KeyGold);
+        data.silverKeys += CollectionManager.Instance.GetCollection(Controller.Instance.character.ID, CollectionType.KeySilver);
+        data.bronzeKeys += CollectionManager.Instance.GetCollection(Controller.Instance.character.ID, CollectionType.KeyBronze);
+
         Debug.Log("Coins = " + data.coins);
-        DataManager.Instance.SaveData();
+        DataManager.SaveData();
         Debug.Log("Game Saved");
         CollectionManager.Instance.ResetCollections();
         if (OnGameFinished != null)

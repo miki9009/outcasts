@@ -11,13 +11,13 @@ public class PowerUp : MonoBehaviour
 
     protected SphereCollider col;
     protected Character character;
-    CollectionType type;
+    public CollectionType Type { get; private set; }
 
     public static HashSet<PowerUp> activePowerUps = new HashSet<PowerUp>();
 
     protected virtual void Start()
     {
-        type = GetComponent<CollectionObject>().type;
+        Type = GetComponent<CollectionObject>().type;
     }
 
     //private void OnTriggerEnter(Collider other)
@@ -33,8 +33,16 @@ public class PowerUp : MonoBehaviour
 
     protected virtual void ApplyPowerUp()
     {
-        RemoveDuplicate(type);
-        PowerUpDisplayManager.Instance.AddDisplay(type, time, this);
+        if (!RemoveDuplicate(Type))
+        {
+            PowerUpDisplayManager.Instance.AddDisplay(this);
+        }
+        else
+        {
+            PowerUpDisplayManager.Instance.ResetDisplay(this);
+        }
+
+
         activePowerUps.Add(this);
     }
 
@@ -48,13 +56,15 @@ public class PowerUp : MonoBehaviour
         activePowerUps.Remove(this);
     }
 
-    static void RemoveDuplicate(CollectionType type)
+    static bool RemoveDuplicate(CollectionType type)
     {
-        PowerUp pwr = activePowerUps.SingleOrDefault(x => x.type == type);
+        PowerUp pwr = activePowerUps.SingleOrDefault(x => x.Type == type);
         if (pwr != null)
         {
             pwr.Disable();
+            return true;
         }
+        return false;
     }
 
 }

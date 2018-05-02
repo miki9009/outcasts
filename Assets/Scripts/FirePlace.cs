@@ -24,6 +24,7 @@ public class FirePlace : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.layer != Layers.Character) return;
         if (goToNextScene)
         {
             goToNextScene = false;

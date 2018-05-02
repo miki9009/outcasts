@@ -5,7 +5,6 @@ public class MovingStone : MonoBehaviour
     public BezierCurve curve;
     public float speed = 0.25f;
 
-    Vector3 nextpoint;
     float movement = 0;
     bool forward;
 
@@ -13,7 +12,7 @@ public class MovingStone : MonoBehaviour
     {
         if (collision.gameObject.layer == Layers.Character)
         {
-            collision.gameObject.GetComponent<CharacterMovement>().Hit(null,100);
+            collision.gameObject.GetComponent<CharacterMovement>().Hit(null,100, true);
         }
     }
 

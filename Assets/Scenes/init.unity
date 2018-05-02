@@ -402,6 +402,35 @@ Prefab:
       propertyPath: day
       value: Monday
       objectReference: {fileID: 0}
+    - target: {fileID: 1768418570623732, guid: dbe408dd6328ad2488fcbfd418c2673e, type: 2}
+      propertyPath: m_Name
+      value: DataCollection
+      objectReference: {fileID: 0}
+    - target: {fileID: 114522631853505672, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: data.bronzeKeys
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114522631853505672, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: data.silverKeys
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114522631853505672, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: data.goldKeys
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114865188061254358, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: disableFirstRunInEditor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114819927616168116, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: data.firstStart
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dbe408dd6328ad2488fcbfd418c2673e, type: 2}
   m_IsPrefabParent: 0

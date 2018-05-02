@@ -46,7 +46,7 @@ public class Benchmark : MonoBehaviour
         Settings.Container data = (Settings.Container)DataManager.Instance.GetData(DataManager.Containers.SETTINGS);
         data.resolution = new Engine.Float2(curResolution.x, curResolution.y);
         data.runBenchmark = false;
-        DataManager.Instance.SaveData();
+        DataManager.SaveData();
         yield return new WaitForEndOfFrame();
         LevelManager.Instance.GoToScene(nextLevel);
         yield return null;

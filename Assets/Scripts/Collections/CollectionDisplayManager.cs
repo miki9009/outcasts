@@ -33,7 +33,6 @@ public class CollectionDisplayManager : MonoBehaviour
         });
     }
 
-    Engine.CheckExistance<CollectionDisplay> method;
     public CollectionDisplay AssignDisplayObject(CollectionType type)
     {
         CollectionDisplay obj = null;

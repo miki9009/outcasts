@@ -21,6 +21,7 @@ public abstract class CollectionObject : MonoBehaviour
 
     protected Coroutine collectedCoroutine;
 
+    [NonSerializedAttribute]
     public CollectionDisplay display;
 
     public void OnTriggerEnter(Collider other)
@@ -128,7 +129,6 @@ public abstract class CollectionObject : MonoBehaviour
         if (collectedCoroutine != null)
         {
             StopCoroutine(collectedCoroutine);
-            transform.localScale = localScale;
         }
         collected = true;
         GetComponent<Collider>().enabled = true;
@@ -136,6 +136,7 @@ public abstract class CollectionObject : MonoBehaviour
         OnLeaveTrigger += SetCollectionObjectActive;
         int collection = CollectionManager.Instance.GetCollection(character.ID, type);
         CollectionManager.Instance.SetCollection(character.ID, type, collection - val);
+        transform.localScale = localScale;
     }
 
     void SetCollectionObjectActive(GameObject gameObject)
@@ -157,6 +158,10 @@ public enum CollectionType
     Clock = 3,
     Magnet = 4,
     Weapon = 5,
-    Throwable = 6
+    Throwable = 6,
+    Invincibility = 7,
+    KeyGold = 8,
+    KeySilver = 9,
+    KeyBronze = 10
 }
 

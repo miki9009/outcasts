@@ -18,7 +18,7 @@ public class ActivationTrigger : MonoBehaviour
             activators++;
             thisActivators++;
             component.Activated = true;
-            if (!button.gameObject.activeInHierarchy)
+            if (button != null && !button.gameObject.activeInHierarchy)
             {
                 ActivateButton(true);
             }
@@ -70,7 +70,7 @@ public class ActivationTrigger : MonoBehaviour
         
         if (set)
         {
-            Effects.ScalePulse(button.transform, 2, 1);
+            Effects.ScalePulse(button.transform, 2, 1, ()=> button.transform.localScale = Vector3.one);
             button.gameObject.SetActive(set);
         }
         else

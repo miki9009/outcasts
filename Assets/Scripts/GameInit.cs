@@ -19,13 +19,15 @@ public class GameInit : MonoBehaviour
     private void Start()
     {
         var data = (Settings.Container)DataManager.Instance.GetData(DataManager.Containers.SETTINGS);
+#if !UNITY_EDITOR
         if (data.firstStart)
         {
             data.firstStart = false;
-            DataManager.Instance.SaveData();
+            DataManager.SaveData();
         }
+#endif
         Init();
-        DataManager.Instance.LoadData();
+        DataManager.LoadData();
         //StartCoroutine(StartInit());
     }
 

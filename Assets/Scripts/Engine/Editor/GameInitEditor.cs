@@ -18,11 +18,11 @@ namespace Engine
 
             if (GUILayout.Button("Save current data"))
             {
-                DataManager.Instance.SaveData();
+                DataManager.SaveData();
             }
             if (GUILayout.Button("Load data"))
             {
-                DataManager.Instance.LoadData();
+                DataManager.LoadData();
             }
         }
     }
