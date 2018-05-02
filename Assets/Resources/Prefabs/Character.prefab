@@ -414,13 +414,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1453601487524222}
-  m_LocalRotation: {x: -0.03998864, y: -0.14221571, z: -0.9822248, w: 0.11580177}
+  m_LocalRotation: {x: -0.057047382, y: 0.7048018, z: -0.7048018, w: -0.057047382}
   m_LocalPosition: {x: -0.4484405, y: -0.07711879, z: 0.09351728}
   m_LocalScale: {x: 0.8870758, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4974400225296794}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 22.3, z: -166.955}
 --- !u!4 &4432786050013874
 Transform:
   m_ObjectHideFlags: 1
@@ -566,15 +566,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1741745381642808}
-  m_LocalRotation: {x: 0, y: 0.8764327, z: -0, w: -0.48152432}
-  m_LocalPosition: {x: -133.57, y: 44.07, z: 101.63}
+  m_LocalRotation: {x: 0, y: 0.52487755, z: -0, w: -0.8511778}
+  m_LocalPosition: {x: -129.844, y: 44.77, z: 97.677}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4623327186587614}
   - {fileID: 4761896993031244}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 237.57, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 296.68, z: 0}
 --- !u!4 &4799106042533150
 Transform:
   m_ObjectHideFlags: 1
@@ -4253,7 +4253,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 931158255
+  randomSeed: 1133374215
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4696,7 +4696,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 5
     enabled: 1
-    type: 12
+    type: 5
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -4704,7 +4704,7 @@ ParticleSystem:
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 1, y: 1, z: 1}
+    m_Scale: {x: 1, y: 0.58, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
