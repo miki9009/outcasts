@@ -11,29 +11,33 @@ public class ActivationTrigger : MonoBehaviour
     int thisActivators = 0;
     Button button;
     SphereCollider col;
+    public Character Character { get; set; }
 
 
     private void OnTriggerEnter(Collider other)
     {
-            activators++;
-            thisActivators++;
-            component.Activated = true;
-            if (button != null && !button.gameObject.activeInHierarchy)
-            {
-                ActivateButton(true);
-            }
-       // Debug.Log("Trigger: Activated");
+        if (component.Activated) return;
+        activators++;
+        thisActivators++;
+        component.Activated = true;
+        if (button != null && !button.gameObject.activeInHierarchy)
+        {
+            ActivateButton(true);
+        }
+        Debug.Log("Activated " + transform.name);
     }
 
     public void OnTriggerExit(Collider other)
-    {      
+    {
+        if (!component.Activated) return;
         activators--;
         thisActivators--;
-        component.Activated = true;
+        component.Activated = false;
         if (activators <= 0)
         {
             ActivateButton(false);
         }
+        Debug.Log("Disabled " + transform.name);
     }
 
     public void DeactivateTrigger()
@@ -75,7 +79,7 @@ public class ActivationTrigger : MonoBehaviour
         }
         else
         {
-            Effects.ScalePulseVanish(button.transform, 2, 1, () => button.gameObject.SetActive(set));
+            Effects.ScalePulseVanish(button.transform, 2, 1, () => { button.gameObject.SetActive(set); button.transform.localScale = Vector3.one; });
         }
     }
 

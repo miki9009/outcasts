@@ -72,6 +72,14 @@ namespace Engine.GUI
 
         }
 
+        public void OnTapPressedInvoke()
+        {
+            if(OnTapPressed!= null)
+            {
+                OnTapPressed.Invoke();
+            }
+        }
+
 
         public bool IsInRange(Vector3 pos)
         {

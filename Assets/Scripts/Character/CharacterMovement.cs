@@ -8,11 +8,14 @@ using Engine.GUI;
 public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 {
 
-    public bool onGound = true;
+    public bool onGround = true;
     public ParticleSystem smoke2;
     public Transform model;
     public LayerMask enemyLayer;
     public ParticleSystem attackParticles;
+    bool rotationEnabled = true;
+    [NonSerialized]
+    public bool movementEnabled = true;
     protected Character character;
     protected CharacterStatistics stats;
     protected Animator anim;
@@ -24,12 +27,14 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     float verInput = 0;
     float horInput = 0;
     float jumpInput = 0;
-    Rigidbody rb;
+    [NonSerialized]
+    public Rigidbody rb;
     Vector3 curPos;
     public bool attack;
     bool isAttacking = false;
 
     public Vector3 velocity;
+    public float pipeFactor;
 
     float timeLastJump = 0;
     bool jumpReleased = true;
@@ -46,6 +51,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     int throwAnimationHash;
     int attackAnimationHash;
     int attackAnimationHash2;
+
+    int direction2D = 1;
 
     public bool Invincible { get; set; }
 
@@ -70,10 +77,13 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     Button btnForward;
     bool buttonsInitialized = true;
     bool canMove = true;
+    
+
 
     // Use this for initialization
     void Start ()
     {
+        rotationEnabled = Controller.Instance.gameType == Controller.GameType.Perspective;
         curPos = transform.position;
         stats = character.stats;
         rb = character.rb;
@@ -88,12 +98,25 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     {
         try
         {
-            btnLeft = GameGUI.GetButtonByName("ButtonLeft");
-            btnRight = GameGUI.GetButtonByName("ButtonRight");
-            btnJump = GameGUI.GetButtonByName("ButtonJump");
-            btnForward = GameGUI.GetButtonByName("ButtonForward");
             btnAttack = GameGUI.GetButtonByName("ButtonAttack");
             btnAttack.OnTapPressed.AddListener(Attack);
+            btnJump = GameGUI.GetButtonByName("ButtonJump");
+
+            if (rotationEnabled)
+            {
+                btnLeft = GameGUI.GetButtonByName("ButtonLeft");
+                btnRight = GameGUI.GetButtonByName("ButtonRight");
+                btnForward = GameGUI.GetButtonByName("ButtonForward");
+            }
+            else
+            {
+                btnLeft = GameGUI.GetButtonByName("ButtonLeft");
+                btnRight = GameGUI.GetButtonByName("ButtonRight");
+                btnJump.gameObject.SetActive(false);
+                btnJump = GameGUI.GetButtonByName("ButtonForward");
+            }
+
+
         }
         catch
         {
@@ -105,7 +128,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 
     private void OnTriggerExit(Collider other)
     {
-        onGound = false;
+        onGround = false;
         smoke.Stop();
     }
 
@@ -126,7 +149,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
             {
                 smoke.Play();
             }
-            onGound = true;
+            //onGound = true;
             attack = false;
             anim.SetBool("attackStay", false);
         }
@@ -143,9 +166,10 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 Hit(enemy);
             }
         }
-        else
+        else if(other.gameObject.layer == Layers.Environment || other.gameObject.layer == Layers.Destructible)
         {
-            onGound = true;
+            //Debug.Log("OnGround = true");
+            onGround = true;
             smoke2.Emit(15);
         }
     }
@@ -216,19 +240,19 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         if (timeLastJump < 0.7f && jumpReleased)
         {
             jumpReleased = false;
-            if (jumpInput > 0 && (Physics.Raycast(transform.position, Vector3.down,1) || doubleJump))
+            if (jumpInput > 0 && (Physics.Raycast(transform.position, Vector3.down,1)/* || doubleJump*/))
             {
                 timeLastJump = 1;
                 rb.AddForce(Vector3.up * stats.jumpForce, ForceMode.VelocityChange);
-                if (onGound)
+                if (onGround)
                 {
-                    onGound = false;
-                    doubleJump = true;
+                    onGround = false;
+                    //doubleJump = true;
                 }
-                else
-                {
-                    doubleJump = false;
-                }
+                //else
+                //{
+                //    doubleJump = false;
+                //}
             }
         }
         else
@@ -250,23 +274,58 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         {
             if (buttonsInitialized)
             {
-                if (btnForward.isTouched) verInput = 1;
-
-                if (btnRight.isTouched) horInput = 1;
-                if (btnLeft.isTouched) horInput = -1;
-
                 if (btnJump.isTouched) jumpInput = 1;
+
+                if (!rotationEnabled)
+                {
+                    if (btnRight.isTouched)
+                    {
+                        verInput = 1;
+                        direction2D = 1;
+                    }
+                    if (btnLeft.isTouched)
+                    {
+                        verInput = 1;
+                        direction2D = -1;
+                    }
+                }
+                else
+                {
+
+                    if (btnRight.isTouched) horInput = 1;
+                    if (btnLeft.isTouched) horInput = -1;
+                    if (btnForward.isTouched) verInput = 1;
+
+                }
             }
 
 #if UNITY_EDITOR
-            if (verInput == 0)
+            if (rotationEnabled)
             {
-                verInput = Input.GetAxisRaw("Vertical");
-            }
+                if (verInput == 0)
+                {
+                    verInput = Input.GetAxisRaw("Vertical");
+                }
 
-            if (horInput == 0)
+                if (horInput == 0)
+                {
+                    horInput = Input.GetAxisRaw("Horizontal");
+                }
+            }
+            else
             {
-                horInput = Input.GetAxisRaw("Horizontal");
+                if (verInput == 0)
+                {
+                    verInput = Input.GetAxisRaw("Horizontal");
+                    if(verInput > 0)
+                    {
+                        direction2D = 1;
+                    }else if(verInput < 0)
+                    {
+                        direction2D = -1;
+                        verInput = 1;
+                    }
+                }
             }
 
             if (jumpInput == 0)
@@ -276,69 +335,81 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                     jumpInput = 1;
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                Debug.Log("Attack Invoked");
+                btnAttack.OnTapPressedInvoke();
+            }
 #endif
         }
 
-        anim.SetFloat("vSpeed", velocity.y);
-        anim.SetBool("onGround", onGound);
-    }
 
+        anim.SetFloat("vSpeed", velocity.y);
+        anim.SetBool("onGround", onGround);
+    }
 
     void Move()
     {
         var velo = rb.velocity;
         anim.SetFloat("hSpeed", velo.magnitude);
-        if (verInput != 0 && Mathf.Abs(velo.magnitude) < stats.runSpeed)
-        { 
-            velo += transform.forward * verInput;
+        if (verInput != 0 && Mathf.Abs(velo.magnitude) < stats.runSpeed && movementEnabled)
+        {
+            velo += rotationEnabled ? transform.forward * verInput : Vector3.right * verInput * direction2D;
             rb.velocity = velo;
             rb.rotation = transform.rotation;
         }
-         rb.maxAngularVelocity = 0;
-        
+        rb.maxAngularVelocity = 0;
     }
 
     void Rotation()
     {
-        if (horInput != 0)
+        if (rotationEnabled)
         {
-            var q = transform.rotation.eulerAngles;
-            transform.rotation = Quaternion.Euler(0, q.y + horInput * Time.deltaTime * stats.turningSpeed, 0);
-        }
-
-        if (modelZ < 10 && horInput == 1 && velocity.magnitude > 1)
-        {
-            modelZ += 0.25f;
-        }
-        else if (horInput == -1 && modelZ > -10 && velocity.magnitude > 1)
-        {
-            modelZ -= 0.25f;
-        }
-        else
-        {
-            if (modelZ > 0)
+            if (horInput != 0)
             {
-                modelZ -= 0.25f;
+                var q = transform.rotation.eulerAngles;
+                transform.rotation = Quaternion.Euler(0, q.y + horInput * Time.deltaTime * stats.turningSpeed, 0);
             }
-            else if(modelZ < 0)
+            if (modelZ < 10 && horInput == 1 && velocity.magnitude > 1)
             {
                 modelZ += 0.25f;
             }
+            else if (horInput == -1 && modelZ > -10 && velocity.magnitude > 1)
+            {
+                modelZ -= 0.25f;
+            }
+            else
+            {
+                if (modelZ > 0)
+                {
+                    modelZ -= 0.25f;
+                }
+                else if (modelZ < 0)
+                {
+                    modelZ += 0.25f;
+                }
+            }
+
+            model.localRotation = Quaternion.Euler(0, 0, -modelZ);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.right * direction2D), Time.deltaTime * stats.turningSpeed / 4);
         }
 
-        model.localRotation = Quaternion.Euler(0, 0, -modelZ);
+
     }
 
     void Attack()
     {
         if (!enabled || attack) return;
-        if (!onGound)
+        if (!onGround && Mathf.Abs(velocity.y) > 5)
         {
             rb.velocity = Vector3.down * stats.attackForce;
             attack = true;
             anim.SetTrigger("attack");
             anim.SetBool("attackStay", true);
-            Debug.Log("Air Attack");
         }
         else
         {
@@ -413,5 +484,16 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         }
         scripts.Clear();
     }
+
+    public void MovementEnable(bool enable)
+    {
+        movementEnabled = enable;
+    }
+
+    public void SetAnimation(string animationName)
+    {
+        anim.Play(animationName);
+    }
+
 
 }

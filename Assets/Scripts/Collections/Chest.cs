@@ -68,6 +68,7 @@ public class Chest : MonoBehaviour, IActivationTrigger
             yield return null;
         }
         int steps = 30;
+
         for (int i = 0; i < steps; i++)
         {
             for (int j = 0; j < coins.Length; j++)
@@ -89,5 +90,16 @@ public class Chest : MonoBehaviour, IActivationTrigger
             }
         }
         yield return null;
+        if (Controller.Instance.gameType == Controller.GameType.Ortographic)
+        {
+            for (int j = 0; j < coins.Length; j++)
+            {
+                if (coins[j] != null)
+                {
+                    coins[j].transform.position = Character.GetLocalPlayer().transform.position;
+                }
+                yield return null;
+            }
+        }
     }
 }

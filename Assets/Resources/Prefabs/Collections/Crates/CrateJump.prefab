@@ -87,7 +87,7 @@ MonoBehaviour:
   minCollectionAmount: 4
   randomizeAmount: 1
   animationSpeed: 10
-  force: 7
+  force: 6
 --- !u!135 &135441952100006276
 SphereCollider:
   m_ObjectHideFlags: 1

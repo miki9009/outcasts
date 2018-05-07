@@ -38,7 +38,7 @@ public class CrateJump : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.transform.position.y > transform.position.y + 1.5f)
+        if (collision.gameObject.transform.position.y > transform.position.y + 1f)
         {
             var character = collision.gameObject.GetComponent<Character>();
             if (character != null && !isSquashing)

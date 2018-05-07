@@ -3,28 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 using System.Linq;
+using UnityStandardAssets.ImageEffects;
 
 public class GameCamera : MonoBehaviour
 {
     public Transform target;
-    public bool fixedUpdate;
     public float x;
     public float y;
     public float z;
+    public float forwardFactor = 5;
     public float rotationSpeed;
     public float upFactor;
     public float speed;
     public Transform[] camAnchors;
 
     public Component vignatteAberration;
+    public MotionBlur motionBlure;
+    public CameraMotionBlur camMotionBlur;
     public bool move = true;
 
     public float UpFactorAtStart { get; private set; }
+
+    Controller.GameType gameType;
 
     float time = 0;
 
 	void Start ()
     {
+        gameType = Controller.Instance.gameType;
         try
         {
             target = Controller.Instance.character.transform;
@@ -44,19 +50,29 @@ public class GameCamera : MonoBehaviour
     {
         if (move)
         {
-            if (fixedUpdate && target)
+            if (target)
             {
-                collide = CheckFreePosition();
-                if (collide)
+                if (gameType == Controller.GameType.Perspective)
                 {
-                    time = time > 0 ? time - Time.deltaTime : 0;
-                    transform.position = Vector3.Lerp(transform.position, target.position + target.forward * z + Vector3.up * y + target.right * x, (time > 0 ? speed * (2 - time) : speed) * Time.deltaTime);
-                    slerp = Quaternion.LookRotation(Math.DirectionVector(transform.position, target.position + Vector3.up * upFactor));
-                    transform.rotation = Quaternion.Slerp(transform.rotation, slerp, rotationSpeed * Time.deltaTime);
+                    collide = CheckFreePosition();
+                    if (collide)
+                    {
+                        time = time > 0 ? time - Time.deltaTime : 0;
+                        transform.position = Vector3.Lerp(transform.position, target.position + target.forward * z + Vector3.up * y + target.right * x, (time > 0 ? speed * (2 - time) : speed) * Time.deltaTime);
+                        slerp = Quaternion.LookRotation(Math.DirectionVector(transform.position, target.position + Vector3.up * upFactor));
+                        transform.rotation = Quaternion.Slerp(transform.rotation, slerp, rotationSpeed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        time = 2;
+                        transform.rotation = Quaternion.Slerp(transform.rotation, slerp, rotationSpeed * Time.deltaTime);
+                    }
                 }
                 else
                 {
-                    time = 2;
+                    time = time > 0 ? time - Time.deltaTime : 0;
+                    transform.position = Vector3.Lerp(transform.position, target.position + target.forward * forwardFactor + new Vector3(x,y,z), (time > 0 ? speed * (2 - time) : speed) * Time.deltaTime);
+                    slerp = Quaternion.LookRotation(Math.DirectionVector(transform.position, target.position + Vector3.up * upFactor + target.forward * forwardFactor));
                     transform.rotation = Quaternion.Slerp(transform.rotation, slerp, rotationSpeed * Time.deltaTime);
                 }
             }           

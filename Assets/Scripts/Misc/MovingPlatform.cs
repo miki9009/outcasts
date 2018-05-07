@@ -9,7 +9,6 @@ public class MovingPlatform : MonoBehaviour
     public bool rotate;
     public float rotationSpeed;
     public TriggerBroadcast triggerBroadcast;
-    public float lerpSpeed;
 
     [Range(0, 1f)]
     public float pos;
@@ -47,7 +46,7 @@ public class MovingPlatform : MonoBehaviour
 
     void BroadCastTriggerExit(Collider other)
     {
-        Debug.Log("Moving platform TriggerExit");
+        //Debug.Log("Moving platform TriggerExit");
         if (platformers.ContainsKey(other.GetInstanceID()))
         {
             int id = other.GetInstanceID();
@@ -63,7 +62,10 @@ public class MovingPlatform : MonoBehaviour
             pos += calculatedSpeed;
         platform.position = Vector3.Lerp(platform.position, curve.GetPointAt(pos), Time.deltaTime * speed);
         if (rotate)
-            platform.rotation = Quaternion.Lerp(platform.rotation, Quaternion.LookRotation(Engine.Vector.Direction(platform.position, curve.GetPointAt(Mathf.Clamp01(pos)))), calculatedRotationSpeed);
+        {
+            Quaternion q = Quaternion.Lerp(platform.rotation, Quaternion.LookRotation(Engine.Vector.Direction(platform.position, curve.GetPointAt(Mathf.Clamp01(pos)))), calculatedRotationSpeed);
+            platform.eulerAngles = new Vector3(0, q.eulerAngles.y, q.eulerAngles.z);
+        }
     }
 
 

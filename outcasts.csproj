@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2017.4.2f2</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -335,11 +337,14 @@
     <Compile Include="Assets\Scripts\Mesh\MeshColor.cs" />
     <Compile Include="Assets\Scripts\Mesh\MeshPainter.cs" />
     <Compile Include="Assets\Scripts\Misc\DeactivateAfterTime.cs" />
+    <Compile Include="Assets\Scripts\Misc\DeathTrigger.cs" />
     <Compile Include="Assets\Scripts\Misc\LightIncrease.cs" />
     <Compile Include="Assets\Scripts\Misc\MovingPlatform.cs" />
+    <Compile Include="Assets\Scripts\Misc\Pipe.cs" />
     <Compile Include="Assets\Scripts\Misc\Platform.cs" />
     <Compile Include="Assets\Scripts\Misc\RequiredUI.cs" />
     <Compile Include="Assets\Scripts\Misc\Statistics.cs" />
+    <Compile Include="Assets\Scripts\Misc\TwoDimensionTrigger.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\PowerUps\InvincibilityParticlesEffect.cs" />
     <Compile Include="Assets\Scripts\PowerUps\Magnet.cs" />

@@ -14,5 +14,6 @@
     public const int Magnet = 16;
     public const int CutOut = 17;
     public const int ThrowableObject = 18;
+    public const int TwoDimensionTrigger = 19;
 
 }

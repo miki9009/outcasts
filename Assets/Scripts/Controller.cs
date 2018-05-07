@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 [DefaultExecutionOrder(-100)]
 public class Controller : MonoBehaviour
 {
+    public enum GameType { Perspective, Ortographic}
+    public GameType gameType = GameType.Perspective;
     public GameObject gameUI;
     Vector2 defaultResolution;
     bool defaultRes = true;
@@ -75,23 +77,8 @@ public class Controller : MonoBehaviour
     private void OnGUI()
     {
         Draw.DisplayFps(Screen.width / 2, 10, Color.red, 40);
-        Draw.TextColorUnity(10, 180, Color.red, "Screen Resolution: " + Screen.width + "x" + Screen.height);
-        //if (UnityEngine.GUI.Button(new Rect(Screen.width - 135, 10, 130, 50), "Change Resolution"))
-        //{
-        //    if (curResFactor > 0.3f)
-        //    {
-        //        curResFactor -= 0.1f;
-        //    }
-        //    else
-        //    {
-        //        curResFactor = 1;
-        //        Screen.SetResolution((int)(startResolution.x * curResFactor), (int)(startResolution.y * curResFactor), true);
-        //    }
-        //    if (Screen.width > 600)
-        //    {
-        //        Screen.SetResolution((int)(startResolution.x * curResFactor), (int)(startResolution.y * curResFactor), true);
-        //    }
-        //}
+       // Draw.TextColorUnity(10, 180, Color.red, "Screen Resolution: " + Screen.width + "x" + Screen.height);
+
     }
 
 }

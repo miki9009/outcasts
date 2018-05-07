@@ -53,24 +53,35 @@ public class Crate : MonoBehaviour, IDestructible
             yield return null;
         }
         int steps = 15;
-        for (int i = 0; i < steps; i++)
-        {
+
+            for (int i = 0; i < steps; i++)
+            {
+                for (int j = 0; j < coins.Length; j++)
+                {
+                    if (coins[j] != null)
+                    {
+                        coins[j].transform.position += dirs[j] * 0.1f;
+                    }
+                }
+                yield return null;
+            }
+            for (int i = 0; i < coins.Length; i++)
+            {
+                if (coins[i] != null)
+                    coins[i].GetComponent<Collection>().enabled = true;
+            }
+        if (Controller.Instance.gameType == Controller.GameType.Ortographic)
+        {            
             for (int j = 0; j < coins.Length; j++)
             {
                 if (coins[j] != null)
                 {
-                     coins[j].transform.position += dirs[j] * 0.1f;
+                    coins[j].transform.position = Character.GetLocalPlayer().transform.position;
                 }
+                yield return null;
             }
-            yield return null;
-        }
-        for (int i = 0; i < coins.Length; i++)
-        {
-            if (coins[i] != null)
-            coins[i].GetComponent<Collection>().enabled = true;
         }
         gameObject.SetActive(false);
-        yield return null;
     }
 
     public void Hit()

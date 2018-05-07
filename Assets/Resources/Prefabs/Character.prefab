@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 4358934737602132}
   - component: {fileID: 198694120996659492}
   - component: {fileID: 199575380342693810}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: AttackParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,7 +415,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1453601487524222}
   m_LocalRotation: {x: -0.057047382, y: 0.7048018, z: -0.7048018, w: -0.057047382}
-  m_LocalPosition: {x: -0.4484405, y: -0.07711879, z: 0.09351728}
+  m_LocalPosition: {x: -0.432, y: -0.747, z: 0.092}
   m_LocalScale: {x: 0.8870758, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4974400225296794}
@@ -566,15 +566,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1741745381642808}
-  m_LocalRotation: {x: 0, y: 0.52487755, z: -0, w: -0.8511778}
-  m_LocalPosition: {x: -129.844, y: 44.77, z: 97.677}
+  m_LocalRotation: {x: 0, y: 0.7455342, z: 0, w: 0.6664675}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4623327186587614}
   - {fileID: 4761896993031244}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 296.68, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 96.41, z: 0}
 --- !u!4 &4799106042533150
 Transform:
   m_ObjectHideFlags: 1
@@ -689,7 +689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6f8ca6e070f8854791f5d2f722a3e63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onGound: 1
+  onGround: 1
   smoke2: {fileID: 198795286452334074}
   model: {fileID: 4761896993031244}
   enemyLayer:
@@ -698,6 +698,7 @@ MonoBehaviour:
   attackParticles: {fileID: 198694120996659492}
   attack: 0
   velocity: {x: 0, y: 0, z: 0}
+  pipeFactor: 0
   characterHealth: {fileID: 0}
   collisionLayer:
     serializedVersion: 2
@@ -883,7 +884,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -340293654
+  randomSeed: 550816240
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4253,14 +4254,14 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1133374215
+  randomSeed: 574619940
   InitialModule:
     serializedVersion: 3
     enabled: 1
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -7025,7 +7026,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.9332002, b: 0.47750863, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -7614,7 +7615,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 219334635
+  randomSeed: -1618512467
   InitialModule:
     serializedVersion: 3
     enabled: 1

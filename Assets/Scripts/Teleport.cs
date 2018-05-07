@@ -10,7 +10,7 @@ public class Teleport : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (canTeleport && otherTeleport.canTeleport)
+        if (canTeleport && otherTeleport.canTeleport && other.gameObject.layer == Layers.Character)
         {
             canTeleport = false;
             otherTeleport.canTeleport = false;
@@ -19,8 +19,9 @@ public class Teleport : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit()
+    private void OnTriggerExit(Collider other)
     {
+        if(!canTeleport && other.gameObject.layer == Layers.Character)
         canTeleport = true;
     }
 
