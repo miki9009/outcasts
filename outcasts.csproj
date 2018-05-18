@@ -273,6 +273,7 @@
     <Compile Include="Assets\Scripts\Collections\CollectionObject.cs" />
     <Compile Include="Assets\Scripts\Collections\Crate.cs" />
     <Compile Include="Assets\Scripts\Collections\CrateJump.cs" />
+    <Compile Include="Assets\Scripts\Collections\CrateJumpMetal.cs" />
     <Compile Include="Assets\Scripts\Collections\Health.cs" />
     <Compile Include="Assets\Scripts\Collections\MovingTransform.cs" />
     <Compile Include="Assets\Scripts\Collections\RealtimeAppearance.cs" />
@@ -299,6 +300,7 @@
     <Compile Include="Assets\Scripts\Engine\Data.cs" />
     <Compile Include="Assets\Scripts\Engine\DataContainer.cs" />
     <Compile Include="Assets\Scripts\Engine\Drawers\DaysDrawer.cs" />
+    <Compile Include="Assets\Scripts\Engine\Drawers\MethodsDrawer.cs" />
     <Compile Include="Assets\Scripts\Engine\Drawers\PopUpAttribute.cs" />
     <Compile Include="Assets\Scripts\Engine\EditorUtilities.cs" />
     <Compile Include="Assets\Scripts\Engine\Engine.cs" />
@@ -321,6 +323,10 @@
     <Compile Include="Assets\Scripts\Engine\PoolingObject.cs" />
     <Compile Include="Assets\Scripts\Engine\TriggerBroadcast.cs" />
     <Compile Include="Assets\Scripts\Engine\UIInitializer.cs" />
+    <Compile Include="Assets\Scripts\Events\CustomMethod.cs" />
+    <Compile Include="Assets\Scripts\Events\EngineEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\ExposeMethodAttribute.cs" />
+    <Compile Include="Assets\Scripts\Events\MethodInvoker.cs" />
     <Compile Include="Assets\Scripts\FirePlace.cs" />
     <Compile Include="Assets\Scripts\GameCamera.cs" />
     <Compile Include="Assets\Scripts\GameInit.cs" />
@@ -336,6 +342,7 @@
     <Compile Include="Assets\Scripts\Layers.cs" />
     <Compile Include="Assets\Scripts\Mesh\MeshColor.cs" />
     <Compile Include="Assets\Scripts\Mesh\MeshPainter.cs" />
+    <Compile Include="Assets\Scripts\Misc\Bridge.cs" />
     <Compile Include="Assets\Scripts\Misc\DeactivateAfterTime.cs" />
     <Compile Include="Assets\Scripts\Misc\DeathTrigger.cs" />
     <Compile Include="Assets\Scripts\Misc\LightIncrease.cs" />

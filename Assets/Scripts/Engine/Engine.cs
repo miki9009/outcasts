@@ -861,6 +861,30 @@ namespace Engine
             UnityEngine.GUI.Label(rect, text, style);
         }
 
+        static double fpsMedian = 0;
+        static long frames = 0;
+        public static void DisplayMedianFps(float x, float y)
+        {
+            deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+            int w = Screen.width, h = Screen.height;
+
+            GUIStyle style = new GUIStyle();
+
+            Rect rect = new Rect(x, y, w, h * 2 / 100);
+            style.alignment = TextAnchor.UpperLeft;
+            style.fontSize = h * 2 / 50;
+            style.normal.textColor = Color.red;
+            float msec = deltaTime * 1000.0f;
+            fps = 1.0f / deltaTime;
+            fpsMedian += fps;
+            frames++;
+            string text = string.Format("Median FPS: ({0:0.})", fpsMedian / frames);
+            UnityEngine.GUI.Label(rect, text, style);
+        }
+
+
+
+
         //DRAW TEXT
         /// <summary>
         /// Wyświetla tekst na ekranie, czarny ( uzywamy w OnGUI )

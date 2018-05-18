@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.ImageEffects;
 
 [DefaultExecutionOrder(-100)]
 public class Controller : MonoBehaviour
@@ -33,6 +34,9 @@ public class Controller : MonoBehaviour
     Vector2 curResolution;
     float curResFactor = 1;
 
+    public VignetteAndChromaticAberration ChromaticAbberration { get; private set; }
+    public Vortex Vortex { get; private set; }
+
     private void Awake()
     {
         Instance = this;
@@ -42,6 +46,8 @@ public class Controller : MonoBehaviour
             Debug.LogError("Main camera is not set");
         }
         GUI = transform.parent.gameObject;
+        ChromaticAbberration = gameCamera.GetComponent<VignetteAndChromaticAberration>();
+        Vortex = gameCamera.GetComponent<Vortex>(); 
     }
 
     // Use this for initialization
@@ -77,7 +83,8 @@ public class Controller : MonoBehaviour
     private void OnGUI()
     {
         Draw.DisplayFps(Screen.width / 2, 10, Color.red, 40);
-       // Draw.TextColorUnity(10, 180, Color.red, "Screen Resolution: " + Screen.width + "x" + Screen.height);
+        Draw.DisplayMedianFps(Screen.width / 2 - Screen.width*0.1f, 70);
+        // Draw.TextColorUnity(10, 180, Color.red, "Screen Resolution: " + Screen.width + "x" + Screen.height);
 
     }
 

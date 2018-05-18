@@ -12033,59 +12033,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 865660514}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &867521230
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 867521231}
-  - component: {fileID: 867521233}
-  - component: {fileID: 867521232}
-  m_Layer: 10
-  m_Name: DeathTrigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &867521231
+--- !u!4 &867521231 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 867521230}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 64.5, y: -5.61, z: -1.34}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 654113745}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &867521232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 867521230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47f5a779393b0ab47aebee41608c49f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!65 &867521233
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 867521230}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 7.8, y: 5, z: 10}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_PrefabParentObject: {fileID: 4193124022229356, guid: 5ed60cc080dba6c429b97d088de13fcb,
+    type: 2}
+  m_PrefabInternal: {fileID: 2009329389}
 --- !u!1 &870159290
 GameObject:
   m_ObjectHideFlags: 0
@@ -14772,7 +14724,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pipeForce: 15
   numberOfLeaves: 25
+  blur: 1
   parts: {fileID: 1593178246}
+  trigger: {fileID: 0}
   curve: {fileID: 0}
 --- !u!114 &1047674171
 MonoBehaviour:
@@ -32234,6 +32188,48 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6a84e0fdd363f9049a44eccd5e92b753, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &2009329389
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 654113745}
+    m_Modifications:
+    - target: {fileID: 4193124022229356, guid: 5ed60cc080dba6c429b97d088de13fcb, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 64.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193124022229356, guid: 5ed60cc080dba6c429b97d088de13fcb, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -5.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193124022229356, guid: 5ed60cc080dba6c429b97d088de13fcb, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -1.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193124022229356, guid: 5ed60cc080dba6c429b97d088de13fcb, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193124022229356, guid: 5ed60cc080dba6c429b97d088de13fcb, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193124022229356, guid: 5ed60cc080dba6c429b97d088de13fcb, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193124022229356, guid: 5ed60cc080dba6c429b97d088de13fcb, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193124022229356, guid: 5ed60cc080dba6c429b97d088de13fcb, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 5ed60cc080dba6c429b97d088de13fcb, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &2012177370
 Prefab:

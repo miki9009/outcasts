@@ -18,7 +18,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public bool movementEnabled = true;
     protected Character character;
     protected CharacterStatistics stats;
-    protected Animator anim;
+    [NonSerialized]
+    public Animator anim;
 
     private BoxCollider jumpCollider;
 
@@ -349,7 +350,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         anim.SetBool("onGround", onGround);
     }
 
-    void Move()
+
+    public void Move()
     {
         var velo = rb.velocity;
         anim.SetFloat("hSpeed", velo.magnitude);
@@ -493,6 +495,11 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public void SetAnimation(string animationName)
     {
         anim.Play(animationName);
+    }
+
+    public void AnimationSetTrigger(string triggerName)
+    {
+        anim.SetTrigger(triggerName);
     }
 
 

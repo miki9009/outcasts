@@ -70,11 +70,10 @@ public class ActivationTrigger : MonoBehaviour
     }
 
     void ActivateButton(bool set)
-    {
-        
+    {       
         if (set)
         {
-            Effects.ScalePulse(button.transform, 2, 1, ()=> button.transform.localScale = Vector3.one);
+            Effects.ScalePulse(button.transform, 2, 1, () => button.transform.localScale = Vector3.one, () => button.transform.localScale = Vector3.one);
             button.gameObject.SetActive(set);
         }
         else

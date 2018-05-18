@@ -17,6 +17,7 @@ public class CrateJump : MonoBehaviour
     bool isSquashing = false;
     BoxCollider boxCollider;
     SphereCollider sphereCollider;
+    Character character;
 
     private void Start()
     {
@@ -43,11 +44,13 @@ public class CrateJump : MonoBehaviour
             var character = collision.gameObject.GetComponent<Character>();
             if (character != null && !isSquashing)
             {
+                this.character = character;
                 gameCam.upFactor = 0;
                 isSquashing = true;
                 duration = 0;
                 character.rb.velocity = Vector3.up * force;
                 character.transform.position = new Vector3(transform.position.x, character.transform.position.y, transform.position.z);
+                character.movement.SetAnimation("JumpUp");
                 StartCoroutine(Animate());
             }
 

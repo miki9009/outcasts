@@ -21,8 +21,12 @@ public class Effects : MonoBehaviour
         }
     }
 
-    public static void ScalePulse(Transform transform, float animationSpeed, int loop, Action onFinished = null)
+    public static void ScalePulse(Transform transform, float animationSpeed, int loop, Action onFinished = null, Action onStart = null)
     {
+        if (onStart != null)
+        {
+            onStart();
+        }
         Instance.StartCoroutine(Instance.ScaleEffectC(transform, animationSpeed, loop));
         if (onFinished != null)
         {

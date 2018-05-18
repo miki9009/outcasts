@@ -9,7 +9,7 @@ namespace Engine
     [CustomPropertyDrawer(typeof(PopUpAttribute), true)]
     public class Drawer: PropertyDrawer
     {
-
+        
         PopUpAttribute enumeration { get { return (PopUpAttribute)attribute; } }
 
         public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)

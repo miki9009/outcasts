@@ -22,6 +22,8 @@ public class Character : MonoBehaviour
 
     Identification identity;
 
+    
+
 
     public int ID
     {

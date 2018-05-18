@@ -117,10 +117,12 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
         collisionBroadcast.CollisionEntered -= Attack;
         CancelInvoke();
         Debug.Log("Plant Hit");
-        Invoke("PlayDie", 0.1f);
+        //Invoke("PlayDie", 0.1f);
         dead = true;
         sphere.enabled = false;
         enemyDeath.StartCoroutine(enemyDeath.DestroyMe());
+        PlayDie();
+        this.enabled = false;
 
     }
 
@@ -128,7 +130,7 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
     {
         Debug.Log("Played Dead");
         anim.Play("Die");
-        this.enabled = true;
+        this.enabled = false;
     }
 
 

@@ -7,6 +7,7 @@ public class Teleport : MonoBehaviour
     public Teleport otherTeleport;
     Transform character;
     public bool canTeleport = true;
+    bool activated;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -25,11 +26,25 @@ public class Teleport : MonoBehaviour
         canTeleport = true;
     }
 
+    private void OnDisable()
+    {
+        if (activated)
+        {
+            Controller.Instance.ChromaticAbberration.enabled = false;
+            Controller.Instance.Vortex.enabled = false;
+            activated = false;
+            if(character != null)
+            {
+                character.position = otherTeleport.transform.position;
+            }
+        }
+    }
+
     IEnumerator Teleportation()
     {
-
-        VignetteAndChromaticAberration visualEffect = Controller.Instance.gameCamera.GetComponent<VignetteAndChromaticAberration>();
-        Vortex vortex = Controller.Instance.gameCamera.GetComponent<Vortex>();
+        activated = true;
+        VignetteAndChromaticAberration visualEffect = Controller.Instance.ChromaticAbberration;
+        Vortex vortex = Controller.Instance.Vortex;
         visualEffect.enabled = true;
         vortex.enabled = true;
         float intensity = 0.7f;
@@ -66,6 +81,7 @@ public class Teleport : MonoBehaviour
         }
         visualEffect.enabled = false;
         vortex.enabled = false;
+        activated = false;
         yield return null;
     }
 }
