@@ -210,7 +210,10 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     {
         Move();
         Rotation();
-	}
+
+        hspeed = Mathf.Lerp(hspeed, anim.GetFloat("hSpeed"), 0.05f);
+        vspeed = Mathf.Lerp(, anim.GetFloat("vSpeed"), 0.05f);
+    }
 
     private void Update()
     {
@@ -502,5 +505,13 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         anim.SetTrigger(triggerName);
     }
 
+    float hspeed;
+    float vspeed;
+    void OnGUI()
+    {
+
+        Draw.TextColor(10, 10, 255, 255, 255, 1, string.Format( "Vspeed: {0:0.0}", vspeed));
+        Draw.TextColor(10, 50, 255, 255, 255, 1, string.Format("Hspeed: {0:0.0}", hspeed));
+    }
 
 }

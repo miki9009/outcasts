@@ -26,19 +26,19 @@ public class Teleport : MonoBehaviour
         canTeleport = true;
     }
 
-    private void OnDisable()
-    {
-        if (activated)
-        {
-            Controller.Instance.ChromaticAbberration.enabled = false;
-            Controller.Instance.Vortex.enabled = false;
-            activated = false;
-            if(character != null)
-            {
-                character.position = otherTeleport.transform.position;
-            }
-        }
-    }
+    //private void OnDisable()
+    //{
+    //    if (activated)
+    //    {
+    //        Controller.Instance.ChromaticAbberration.enabled = false;
+    //        Controller.Instance.Vortex.enabled = false;
+    //        activated = false;
+    //        if(character != null)
+    //        {
+    //            character.position = otherTeleport.transform.position;
+    //        }
+    //    }
+    //}
 
     IEnumerator Teleportation()
     {
