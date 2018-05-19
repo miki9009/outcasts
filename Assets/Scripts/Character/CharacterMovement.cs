@@ -211,8 +211,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         Move();
         Rotation();
 
-        hspeed = Mathf.Lerp(hspeed, anim.GetFloat("hSpeed"), 0.05f);
-        vspeed = Mathf.Lerp(, anim.GetFloat("vSpeed"), 0.05f);
+        //hspeed = Mathf.Lerp(hspeed, anim.GetFloat("hSpeed"), 0.05f);
+        //vspeed = Mathf.Lerp(, anim.GetFloat("vSpeed"), 0.05f);
     }
 
     private void Update()
