@@ -101,6 +101,7 @@ public class Character : MonoBehaviour
         Controller.Instance.characters.Remove(this);
     }
 
+
 }
 public class Identification
 {

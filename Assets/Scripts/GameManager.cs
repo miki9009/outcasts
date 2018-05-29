@@ -59,7 +59,6 @@ public class GameManager : MonoBehaviour
             OnLevelLoaded();
         }
         yield return null;
-
     }
 
 

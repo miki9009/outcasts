@@ -27,11 +27,7 @@ public class Effects : MonoBehaviour
         {
             onStart();
         }
-        Instance.StartCoroutine(Instance.ScaleEffectC(transform, animationSpeed, loop));
-        if (onFinished != null)
-        {
-            onFinished();
-        }
+        Instance.StartCoroutine(Instance.ScaleEffectC(transform, animationSpeed, loop, onFinished));
     }
 
     public static void ScalePulseVanish(Transform transform, float animationSpeed, int loop, Action onRemove = null)
@@ -39,7 +35,7 @@ public class Effects : MonoBehaviour
         Instance.StartCoroutine(Instance.ScaleEffectVanishC(transform, animationSpeed, loop, onRemove));
     }
 
-    IEnumerator ScaleEffectC(Transform transform, float animationSpeed, int loop)
+    IEnumerator ScaleEffectC(Transform transform, float animationSpeed, int loop, Action onFinished)
     {
         while (loop > 0)
         {
@@ -57,6 +53,14 @@ public class Effects : MonoBehaviour
             transform.localScale = startVector;
             loop--;
             yield return null;
+        }
+        if (onFinished != null)
+        {
+            onFinished();
+        }
+        else
+        {
+            Debug.Log("Finished was null");
         }
         yield return null;
     }

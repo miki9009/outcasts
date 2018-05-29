@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4193124022229356}
   - component: {fileID: 65421860013302608}
   - component: {fileID: 114533173286455418}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: DeathTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1663557184418626}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 64.5, y: -5.61, z: -1.34}
+  m_LocalPosition: {x: 69.72, y: -3.48, z: -1.0959871}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -51,7 +51,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 7.8, y: 5, z: 10}
+  m_Size: {x: 13.59, y: 5, z: 40.6}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114533173286455418
 MonoBehaviour:

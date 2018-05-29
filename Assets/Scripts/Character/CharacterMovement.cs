@@ -7,7 +7,6 @@ using Engine.GUI;
 
 public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 {
-
     public bool onGround = true;
     public ParticleSystem smoke2;
     public Transform model;
@@ -35,11 +34,12 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     bool isAttacking = false;
 
     public Vector3 velocity;
+    float hspeed;
+    float vspeed;
     public float pipeFactor;
 
     float timeLastJump = 0;
     bool jumpReleased = true;
-    bool doubleJump = false;
     float modelZ = 0;
     ParticleSystem smokeExplosion;
     ParticleSystem starsExplosion;
@@ -47,11 +47,11 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public Action MeleeAttack;
     public event Action<IThrowable, Vector3> Thrown;
     public ThrowableObject ThrowObject { get; set; }
+    public Vector3 StartPosition { get; private set; }
 
     //ANIMATIONS
     int throwAnimationHash;
     int attackAnimationHash;
-    int attackAnimationHash2;
 
     int direction2D = 1;
 
@@ -62,13 +62,12 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         get;set;
     }
 
-
-
     private void Awake()
     {
         character = GetComponent<Character>();
         jumpCollider = GetComponent<BoxCollider>();
         smoke = GetComponentInChildren<ParticleSystem>();
+        StartPosition = transform.position;
     }
 
     Button btnLeft;
@@ -78,8 +77,6 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     Button btnForward;
     bool buttonsInitialized = true;
     bool canMove = true;
-    
-
 
     // Use this for initialization
     void Start ()
@@ -91,8 +88,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         anim = character.anim;
         InitButtons();
         smokeExplosion = StaticParticles.Instance.smokeExplosion;
-        starsExplosion = StaticParticles.Instance.starsExplosion;
-        
+        starsExplosion = StaticParticles.Instance.starsExplosion;        
     }
 
     void InitButtons()
@@ -116,15 +112,12 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 btnJump.gameObject.SetActive(false);
                 btnJump = GameGUI.GetButtonByName("ButtonForward");
             }
-
-
         }
         catch
         {
             Debug.Log("Buttons are not initialized, you can still use keyboard for movement");
             buttonsInitialized = false;
         }
-
     }
 
     private void OnTriggerExit(Collider other)
@@ -136,21 +129,28 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public void Die()
     {
         anim.Play("Die");
-        enabled = false;
-        StopAllCoroutines();
+        DieNonAnimation();
     }
 
-    bool resetAttack = true;
+    public void DieNonAnimation()
+    {
+        enabled = false;
+        StopAllCoroutines();
+        Controller.Instance.OnPlayerDead(character);
+    }
 
     private void OnTriggerStay(Collider other)
     {
+        if (other.gameObject.layer == Layers.Environment)
+        {
+            onGround = true;
+        }
         if (other.gameObject.layer != 12 && other.gameObject.layer != 13)
         {
             if (!smoke.isPlaying)
             {
                 smoke.Play();
             }
-            //onGound = true;
             attack = false;
             anim.SetBool("attackStay", false);
         }
@@ -169,12 +169,10 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         }
         else if(other.gameObject.layer == Layers.Environment || other.gameObject.layer == Layers.Destructible)
         {
-            //Debug.Log("OnGround = true");
             onGround = true;
             smoke2.Emit(15);
         }
     }
-
 
     public void Hit(Enemy enemy = null, int hp = 1, bool heavyAttack = false)
     {
@@ -208,17 +206,18 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     // Update is called once per frame
     void FixedUpdate ()
     {
+        velocity = rb.velocity;
+        hspeed = Mathf.Abs(velocity.x + velocity.z); //Mathf.Lerp(hspeed, velocity.x + velocity.z, 0.05f);
+        vspeed = velocity.y; //Mathf.Lerp(vspeed,velocity.y, 0.05f);
+        anim.SetFloat("hSpeed", hspeed);
+        anim.SetFloat("vSpeed", vspeed);
         Move();
         Rotation();
-
-        //hspeed = Mathf.Lerp(hspeed, anim.GetFloat("hSpeed"), 0.05f);
-        //vspeed = Mathf.Lerp(, anim.GetFloat("vSpeed"), 0.05f);
     }
 
     private void Update()
     {
         curPos = transform.position;
-        velocity = rb.velocity;
         Inputs();
         Jump();
         if (attack)
@@ -244,19 +243,11 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         if (timeLastJump < 0.7f && jumpReleased)
         {
             jumpReleased = false;
-            if (jumpInput > 0 && (Physics.Raycast(transform.position, Vector3.down,1)/* || doubleJump*/))
+            if (jumpInput > 0 && onGround)
             {
                 timeLastJump = 1;
                 rb.AddForce(Vector3.up * stats.jumpForce, ForceMode.VelocityChange);
-                if (onGround)
-                {
-                    onGround = false;
-                    //doubleJump = true;
-                }
-                //else
-                //{
-                //    doubleJump = false;
-                //}
+                onGround = false;
             }
         }
         else
@@ -295,11 +286,9 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 }
                 else
                 {
-
                     if (btnRight.isTouched) horInput = 1;
                     if (btnLeft.isTouched) horInput = -1;
                     if (btnForward.isTouched) verInput = 1;
-
                 }
             }
 
@@ -342,14 +331,12 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                Debug.Log("Attack Invoked");
+                //Debug.Log("Attack Invoked");
                 btnAttack.OnTapPressedInvoke();
             }
 #endif
         }
-
-
-        anim.SetFloat("vSpeed", velocity.y);
+        //anim.SetFloat("vSpeed", velocity.y);
         anim.SetBool("onGround", onGround);
     }
 
@@ -357,7 +344,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public void Move()
     {
         var velo = rb.velocity;
-        anim.SetFloat("hSpeed", velo.magnitude);
+        //anim.SetFloat("hSpeed", velo.magnitude);
         if (verInput != 0 && Mathf.Abs(velo.magnitude) < stats.runSpeed && movementEnabled)
         {
             velo += rotationEnabled ? transform.forward * verInput : Vector3.right * verInput * direction2D;
@@ -395,15 +382,12 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                     modelZ += 0.25f;
                 }
             }
-
             model.localRotation = Quaternion.Euler(0, 0, -modelZ);
         }
         else
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.right * direction2D), Time.deltaTime * stats.turningSpeed / 4);
         }
-
-
     }
 
     void Attack()
@@ -420,7 +404,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         {
             if (Thrown != null)
             {
-                Debug.Log("Throw");
+                //Debug.Log("Throw");
                 canMove = false;
                 RaycastHit hit;
                 if (Physics.SphereCast(transform.position, 5, transform.forward, out hit, 50, enemyLayer.value, QueryTriggerInteraction.Ignore))
@@ -443,7 +427,6 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                     MeleeAttack();
                 }
             }
-
         }
     }
 
@@ -490,6 +473,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         scripts.Clear();
     }
 
+
     public void MovementEnable(bool enable)
     {
         movementEnabled = enable;
@@ -503,15 +487,6 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public void AnimationSetTrigger(string triggerName)
     {
         anim.SetTrigger(triggerName);
-    }
-
-    float hspeed;
-    float vspeed;
-    void OnGUI()
-    {
-
-        Draw.TextColor(10, 10, 255, 255, 255, 1, string.Format( "Vspeed: {0:0.0}", vspeed));
-        Draw.TextColor(10, 50, 255, 255, 255, 1, string.Format("Hspeed: {0:0.0}", hspeed));
     }
 
 }

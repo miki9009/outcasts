@@ -8,7 +8,7 @@ public delegate float Easer(float t);
 public static class Auto
 {
     //	#region Transform coroutines
-    public static IEnumerator<float> _MoveTo(this Transform transform, Vector3 target, float duration, Easer ease)
+    public static IEnumerator _MoveTo(this Transform transform, Vector3 target, float duration, Easer ease)
     {
         float elapsed = 0;
         var start = transform.localPosition;
@@ -36,7 +36,7 @@ public static class Auto
         transform.localPosition = target;
     }
 
-    public static IEnumerator<float> _MoveTo(this Transform transform, Vector3 target, float duration)
+    public static IEnumerator _MoveTo(this Transform transform, Vector3 target, float duration)
     {
         return _MoveTo(transform, target, duration, AutoEase.Linear);
     }
@@ -45,7 +45,7 @@ public static class Auto
         return MoveTo(transform, target, duration, AutoEase.Linear);
     }
 
-    public static IEnumerator<float> _MoveTo(this Transform transform, Vector3 target, float duration, EaseType ease)
+    public static IEnumerator _MoveTo(this Transform transform, Vector3 target, float duration, EaseType ease)
     {
         return _MoveTo(transform, target, duration, AutoEase.FromType(ease));
     }
@@ -54,7 +54,7 @@ public static class Auto
         return MoveTo(transform, target, duration, AutoEase.FromType(ease));
     }
 
-    public static IEnumerator<float> _MoveFrom(this Transform transform, Vector3 target, float duration, Easer ease)
+    public static IEnumerator _MoveFrom(this Transform transform, Vector3 target, float duration, Easer ease)
     {
         var start = transform.localPosition;
         transform.localPosition = target;
@@ -67,7 +67,7 @@ public static class Auto
         return MoveTo(transform, start, duration, ease);
     }
 
-    public static IEnumerator<float> _MoveFrom(this Transform transform, Vector3 target, float duration)
+    public static IEnumerator _MoveFrom(this Transform transform, Vector3 target, float duration)
     {
         return _MoveFrom(transform, target, duration, AutoEase.Linear);
     }
@@ -76,7 +76,7 @@ public static class Auto
         return MoveFrom(transform, target, duration, AutoEase.Linear);
     }
 
-    public static IEnumerator<float> _MoveFrom(this Transform transform, Vector3 target, float duration, EaseType ease)
+    public static IEnumerator _MoveFrom(this Transform transform, Vector3 target, float duration, EaseType ease)
     {
         return _MoveFrom(transform, target, duration, AutoEase.FromType(ease));
     }
@@ -85,7 +85,7 @@ public static class Auto
         return MoveFrom(transform, target, duration, AutoEase.FromType(ease));
     }
 
-    public static IEnumerator<float> _ScaleTo(this Transform transform, Vector3 target, float duration, Easer ease)
+    public static IEnumerator _ScaleTo(this Transform transform, Vector3 target, float duration, Easer ease)
     {
         float elapsed = 0;
         var start = transform.localScale;
@@ -94,10 +94,11 @@ public static class Auto
         {
             elapsed = Mathf.MoveTowards(elapsed, duration, Time.deltaTime);
             transform.localScale = start + range * ease(elapsed / duration);
-            yield return 0f;
+            yield return null;
         }
         transform.localScale = target;
     }
+
     public static IEnumerator ScaleTo(this Transform transform, Vector3 target, float duration, Easer ease)
     {
         float elapsed = 0;
@@ -112,7 +113,7 @@ public static class Auto
         transform.localScale = target;
     }
 
-    public static IEnumerator<float> _ScaleTo(this Transform transform, Vector3 target, float duration)
+    public static IEnumerator _ScaleTo(this Transform transform, Vector3 target, float duration)
     {
         return _ScaleTo(transform, target, duration, AutoEase.Linear);
     }
@@ -121,7 +122,7 @@ public static class Auto
         return ScaleTo(transform, target, duration, AutoEase.Linear);
     }
 
-    public static IEnumerator<float> _ScaleTo(this Transform transform, Vector3 target, float duration, EaseType ease)
+    public static IEnumerator _ScaleTo(this Transform transform, Vector3 target, float duration, EaseType ease)
     {
         return _ScaleTo(transform, target, duration, AutoEase.FromType(ease));
     }
@@ -130,7 +131,7 @@ public static class Auto
         return ScaleTo(transform, target, duration, AutoEase.FromType(ease));
     }
 
-    public static IEnumerator<float> _ScaleFrom(this Transform transform, Vector3 target, float duration, Easer ease)
+    public static IEnumerator _ScaleFrom(this Transform transform, Vector3 target, float duration, Easer ease)
     {
         var start = transform.localScale;
         transform.localScale = target;
@@ -143,7 +144,7 @@ public static class Auto
         return ScaleTo(transform, start, duration, ease);
     }
 
-    public static IEnumerator<float> _ScaleFrom(this Transform transform, Vector3 target, float duration)
+    public static IEnumerator _ScaleFrom(this Transform transform, Vector3 target, float duration)
     {
         return _ScaleFrom(transform, target, duration, AutoEase.Linear);
     }
@@ -152,7 +153,7 @@ public static class Auto
         return ScaleFrom(transform, target, duration, AutoEase.Linear);
     }
 
-    public static IEnumerator<float> _ScaleFrom(this Transform transform, Vector3 target, float duration, EaseType ease)
+    public static IEnumerator _ScaleFrom(this Transform transform, Vector3 target, float duration, EaseType ease)
     {
         return _ScaleFrom(transform, target, duration, AutoEase.FromType(ease));
     }
@@ -161,7 +162,7 @@ public static class Auto
         return ScaleFrom(transform, target, duration, AutoEase.FromType(ease));
     }
 
-    public static IEnumerator<float> _RotateTo(this Transform transform, Quaternion target, float duration, Easer ease)
+    public static IEnumerator _RotateTo(this Transform transform, Quaternion target, float duration, Easer ease)
     {
         float elapsed = 0;
         var start = transform.localRotation;
@@ -186,7 +187,7 @@ public static class Auto
         transform.localRotation = target;
     }
 
-    public static IEnumerator<float> _RotateTo(this Transform transform, Quaternion target, float duration)
+    public static IEnumerator _RotateTo(this Transform transform, Quaternion target, float duration)
     {
         return _RotateTo(transform, target, duration, AutoEase.Linear);
     }
@@ -195,7 +196,7 @@ public static class Auto
         return RotateTo(transform, target, duration, AutoEase.Linear);
     }
 
-    public static IEnumerator<float> _RotateTo(this Transform transform, Quaternion target, float duration, EaseType ease)
+    public static IEnumerator _RotateTo(this Transform transform, Quaternion target, float duration, EaseType ease)
     {
         return _RotateTo(transform, target, duration, AutoEase.FromType(ease));
     }
@@ -204,7 +205,7 @@ public static class Auto
         return RotateTo(transform, target, duration, AutoEase.FromType(ease));
     }
 
-    public static IEnumerator<float> _RotateFrom(this Transform transform, Quaternion target, float duration, Easer ease)
+    public static IEnumerator _RotateFrom(this Transform transform, Quaternion target, float duration, Easer ease)
     {
         var start = transform.localRotation;
         transform.localRotation = target;
@@ -217,7 +218,7 @@ public static class Auto
         return RotateTo(transform, start, duration, ease);
     }
 
-    public static IEnumerator<float> _RotateFrom(this Transform transform, Quaternion target, float duration)
+    public static IEnumerator _RotateFrom(this Transform transform, Quaternion target, float duration)
     {
         return _RotateFrom(transform, target, duration, AutoEase.Linear);
     }
@@ -226,7 +227,7 @@ public static class Auto
         return RotateFrom(transform, target, duration, AutoEase.Linear);
     }
 
-    public static IEnumerator<float> _RotateFrom(this Transform transform, Quaternion target, float duration, EaseType ease)
+    public static IEnumerator _RotateFrom(this Transform transform, Quaternion target, float duration, EaseType ease)
     {
         return _RotateFrom(transform, target, duration, AutoEase.FromType(ease));
     }
@@ -236,7 +237,7 @@ public static class Auto
     }
 
 
-    public static IEnumerator<float> _CurveTo(this Transform transform, Vector3 control, Vector3 target, float duration, Easer ease)
+    public static IEnumerator _CurveTo(this Transform transform, Vector3 control, Vector3 target, float duration, Easer ease)
     {
         float elapsed = 0;
         var start = transform.localPosition;
@@ -273,7 +274,7 @@ public static class Auto
         transform.localPosition = target;
     }
 
-    public static IEnumerator<float> _CurveTo(this Transform transform, Vector3 control, Vector3 target, float duration)
+    public static IEnumerator _CurveTo(this Transform transform, Vector3 control, Vector3 target, float duration)
     {
         return _CurveTo(transform, control, target, duration, AutoEase.Linear);
     }
@@ -282,7 +283,7 @@ public static class Auto
         return CurveTo(transform, control, target, duration, AutoEase.Linear);
     }
 
-    public static IEnumerator<float> _CurveTo(this Transform transform, Vector3 control, Vector3 target, float duration, EaseType ease)
+    public static IEnumerator _CurveTo(this Transform transform, Vector3 control, Vector3 target, float duration, EaseType ease)
     {
         return _CurveTo(transform, control, target, duration, AutoEase.FromType(ease));
     }
@@ -292,7 +293,7 @@ public static class Auto
     }
 
 
-    public static IEnumerator<float> _CurveFrom(this Transform transform, Vector3 control, Vector3 start, float duration, Easer ease)
+    public static IEnumerator _CurveFrom(this Transform transform, Vector3 control, Vector3 start, float duration, Easer ease)
     {
         var target = transform.localPosition;
         transform.localPosition = start;
@@ -305,7 +306,7 @@ public static class Auto
         return CurveTo(transform, control, target, duration, ease);
     }
 
-    public static IEnumerator<float> _CurveFrom(this Transform transform, Vector3 control, Vector3 start, float duration)
+    public static IEnumerator _CurveFrom(this Transform transform, Vector3 control, Vector3 start, float duration)
     {
         return _CurveFrom(transform, control, start, duration, AutoEase.Linear);
     }
@@ -314,7 +315,7 @@ public static class Auto
         return CurveFrom(transform, control, start, duration, AutoEase.Linear);
     }
 
-    public static IEnumerator<float> _CurveFrom(this Transform transform, Vector3 control, Vector3 start, float duration, EaseType ease)
+    public static IEnumerator _CurveFrom(this Transform transform, Vector3 control, Vector3 start, float duration, EaseType ease)
     {
         return _CurveFrom(transform, control, start, duration, AutoEase.FromType(ease));
     }
@@ -324,7 +325,7 @@ public static class Auto
     }
 
 
-    public static IEnumerator<float> _Shake(this Transform transform, Vector3 amount, float duration)
+    public static IEnumerator _Shake(this Transform transform, Vector3 amount, float duration)
     {
         var start = transform.localPosition;
         var shake = Vector3.zero;
@@ -351,7 +352,7 @@ public static class Auto
         transform.localPosition = start;
     }
 
-    public static IEnumerator<float> _Shake(this Transform transform, float amount, float duration)
+    public static IEnumerator _Shake(this Transform transform, float amount, float duration)
     {
         return _Shake(transform, new Vector3(amount, amount, amount), duration);
     }
@@ -365,7 +366,7 @@ public static class Auto
 
     //	#region Waiting coroutines
 
-    public static IEnumerator<float> _Wait(float duration)
+    public static IEnumerator _Wait(float duration)
     {
         while (duration > 0)
         {
@@ -383,7 +384,7 @@ public static class Auto
     }
 
 
-    public static IEnumerator<float> _WaitUntil(Predicate predicate)
+    public static IEnumerator _WaitUntil(Predicate predicate)
     {
         while (!predicate())
             yield return 0f;
@@ -589,6 +590,7 @@ public static class AutoEase
             case EaseType.ElasticIn: return ElasticIn;
             case EaseType.ElasticOut: return ElasticOut;
             case EaseType.ElasticInOut: return ElasticInOut;
+
         }
         return Linear;
     }

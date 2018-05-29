@@ -58,7 +58,9 @@ namespace Engine.GUI
             return window;
         }
 
-        
+        public const string END_SCREEN = "EndGameScreen";
+
+
         RectTransform rect;
         Vector2 desiredPos;
         Vector2 startPos;

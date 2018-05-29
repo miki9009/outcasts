@@ -11,12 +11,14 @@ public class CrateJumpMetal : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var rb = other.attachedRigidbody;
-        if (addForce && rb != null)
+        //Debug.Log(other.name);
+        if (addForce && rb != null && rb.velocity.y <-2)
         {
             var dir = rb.velocity.normalized;
             addForce = false;
             other.attachedRigidbody.velocity  = /*new Vector3(dir.x,-dir.y,dir.z)*/ Vector3.up * Mathf.Clamp(Mathf.Pow(other.attachedRigidbody.velocity.magnitude,1.4f), 1, maxForce);
             squashed = rb.velocity.magnitude / maxForce;
+            //Character.GetLocalPlayer().movement.SetAnimation("JumpCrate");
         }
     }
 

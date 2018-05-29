@@ -35,14 +35,14 @@ public class CharacterHealth : MonoBehaviour
         for (int i = startIndex; i < stats.health; i++)
         {
             hearts[i].SetActive(active);
-            Effects.ScalePulse(hearts[i].transform, 2, 2);
+            Effects.ScalePulse(hearts[i].transform, 2, 2, ()=>hearts[i].transform.localScale = Vector3.one);
         }
     }
 
     public void AddHealth(int health)
     {
         hearts[health-1].SetActive(true);
-        Effects.ScalePulse(hearts[health-1].transform, 2, 2);
+        Effects.ScalePulse(hearts[health-1].transform, 2, 2, () => hearts[health-1].transform.localScale = Vector3.one);
     }
 
     public void RemoveHealth(int newHealth)

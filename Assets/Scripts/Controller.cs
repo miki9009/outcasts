@@ -4,6 +4,7 @@ using UnityEngine;
 using Engine;
 using UnityEngine.SceneManagement;
 using UnityStandardAssets.ImageEffects;
+using Engine.GUI;
 
 [DefaultExecutionOrder(-100)]
 public class Controller : MonoBehaviour
@@ -12,9 +13,9 @@ public class Controller : MonoBehaviour
     public GameType gameType = GameType.Perspective;
     public GameObject gameUI;
     Vector2 defaultResolution;
-    bool defaultRes = true;
     public Color levelColor;
-
+    public Checkpoint LastCheckpoint { get; set; }
+    public int restarts = 5;
     public static Controller Instance
     {
         get;
@@ -31,8 +32,7 @@ public class Controller : MonoBehaviour
     [HideInInspector] public Camera gameCamera;
     [HideInInspector] public GameObject GUI;
     Vector2 startResolution;
-    Vector2 curResolution;
-    float curResFactor = 1;
+
 
     public VignetteAndChromaticAberration ChromaticAbberration { get; private set; }
     public Vortex Vortex { get; private set; }
@@ -64,17 +64,62 @@ public class Controller : MonoBehaviour
         //catch { }
         startResolution = new Vector2(Screen.width, Screen.height);
         GameManager.OnLevelLoaded += DeactivateActionButton;
-        
+        PlayerDead += DeactivateActionButtonOnPlayerDeath;
+    }
+
+    void DeactivateActionButtonOnPlayerDeath(Character character)
+    {
+        DeactivateActionButton();
+        ActivationTrigger.activatedTriggers = 0;
     }
 
     void DeactivateActionButton()
     {
-        Debug.Log("Went off");
+        //Debug.Log("Went off");
         var button = GameGUI.GetButtonByName("Action");
         if (button != null && button.gameObject != null)
         {
             button.gameObject.SetActive(false);
         }
+    }
+
+    public event System.Action<Character> PlayerDead;
+    public void OnPlayerDead(Character character)
+    {
+        StartCoroutine(PlayerDeadCoroutine(character));
+        if(PlayerDead != null)
+        {
+            PlayerDead(character);
+        }
+    }
+
+    IEnumerator PlayerDeadCoroutine(Character character)
+    {
+        yield return new WaitForSeconds(3f);
+        if(restarts > 0)
+        {
+            character.movement.enabled = true;
+            character.stats.health = 1;
+            character.movement.characterHealth.AddHealth(character.stats.health);
+            character.movement.anim.Play("Idle");
+            restarts--;
+            character.rb.velocity = Vector3.zero;
+            gameCamera.GetComponent<GameCamera>().target = character.transform;
+            if (LastCheckpoint != null)
+            {
+                LastCheckpoint.ResetToCheckpoint(character);
+            }
+            else
+            {
+                character.transform.position = character.movement.StartPosition;
+            }
+            
+        }
+        else
+        {
+            UIWindow.GetWindow(UIWindow.END_SCREEN).RestartLevel();
+        }
+        yield return null;
     }
 
 

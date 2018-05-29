@@ -24,26 +24,19 @@ public class RealtimeAppearance : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (!activated)
         {
-            if (!activated)
-            {
-                StartCoroutine(ActivateChildren());
-            }
-            activated = true;
+            StartCoroutine(ActivateChildren());
         }
-
+        activated = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (activated)
         {
-            if (activated)
-            {
-                StartCoroutine(DeactivateChildren());
-                activated = false;
-            }
+            StartCoroutine(DeactivateChildren());
+            activated = false;
         }
     }
 

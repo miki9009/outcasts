@@ -55,6 +55,18 @@ public abstract class CollectionObject : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        if(collected && collectedCoroutine != null)
+        {
+            var manager =  GetComponent<ActiveObject>();
+            if (manager != null)
+                manager.DeactivatedByManager = false;
+            else
+                Debug.LogError("Should be Deactivated by Manager, but manager is null");
+        }
+    }
+
     private void Awake()
     {
         localScale = transform.localScale;
@@ -104,8 +116,8 @@ public abstract class CollectionObject : MonoBehaviour
         }
 
         yield return new WaitForSeconds(deactivationTime);
-        Deactivate();
         collectedCoroutine = null;
+        Deactivate();
         yield return null;
     }
 

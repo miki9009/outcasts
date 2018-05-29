@@ -26,7 +26,11 @@ public class Chest : MonoBehaviour, IActivationTrigger
             if (enabled)
             StartCoroutine(OpenChest());
             Used = true;
-            GetComponent<ActivationTrigger>().DeactivateTrigger();
+            ActivationTrigger.activatedTriggers -= ActivationTrigger.CHARACTER_TRIGGERS;
+            if (ActivationTrigger.activatedTriggers <= 0)
+            {
+                GetComponent<ActivationTrigger>().DeactivateTrigger();
+            }
         }
     }
 

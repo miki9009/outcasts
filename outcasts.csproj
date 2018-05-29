@@ -343,6 +343,8 @@
     <Compile Include="Assets\Scripts\Mesh\MeshColor.cs" />
     <Compile Include="Assets\Scripts\Mesh\MeshPainter.cs" />
     <Compile Include="Assets\Scripts\Misc\Bridge.cs" />
+    <Compile Include="Assets\Scripts\Misc\Checkpoint.cs" />
+    <Compile Include="Assets\Scripts\Misc\CoroutineHost.cs" />
     <Compile Include="Assets\Scripts\Misc\DeactivateAfterTime.cs" />
     <Compile Include="Assets\Scripts\Misc\DeathTrigger.cs" />
     <Compile Include="Assets\Scripts\Misc\LightIncrease.cs" />

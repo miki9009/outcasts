@@ -50,7 +50,7 @@ public class CrateJump : MonoBehaviour
                 duration = 0;
                 character.rb.velocity = Vector3.up * force;
                 character.transform.position = new Vector3(transform.position.x, character.transform.position.y, transform.position.z);
-                character.movement.SetAnimation("JumpUp");
+                character.movement.SetAnimation("JumpCrate");
                 StartCoroutine(Animate());
             }
 
