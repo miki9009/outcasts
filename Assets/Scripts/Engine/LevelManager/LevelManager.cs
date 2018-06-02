@@ -62,6 +62,7 @@ public class LevelManager : MonoBehaviour
                     }
                 }
             }
+            Debug.Log("LEVEL LOADED: " + levels[levelIndex].sceneName);
         };
     }
 

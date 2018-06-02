@@ -6,15 +6,21 @@ using System.Linq;
 public class SettingsWindow : UIWindow
 {
     public Text resolutionLabel;
+    public Text movementSelectedLabel;
+    public Text showFpsLabel;
     int index;
     Vector2 currentRes = new Vector2(1920, 1080);
 
+
+    bool buttonsMovement;
+    bool showFps;
+
     private void Awake()
     {
-        BeginShow += ShowStartRes;
+        BeginShow += AssignSettings;
     }
 
-    private void ShowStartRes()
+    private void AssignSettings()
     {
         int width = Screen.currentResolution.width;
         int height = Screen.currentResolution.height;
@@ -27,6 +33,9 @@ public class SettingsWindow : UIWindow
             }
         }
         SetResolutionString(width, height);
+        buttonsMovement = DataManager.Settings.buttonMovement;
+        showFps = DataManager.Settings.showFps;
+        SetMovementString(buttonsMovement);
     }   
 
     static Vector2[] resolutions = new Vector2[]
@@ -43,8 +52,10 @@ public class SettingsWindow : UIWindow
     public void Save()
     {
         Screen.SetResolution((int)currentRes.x, (int)currentRes.y,true);
-        var settings = (Settings.Container)DataManager.Instance.GetData(DataManager.Containers.SETTINGS);
-        settings.resolution = currentRes;
+
+        DataManager.Settings.resolution = currentRes;
+        DataManager.Settings.buttonMovement = buttonsMovement;
+        DataManager.Settings.showFps = showFps;
         DataManager.SaveData();
     }
 
@@ -57,13 +68,33 @@ public class SettingsWindow : UIWindow
         }
         currentRes = resolutions[index];
         SetResolutionString(currentRes.x, currentRes.y);
-
     }
 
     void SetResolutionString(float width, float height)
     {
-
         resolutionLabel.text = string.Format("{0}x{1}", width, height);
+    }
+
+    void SetMovementString(bool movementSelected)
+    {
+        movementSelectedLabel.text = buttonsMovement ? "Buttons" : "Gestures";
+    }
+
+    void SetFpsShowString(bool showFps)
+    {
+        showFpsLabel.text = showFps ? "ON" : "OFF";
+    }
+
+    public void ChangeMovementType()
+    {
+        buttonsMovement = !buttonsMovement;
+        SetMovementString(buttonsMovement);
+    }
+
+    public void ChangeShowFps()
+    {
+        showFps = !showFps;
+        SetFpsShowString(showFps);
     }
 
 

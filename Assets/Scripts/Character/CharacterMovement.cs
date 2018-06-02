@@ -48,6 +48,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public event Action<IThrowable, Vector3> Thrown;
     public ThrowableObject ThrowObject { get; set; }
     public Vector3 StartPosition { get; private set; }
+    public bool ButtonsInput { get; set; }
 
     //ANIMATIONS
     int throwAnimationHash;
@@ -61,6 +62,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     {
         get;set;
     }
+
+    Action Movement;
 
     private void Awake()
     {
@@ -95,22 +98,32 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     {
         try
         {
+            ButtonsInput = Controller.Instance.ButtonMovement;
             btnAttack = GameGUI.GetButtonByName("ButtonAttack");
-            btnAttack.OnTapPressed.AddListener(Attack);
-            btnJump = GameGUI.GetButtonByName("ButtonJump");
-
-            if (rotationEnabled)
+            btnJump = GameGUI.GetButtonByName("ButtonForward");
+            if (ButtonsInput)
             {
+                btnAttack.gameObject.SetActive(true);
+                btnAttack.OnTapPressed.AddListener(Attack);
                 btnLeft = GameGUI.GetButtonByName("ButtonLeft");
+                btnLeft.gameObject.SetActive(true);
                 btnRight = GameGUI.GetButtonByName("ButtonRight");
-                btnForward = GameGUI.GetButtonByName("ButtonForward");
+                btnRight.gameObject.SetActive(true);              
+                btnJump.gameObject.SetActive(true);
+                var rect = GameGUI.GetButtonByName("Action").GetComponent<RectTransform>();
+                rect.anchoredPosition = new Vector2(700, rect.anchoredPosition.y);
+                Movement = ButtonsMovement;
+
             }
             else
             {
-                btnLeft = GameGUI.GetButtonByName("ButtonLeft");
-                btnRight = GameGUI.GetButtonByName("ButtonRight");
-                btnJump.gameObject.SetActive(false);
-                btnJump = GameGUI.GetButtonByName("ButtonForward");
+                btnAttack.gameObject.SetActive(false);
+                GameGUI.GetButtonByName("ButtonLeft").gameObject.SetActive(false);
+                GameGUI.GetButtonByName("ButtonRight").gameObject.SetActive(false);
+                btnJump.gameObject.SetActive(false) ;
+                var rect = GameGUI.GetButtonByName("Action").GetComponent<RectTransform>();
+                rect.anchoredPosition = new Vector2(0, rect.anchoredPosition.y);
+                Movement = GestureMovement;
             }
         }
         catch
@@ -218,6 +231,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     private void Update()
     {
         curPos = transform.position;
+        Movement();
         Inputs();
         Jump();
         if (attack)
@@ -240,86 +254,41 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 
     void Jump()
     {
-        if (timeLastJump < 0.7f && jumpReleased)
+        if (jumpInput > 0 && onGround && timeLastJump < 0.1f)
         {
-            jumpReleased = false;
-            if (jumpInput > 0 && onGround)
-            {
-                timeLastJump = 1;
-                rb.AddForce(Vector3.up * stats.jumpForce, ForceMode.VelocityChange);
-                onGround = false;
-            }
+            timeLastJump = 1;
+            rb.AddForce(Vector3.up * stats.jumpForce, ForceMode.VelocityChange);
+            jumpInput = 0;
+            onGround = false;
         }
         else
         {
             timeLastJump -= Time.deltaTime;
         }
-        if (jumpInput == 0)
-        {
-            jumpReleased = true;
-        }
     }
 
     void Inputs()
-    {
-        verInput = 0;
-        horInput = 0;
-        jumpInput = 0;
+    {        
         if (canMove)
         {
             if (buttonsInitialized)
             {
-                if (btnJump.isTouched) jumpInput = 1;
-
-                if (!rotationEnabled)
+                if (verInput < 0)
                 {
-                    if (btnRight.isTouched)
-                    {
-                        verInput = 1;
-                        direction2D = 1;
-                    }
-                    if (btnLeft.isTouched)
-                    {
-                        verInput = 1;
-                        direction2D = -1;
-                    }
+                    verInput = 1;
+                    direction2D = 1;
                 }
-                else
+                if (verInput > 0)
                 {
-                    if (btnRight.isTouched) horInput = 1;
-                    if (btnLeft.isTouched) horInput = -1;
-                    if (btnForward.isTouched) verInput = 1;
+                    verInput = 1;
+                    direction2D = -1;
                 }
             }
 
 #if UNITY_EDITOR
-            if (rotationEnabled)
-            {
-                if (verInput == 0)
-                {
-                    verInput = Input.GetAxisRaw("Vertical");
-                }
-
-                if (horInput == 0)
-                {
-                    horInput = Input.GetAxisRaw("Horizontal");
-                }
-            }
-            else
-            {
-                if (verInput == 0)
-                {
-                    verInput = Input.GetAxisRaw("Horizontal");
-                    if(verInput > 0)
-                    {
-                        direction2D = 1;
-                    }else if(verInput < 0)
-                    {
-                        direction2D = -1;
-                        verInput = 1;
-                    }
-                }
-            }
+            //verInput = Input.GetAxisRaw("Vertical");
+            if(horInput == 0)
+                horInput = Input.GetAxisRaw("Horizontal");
 
             if (jumpInput == 0)
             {
@@ -337,7 +306,123 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 #endif
         }
         //anim.SetFloat("vSpeed", velocity.y);
+        if (horInput > 0)
+            direction2D = 1;
+        else if (horInput < 0)
+            direction2D = -1;
         anim.SetBool("onGround", onGround);
+    }
+
+    Vector2 horTouched;
+    Vector2 verTouched;
+    bool horPressed;
+    bool verPressed;
+    float verDistance;
+    float timeJumpWait = 1;
+    void GestureMovement()
+    {
+        bool pressedHorizontalCurrent = false;
+        bool pressedVerticalCurrent = false;
+        int touchCount = Input.touchCount;
+        var touches = Input.touches;
+        jumpInput = 0;
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            if (touches[i].position.x < Screen.width / 2)
+            {
+                pressedHorizontalCurrent = true;
+                if (!horPressed)
+                {
+                    horPressed = true;
+                    horTouched = touches[i].position;
+                }
+                else
+                {
+                    horInput = Mathf.Clamp((touches[i].position.x - horTouched.x)/50, -1, 1);
+                }
+            }
+            else
+            {
+                pressedVerticalCurrent = true;
+                if(!verPressed)
+                {
+                    verPressed = true;
+                    verTouched = touches[i].position;
+                }
+                else
+                {
+                    verDistance = Vector3.Distance(verTouched, touches[i].position);
+                }
+            }
+        }
+
+#if UNITY_EDITOR
+        if (Input.GetMouseButton(0))
+        {
+            if (Input.mousePosition.x < Screen.width / 2)
+            {
+                pressedHorizontalCurrent = true;
+                if (!horPressed)
+                {
+                    horPressed = true;
+                    horTouched = Input.mousePosition;
+                }
+                else
+                {
+                    horInput = Mathf.Clamp((Input.mousePosition.x - horTouched.x), -1, 1);
+                }
+            }
+            else
+            {
+                pressedVerticalCurrent = true;
+                if (!verPressed)
+                {
+                    verPressed = true;
+                    verTouched = Input.mousePosition;
+                }
+                else
+                {
+                    verDistance = Vector3.Distance(verTouched, Input.mousePosition);
+                }
+            }
+        }
+#endif
+        if (!pressedHorizontalCurrent)
+        {
+            horPressed = false;
+            horInput = Mathf.Lerp(horInput, 0, Time.deltaTime * 10);
+            if(Mathf.Abs(horInput) < 0.1f)
+            {
+                horInput = 0;
+            }
+        }
+        if (verPressed && verDistance > 30)
+        {
+            verPressed = false;
+            jumpInput = 1;
+        }
+
+        if (verPressed && !pressedVerticalCurrent)
+        {
+            verPressed = false;
+            if (verDistance < 50)
+            {
+                jumpInput = 0;
+                Attack();
+            }
+        }
+        verDistance = Mathf.Clamp(verDistance - 1, 0, 50);
+    }
+
+    void ButtonsMovement()
+    {
+        horInput = 0;
+        if (btnRight.isTouched) horInput = 1;
+        if (btnLeft.isTouched) horInput = -1;
+        if (btnJump.isTouched)
+            jumpInput = 1;
+        else
+            jumpInput = 0;
     }
 
 
@@ -345,9 +430,9 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     {
         var velo = rb.velocity;
         //anim.SetFloat("hSpeed", velo.magnitude);
-        if (verInput != 0 && Mathf.Abs(velo.magnitude) < stats.runSpeed && movementEnabled)
+        if (horInput != 0 && Mathf.Abs(velo.magnitude) < stats.runSpeed && movementEnabled)
         {
-            velo += rotationEnabled ? transform.forward * verInput : Vector3.right * verInput * direction2D;
+            velo += rotationEnabled ? transform.forward * verInput : Vector3.right * horInput;
             rb.velocity = velo;
             rb.rotation = transform.rotation;
         }
@@ -393,15 +478,15 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     void Attack()
     {
         if (!enabled || attack) return;
-        if (!onGround && Mathf.Abs(velocity.y) > 5)
-        {
-            rb.velocity = Vector3.down * stats.attackForce;
-            attack = true;
-            anim.SetTrigger("attack");
-            anim.SetBool("attackStay", true);
-        }
-        else
-        {
+        //if (!onGround && Mathf.Abs(velocity.y) > 5)
+        //{
+        //    rb.velocity = Vector3.down * stats.attackForce;
+        //    attack = true;
+        //    anim.SetTrigger("attack");
+        //    anim.SetBool("attackStay", true);
+        //}
+        //else
+        //{
             if (Thrown != null)
             {
                 //Debug.Log("Throw");
@@ -427,7 +512,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                     MeleeAttack();
                 }
             }
-        }
+        //}
     }
 
     public LayerMask collisionLayer;
@@ -457,7 +542,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         RaycastHit[] hits = Physics.SphereCastAll(curPos, 2, Vector3.down, 10, collisionLayer.value,QueryTriggerInteraction.Ignore);
         for (int i = 0; i < hits.Length; i++)
         {
-            Debug.Log("Hit: " + hits[i].transform.name);
+            //Debug.Log("Hit: " + hits[i].transform.name);
             scripts.Add(hits[i].collider.transform.root.gameObject.GetComponent<IDestructible>());
         }
         foreach (var script in scripts)

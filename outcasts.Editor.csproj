@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2017.4.2f2</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -316,6 +318,8 @@
     <Compile Include="Assets\OtherAssets\MOBA and Tower Defense\Standard Assets\Editor\ImageEffects\VignetteAndChromaticAberrationEditor.cs" />
     <Compile Include="Assets\Scripts\Collections\Editor\MovingTransformEditor.cs" />
     <Compile Include="Assets\Scripts\Collections\Editor\RotateEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\CollectionManagerEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\SignificantEditor.cs" />
     <Compile Include="Assets\Scripts\Engine\Drawers\Editor\Drawer.cs" />
     <Compile Include="Assets\Scripts\Engine\Drawers\Editor\PopUpAttributeDrawer.cs" />
     <Compile Include="Assets\Scripts\Engine\Editor\ButtonInspector.cs" />
@@ -552,6 +556,7 @@
     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Advanced.shader" />
     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />
     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\WaterInclude.cginc" />
+    <None Include="Assets\Update.txt" />
     <None Include="Assets\dmk Fixed Function Shader Collection\Shaders\Unlit_color_cutout.shader" />
     <None Include="Assets\dmk Fixed Function Shader Collection\Shaders\Unlit_texture_color.shader" />
     <None Include="Assets\dmk Fixed Function Shader Collection\Shaders\Unlit_texture_color_lightmap.shader" />

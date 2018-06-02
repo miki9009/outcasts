@@ -5,19 +5,19 @@ public class TriggerBroadcast : MonoBehaviour
 {
     public event System.Action<Collider> TriggerEntered;
     public event System.Action<Collider> TriggerExit;
-    void OnTriggerEnter(Collider collision)
+    void OnTriggerEnter(Collider collider)
     {
         if (TriggerEntered != null)
         {
-            TriggerEntered(collision);
+            TriggerEntered(collider);
         }
     }
 
-    void OnTriggerExit(Collider collision)
+    void OnTriggerExit(Collider collider)
     {
         if (TriggerExit != null)
         {
-            TriggerExit(collision);
+            TriggerExit(collider);
         }
     }
 }

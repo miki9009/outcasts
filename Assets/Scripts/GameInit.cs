@@ -28,7 +28,6 @@ public class GameInit : MonoBehaviour
 #endif
         Init();
         DataManager.LoadData();
-        //StartCoroutine(StartInit());
     }
 
     private void OnDestroy()

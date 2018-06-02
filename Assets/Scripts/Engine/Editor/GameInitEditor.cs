@@ -24,6 +24,10 @@ namespace Engine
             {
                 DataManager.LoadData();
             }
+            if (GUILayout.Button("Clear data"))
+            {
+                PlayerPrefs.DeleteAll();
+            }
         }
     }
 }

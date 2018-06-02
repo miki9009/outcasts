@@ -47,6 +47,11 @@ public class CollectionManager : MonoBehaviour
 
     Dictionary<int, CollectionSet> collections;
 
+    public Dictionary<int, CollectionSet> AllCollections()
+    {
+        return collections;
+    }
+
     public void SetCollection(int playerID, CollectionType type, int val)
     {
         if (collections.ContainsKey(playerID))
@@ -92,6 +97,7 @@ public class CollectionManager : MonoBehaviour
             return collections[playerID].Collection[type];
         }
     }
+
 
     public void EmmitParticles(CollectionType type, Vector3 position, int ammount)
     {
@@ -142,7 +148,7 @@ public class CollectionManager : MonoBehaviour
     }
 #endif
 
-    class CollectionSet
+    public class CollectionSet
     {
         public CollectionSet(CollectionType type, int playerID)
         {

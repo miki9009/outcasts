@@ -52,5 +52,7 @@ public class Settings : DataContainer
         public Float2 resolution = new Float2(1920, 1080);
         public bool runBenchmark;
         public bool firstStart;
+        public bool buttonMovement;
+        public bool showFps;
     }
 }

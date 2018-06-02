@@ -174,6 +174,7 @@ public enum CollectionType
     Invincibility = 7,
     KeyGold = 8,
     KeySilver = 9,
-    KeyBronze = 10
+    KeyBronze = 10,
+    Restart = 11
 }
 

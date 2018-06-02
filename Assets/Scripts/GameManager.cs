@@ -64,14 +64,16 @@ public class GameManager : MonoBehaviour
 
     public void GameFinished()
     {
-        var data = (CollectionsContainer.Container)DataManager.Instance.GetData("Collections");
-        data.coins += CollectionManager.Instance.GetCollection(Controller.Instance.character.ID, CollectionType.Coin);
-        data.emmeralds += CollectionManager.Instance.GetCollection(Controller.Instance.character.ID, CollectionType.Emmerald);
-        data.goldKeys += CollectionManager.Instance.GetCollection(Controller.Instance.character.ID, CollectionType.KeyGold);
-        data.silverKeys += CollectionManager.Instance.GetCollection(Controller.Instance.character.ID, CollectionType.KeySilver);
-        data.bronzeKeys += CollectionManager.Instance.GetCollection(Controller.Instance.character.ID, CollectionType.KeyBronze);
+        var data = DataManager.Collections;
+        var collectionManger = CollectionManager.Instance;
+        int localID = Character.GetLocalPlayer().ID;
+        data.coins += collectionManger.GetCollection(localID, CollectionType.Coin);
+        data.emmeralds += collectionManger.GetCollection(localID, CollectionType.Emmerald);
+        data.goldKeys += collectionManger.GetCollection(localID, CollectionType.KeyGold);
+        data.silverKeys += collectionManger.GetCollection(localID, CollectionType.KeySilver);
+        data.bronzeKeys += collectionManger.GetCollection(localID, CollectionType.KeyBronze);
+        data.restarts += collectionManger.GetCollection(localID, CollectionType.Restart);
 
-        Debug.Log("Coins = " + data.coins);
         DataManager.SaveData();
         Debug.Log("Game Saved");
         CollectionManager.Instance.ResetCollections();

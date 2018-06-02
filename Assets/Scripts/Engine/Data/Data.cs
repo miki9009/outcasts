@@ -136,47 +136,6 @@ namespace Engine
             }
             return data;
         }
-
-    //    public static void Serialize<T>(T data, Stream stream)
-    //    {
-    //        try // try to serialize the collection to a file
-    //        {
-    //            using (stream)
-    //            {
-    //                // create BinaryFormatter
-    //                BinaryFormatter bin = new BinaryFormatter();
-    //                // serialize the collection (EmployeeList1) to file (stream)
-    //                bin.Serialize(stream, data);
-    //            }
-    //        }
-    //        catch (IOException)
-    //        {
-    //        }
-    //    }
-
-    //    public static T Deserialize<T>(Stream stream) where T : new()
-    //    {
-    //        T ret = CreateInstance<T>();
-    //        try
-    //        {
-    //            using (stream)
-    //            {
-    //                // create BinaryFormatter
-    //                BinaryFormatter bin = new BinaryFormatter();
-    //                // deserialize the collection (Employee) from file (stream)
-    //                ret = (T)bin.Deserialize(stream);
-    //            }
-    //        }
-    //        catch (IOException)
-    //        {
-    //        }
-    //        return ret;
-    //    }
-    //    // function to create instance of T
-    //    public static Object CreateInstance<Object>() where Object : new()
-    //    {
-    //        return (Object)Activator.CreateInstance(typeof(Object));
-    //    }
     }
 
     [Serializable]

@@ -3,167 +3,171 @@ using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 
-public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected
+public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAnimator
 {
-    public Transform Transform { get { return transform; } set { Transform = value; } }
-    PathMovement pathMovement;
-    public float speed;
-    public float turningSpeed;
+    public float offset = 10;
+    public bool randomStartRotation;
+    public float speed = 3;
 
-    public Transform target;
-    public Vector3 velocity;
+    int right = 1;
+    int left = -1;
+    int dir;
+    public int action = 0;
+    //0-move
+    //1-follow
+    //2-idle
 
     Rigidbody rb;
-    public float horInput = 0;
-    public float verInput = 0;
-    [HideInInspector] public Animator anim;
-    public float attackTime = 5;
-    float curAttackTime = 0;
-    public int attackAnimation;
+    Vector3 startPos;
+    Vector3 leftMax;
+    Vector3 rightMax;
 
-    public bool inRange = false;
+    float idle = 1;
+    public bool isAttacking;
+
+    public Transform Transform { get { return transform; } set { Transform = value; } }
+
+    public AnimatorBehaviour AnimatorBehaviour
+    {
+        get;set;
+    }
+
+    [System.NonSerialized] public Transform target;
+
+    [System.NonSerialized] public Animator anim;
+    public float attackTime = 1;
+
     public GameObject stars;
 
     ParticleSystem starsExplosion;
-    public Vector3 targetPoint;
-    public bool changePoint = true;
-    float range;
     private EnemyDeath enemyDeath;
     Vector3 startPosition;
-    public float guardRange;
     public bool dead = false;
-    public bool isAttacking = false;
+    bool canAttack = false;
 
-	void Start ()
+	protected virtual void Start ()
     {
+        canAttack = true;
         startPosition = transform.position;
-        pathMovement = GetComponent<PathMovement>();
         rb = GetComponent<Rigidbody>();
-        StartCoroutine(RefreshPath());
         anim = GetComponentInChildren<Animator>();
-        attackAnimation = Animator.StringToHash("Attack");
         starsExplosion = StaticParticles.Instance.starsExplosion;
-        ChangeTargetPoint();
         enemyDeath = GetComponent<EnemyDeath>();
-
-    }
-
-	void Update ()
-    {
-        pathMovement.Inputs(out horInput, out verInput);
-
-        var vec = rb.velocity;
-
-        anim.SetFloat("hSpeed", vec.magnitude);
-
-        curAttackTime += Time.deltaTime;
-	}
-
-    void Attack()
-    {
-        if (target == null || dead) return;
-        isAttacking = true;
-        anim.SetTrigger("attack");
-        curAttackTime = 0;
-        var dir = Math.Direction(transform.position, target.position);
-        dir.y = 0;
-        pathMovement.direction = dir;
-        transform.rotation = Quaternion.LookRotation(dir);
-        range = GetComponentInChildren<SphereCollider>().radius;
-    }
-
-
-    void MainMovement()
-    {
-        if (target != null && Vector3.Distance(transform.position, target.position) < 4)
+        if (randomStartRotation)
         {
-            if (curAttackTime > attackTime)
+            if (Engine.Math.Probability(0.5f))
             {
-                curAttackTime = 0;
-                Invoke("Attack", 1f);
-            }
-            if (target == null || Vector3.Distance(transform.position, target.position) > range)
-            {
-                inRange = false;
-            }
-        }
-        else if (Vector3.Distance(transform.position, targetPoint) < 5)
-        {
-            changePoint = true;
-        }
-
-    }
-
-    private void FixedUpdate()
-    {
-        var velo = rb.velocity;
-        if (verInput != 0 && Mathf.Abs(velo.magnitude) < speed)
-        {
-            velo += transform.forward * verInput;
-            rb.velocity = velo;
-        }
-        rb.maxAngularVelocity = 0;
-        rb.maxAngularVelocity = 0;
-
-        if (horInput != 0)
-        {
-            var q = transform.rotation.eulerAngles;
-            transform.rotation = Quaternion.Euler(0, q.y + horInput * Time.deltaTime * turningSpeed, 0);
-        }
-    }
-
-    void ChangeTargetPoint()
-    {
-        // Debug.Log("Destination changed");
-        Vector3 targetPos = Vector3.zero;
-        if (Vector3.Distance(transform.position, startPosition) > guardRange)
-        {
-            targetPos = startPosition;
-        }
-        else
-        {
-            targetPos = transform.position + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)) * Random.Range(10, 20);
-        }
-        changePoint = !pathMovement.RandomPoint(startPosition, guardRange, out targetPoint);
-    }
-
-    private void OnDisable()
-    {
-        StopAllCoroutines();
-    }
-
-    private void OnEnable()
-    {
-        StartCoroutine(RefreshPath());
-    }
-
-    IEnumerator RefreshPath()
-    {
-        Engine.Game.WaitForFrames(Random.Range(1, 25));
-        var wait = new WaitForSeconds(0.5f);
-        yield return wait;
-        while (true)
-        {
-            if (target != null)
-            {
-                pathMovement.GetPath(target.position);
+                dir = right;
+                transform.rotation = Quaternion.LookRotation(Vector3.right);
             }
             else
             {
-                if (changePoint || pathMovement.noPath)
+                dir = left;
+                transform.rotation = Quaternion.LookRotation(Vector3.left);
+            }
+        }
+        startPos = transform.position;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        Debug.Log("Collision");
+        if (other.gameObject.layer != Layers.Character)
+        {
+            dir = dir == left ? right : left;
+            transform.rotation = Quaternion.LookRotation(dir == right ? Vector3.right : Vector3.left);
+        }
+        else
+        {
+            target = other.transform;
+            if(canAttack)
+                Attack();
+        }
+    }
+
+    private void Update()
+    {
+        if (canAttack)
+        {
+            var vec = rb.velocity;
+            anim.SetFloat("hSpeed", Mathf.Abs(vec.x));
+            if (action == 0)
+            {
+                rb.velocity = new Vector3(speed * dir, rb.velocity.y, 0);
+                if (dir == left)
                 {
-                    pathMovement.noPath = false;
-                    ChangeTargetPoint();
+                    if (transform.position.x < startPos.x - offset)
+                    {
+                        action = 2;
+                        dir = right;
+                        rb.velocity = Vector3.zero;
+                    }
                 }
                 else
                 {
-                    pathMovement.GetPath(targetPoint);
+                    if (transform.position.x > startPos.x + offset)
+                    {
+                        action = 2;
+                        dir = left;
+                        rb.velocity = Vector3.zero;
+                    }
                 }
             }
-            MainMovement();
-            yield return wait;
+            else if (action == 1)
+            {
+                if (target != null)
+                {
+                    rb.velocity = new Vector3(speed * dir, rb.velocity.y, 0);
+                    if (target.position.x > transform.position.x)
+                    {
+                        dir = right;
+                        transform.rotation = Quaternion.LookRotation(Vector3.right);
+                    }
+                    else
+                    {
+                        dir = left;
+                        transform.rotation = Quaternion.LookRotation(Vector3.left);
+                    }
+                }
+                else
+                {
+                    action = 0;
+                }
+            }
+            else
+            {
+                if (idle > 0)
+                {
+                    idle -= Time.deltaTime;
+                }
+                else
+                {
+                    if (dir == right)
+                        transform.rotation = Quaternion.LookRotation(Vector3.right);
+                    else
+                        transform.rotation = Quaternion.LookRotation(Vector3.left);
+                    action = 0;
+                    idle = 1;
+                }
+            }
         }
     }
+
+    void Attack()
+    {
+        Debug.Log("Attack");
+        canAttack = false;
+        if (target == null || dead) return;
+        anim.Play("Attack");
+        Invoke("CanAttack", attackTime);
+    }
+
+    void CanAttack()
+    {
+        canAttack = true;
+        anim.Play("Idle");
+    }
+
 
     public void Hit()
     {
@@ -188,12 +192,34 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected
         Hit();
     }
 
-#if UNITY_EDITOR
 
+    int attackHashName = Animator.StringToHash("Attack");
+
+    public void StateAnimatorInitialized()
+    {
+        AnimatorBehaviour.StateEnter += (animatorStateInfo) =>
+        {
+            if (animatorStateInfo.shortNameHash == attackHashName)
+            {
+                isAttacking = true;
+            }
+        };
+
+        AnimatorBehaviour.StateExit += (animatorStateInfo) =>
+        {
+            if (animatorStateInfo.shortNameHash == attackHashName)
+            {
+                isAttacking = false;
+            }
+        };
+    }
+
+#if UNITY_EDITOR
+    public Color gizmoColor = Color.blue;
     private void OnDrawGizmos()
     {
-        Gizmos.color = new Color(0, 0, 1, 0.3f);
-        Gizmos.DrawSphere(transform.position, guardRange);
+        Gizmos.color = gizmoColor;
+        Gizmos.DrawCube(transform.position + Vector3.one, new Vector3(offset * 2, 2, 2));
     }
 
 

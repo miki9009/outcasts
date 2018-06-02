@@ -275,9 +275,12 @@
     <Compile Include="Assets\Scripts\Collections\CrateJump.cs" />
     <Compile Include="Assets\Scripts\Collections\CrateJumpMetal.cs" />
     <Compile Include="Assets\Scripts\Collections\Health.cs" />
+    <Compile Include="Assets\Scripts\Collections\Key.cs" />
     <Compile Include="Assets\Scripts\Collections\MovingTransform.cs" />
     <Compile Include="Assets\Scripts\Collections\RealtimeAppearance.cs" />
+    <Compile Include="Assets\Scripts\Collections\Restart.cs" />
     <Compile Include="Assets\Scripts\Collections\Rotate.cs" />
+    <Compile Include="Assets\Scripts\Collections\Significant.cs" />
     <Compile Include="Assets\Scripts\Collections\WeaponCollect.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\Data\Containers\CollectionsContainer.cs" />
@@ -287,9 +290,11 @@
     <Compile Include="Assets\Scripts\Effects.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyDeath.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemyMovement.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemySpot.cs" />
     <Compile Include="Assets\Scripts\Enemy\GameTime.cs" />
     <Compile Include="Assets\Scripts\Enemy\MovingStone.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Native.cs" />
     <Compile Include="Assets\Scripts\Enemy\Plant.cs" />
     <Compile Include="Assets\Scripts\Engine\AnimatorBehaviour.cs" />
     <Compile Include="Assets\Scripts\Engine\CollisionBroadcast.cs" />
@@ -297,8 +302,9 @@
     <Compile Include="Assets\Scripts\Engine\ConcurrentInt.cs" />
     <Compile Include="Assets\Scripts\Engine\Config\Config.cs" />
     <Compile Include="Assets\Scripts\Engine\Config\TestConfig.cs" />
-    <Compile Include="Assets\Scripts\Engine\Data.cs" />
-    <Compile Include="Assets\Scripts\Engine\DataContainer.cs" />
+    <Compile Include="Assets\Scripts\Engine\Data\Data.cs" />
+    <Compile Include="Assets\Scripts\Engine\Data\DataContainer.cs" />
+    <Compile Include="Assets\Scripts\Engine\Data\DataProperty.cs" />
     <Compile Include="Assets\Scripts\Engine\Drawers\DaysDrawer.cs" />
     <Compile Include="Assets\Scripts\Engine\Drawers\MethodsDrawer.cs" />
     <Compile Include="Assets\Scripts\Engine\Drawers\PopUpAttribute.cs" />
@@ -337,6 +343,7 @@
     <Compile Include="Assets\Scripts\GUI\MenuManager.cs" />
     <Compile Include="Assets\Scripts\GUI\MovementButton.cs" />
     <Compile Include="Assets\Scripts\GUI\SettingsWindow.cs" />
+    <Compile Include="Assets\Scripts\GUI\TouchImage.cs" />
     <Compile Include="Assets\Scripts\GUI\UIWindow.cs" />
     <Compile Include="Assets\Scripts\IDestructible.cs" />
     <Compile Include="Assets\Scripts\Layers.cs" />
@@ -344,6 +351,7 @@
     <Compile Include="Assets\Scripts\Mesh\MeshPainter.cs" />
     <Compile Include="Assets\Scripts\Misc\Bridge.cs" />
     <Compile Include="Assets\Scripts\Misc\Checkpoint.cs" />
+    <Compile Include="Assets\Scripts\Misc\Clouds.cs" />
     <Compile Include="Assets\Scripts\Misc\CoroutineHost.cs" />
     <Compile Include="Assets\Scripts\Misc\DeactivateAfterTime.cs" />
     <Compile Include="Assets\Scripts\Misc\DeathTrigger.cs" />
@@ -597,6 +605,7 @@
     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Advanced.shader" />
     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />
     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\WaterInclude.cginc" />
+    <None Include="Assets\Update.txt" />
     <None Include="Assets\dmk Fixed Function Shader Collection\Shaders\Unlit_color_cutout.shader" />
     <None Include="Assets\dmk Fixed Function Shader Collection\Shaders\Unlit_texture_color.shader" />
     <None Include="Assets\dmk Fixed Function Shader Collection\Shaders\Unlit_texture_color_lightmap.shader" />

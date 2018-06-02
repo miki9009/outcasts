@@ -43,7 +43,8 @@ public class Benchmark : MonoBehaviour
             }
             yield return new WaitForSeconds(1);
         }
-        Settings.Container data = (Settings.Container)DataManager.Instance.GetData(DataManager.Containers.SETTINGS);
+        //Settings.Container data = (Settings.Container)DataManager.Instance.GetData(DataManager.Containers.SETTINGS);
+        Settings.Container data = DataManager.Settings;
         data.resolution = new Engine.Float2(curResolution.x, curResolution.y);
         data.runBenchmark = false;
         DataManager.SaveData();

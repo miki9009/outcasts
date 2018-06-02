@@ -42,7 +42,7 @@ public class CrateJump : MonoBehaviour
         if (collision.gameObject.transform.position.y > transform.position.y + 1f)
         {
             var character = collision.gameObject.GetComponent<Character>();
-            if (character != null && !isSquashing)
+            if (character != null && !isSquashing && character.movement.enabled)
             {
                 this.character = character;
                 gameCam.upFactor = 0;

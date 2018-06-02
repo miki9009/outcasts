@@ -78,11 +78,21 @@ public class DataManager : MonoBehaviour
         Data.Save(Instance.dataFileName, Instance.datas);
     }
 
+    /// <summary>
+    /// GetData not recommended at startup
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     public static T GetData<T>() where T : IData
     {
         return (T)Instance.datas.SingleOrDefault(x => x.Value.GetType() == typeof(T)).Value;
     }
 
+    /// <summary>
+    /// Deeper search of Data null reference HANDLED
+    /// </summary>
+    /// <param name="ID"></param>
+    /// <returns></returns>
     public IData GetData(string ID)
     {
         IData data = null;
@@ -143,5 +153,38 @@ public class DataManager : MonoBehaviour
     {
         public const string SETTINGS = "Settings";
     }
+
+
+    //CONTAINERS
+    private static Settings.Container settings;
+    public static Settings.Container Settings
+    {
+        get
+        {
+            if (settings == null)
+            {
+                settings = GetData<Settings.Container>();
+            }
+            return settings;
+        }
+    }
+
+    private static CollectionsContainer.Container collections;
+    public static CollectionsContainer.Container Collections
+    {
+        get
+        {
+            if (collections == null)
+            {
+                collections = GetData<CollectionsContainer.Container>();
+            }
+            return collections;
+        }
+    }
+
+
+
+
+
 }
 

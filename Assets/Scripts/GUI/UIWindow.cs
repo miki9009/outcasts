@@ -48,6 +48,11 @@ namespace Engine.GUI
         public event Action BeginHide;
         public event Action BeginShow;
 
+        Coroutine show;
+        Coroutine hide;
+        Coroutine fadeOut;
+        Coroutine fadeIn;
+
         public static UIWindow GetWindow(string ID)
         {
             var window = windows.SingleOrDefault(x => x.ID == ID);
@@ -83,7 +88,13 @@ namespace Engine.GUI
 
         private void OnDisable()
         {
-            Debug.Log("Disabled: " + name);
+            //Debug.Log("Disabled: " + name);
+            if (fadeOut != null || hide != null)
+            {
+                gameObject.SetActive(false);
+                if (fadeOut != null) StopCoroutine(fadeOut);
+                if (hide != null) StopCoroutine(hide);
+            }
             rect.anchoredPosition = startPos;
         }
 
@@ -131,17 +142,19 @@ namespace Engine.GUI
         public void Show()
         {
             gameObject.SetActive(true);
-            StartCoroutine(ShowE());
+            show = StartCoroutine(ShowE());
         }
 
         public void Hide()
         {
-            StartCoroutine(HideE());
+            if (hide != null) return;
+            hide = StartCoroutine(HideE());
         }
 
         public void FadeOut()
         {
-            StartCoroutine(FadeOutE());
+            if (fadeOut != null) return;
+            fadeOut = StartCoroutine(FadeOutE());
         }
         IEnumerator FadeOutE()
         {
@@ -151,12 +164,13 @@ namespace Engine.GUI
                 yield return null;
             }
             gameObject.SetActive(false);
+            fadeOut = null;
             yield return null;
         }
         public void FadeIn()
         {
             gameObject.SetActive(true);
-            StartCoroutine(FadeInE());
+            fadeIn = StartCoroutine(FadeInE());
         }
         IEnumerator FadeInE()
         {
@@ -165,6 +179,7 @@ namespace Engine.GUI
                 canvasGroup.alpha += Time.deltaTime * fadeSpeed;
                 yield return null;
             }
+            fadeIn = null;
             yield return null;
         }
 
@@ -217,6 +232,7 @@ namespace Engine.GUI
             {
                 Show();
             }
+            show = null;
             yield return null;
         }
 
@@ -269,6 +285,7 @@ namespace Engine.GUI
             {
                 Hidden();
             }
+            hide = null;
             yield return null;
         }
 
@@ -326,6 +343,11 @@ namespace Engine.GUI
             catch { }
             SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
             SceneManager.sceneLoaded += SetActiveScene;
+        }
+
+        public void ApplicationQuit()
+        {
+            Application.Quit();
         }
 
     }

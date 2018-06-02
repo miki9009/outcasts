@@ -861,6 +861,10 @@ namespace Engine
             UnityEngine.GUI.Label(rect, text, style);
         }
 
+        public static void ResetMedianFps()
+        {
+            fpsMedian = 0;
+        }
         static double fpsMedian = 0;
         static long frames = 0;
         public static void DisplayMedianFps(float x, float y)

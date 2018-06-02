@@ -60,6 +60,7 @@ public class FirePlace : MonoBehaviour
     IEnumerator GoToNextScene()
     {
         yield return new WaitForSeconds(1);
+        Debug.Log("LOADING NEXT SCENE: " + nextLevel);
         LevelManager.Instance.GoToScene(nextLevel);
         yield return null;
     }

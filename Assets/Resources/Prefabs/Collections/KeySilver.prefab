@@ -19,8 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4234075506860096}
-  - component: {fileID: 114111011310530006}
   - component: {fileID: 135649333517600110}
+  - component: {fileID: 114373880492824004}
   m_Layer: 13
   m_Name: KeySilver
   m_TagString: Untagged
@@ -113,7 +113,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1604529100029836}
   m_Mesh: {fileID: 4300000, guid: 81daa9752a7c30a44b6928528f5c32bb, type: 3}
---- !u!114 &114111011310530006
+--- !u!114 &114373880492824004
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1135564789282794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9f60627d4f7b954798772d0e430ef93, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d64e77e57f35044c8fc3e5b4c830562, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 9

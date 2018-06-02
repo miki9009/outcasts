@@ -128,7 +128,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1576446732701938}
   m_LocalRotation: {x: -0, y: 0.20603332, z: -0, w: 0.978545}
-  m_LocalPosition: {x: -136.58267, y: 45.063, z: 103.31787}
+  m_LocalPosition: {x: 7.2157173, y: -1.4203374, z: 1.7684498}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4858628712607470}
@@ -241,7 +241,6 @@ MonoBehaviour:
   particlesAmmount: 10
   collected: 0
   rigid: {fileID: 0}
-  display: {fileID: 0}
   deactivationTime: 0.1
 --- !u!114 &114945034658797020
 MonoBehaviour:

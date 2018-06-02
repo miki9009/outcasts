@@ -38,6 +38,7 @@ public class CollectionsContainer : DataContainer
         public int goldKeys;
         public int silverKeys;
         public int bronzeKeys;
+        public int restarts;
     }
 
 

@@ -46,6 +46,11 @@ public class Chest : MonoBehaviour, IActivationTrigger
         yield return null;
     }
 
+    protected void OpenChestImmediate()
+    {
+        cover.localEulerAngles = new Vector3(10,0,0);
+    }
+
     readonly Vector3[] dirs = {
         new Vector3(0,0.5f,0),
         new Vector3(1, 0.5f, 1),

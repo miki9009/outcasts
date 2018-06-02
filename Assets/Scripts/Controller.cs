@@ -23,7 +23,8 @@ public class Controller : MonoBehaviour
     }
 
     public float aspectRatio = 1;
-
+    public bool ButtonMovement { get; set; }
+    bool showFps;
 
     [HideInInspector] public Character character;
 
@@ -47,7 +48,9 @@ public class Controller : MonoBehaviour
         }
         GUI = transform.parent.gameObject;
         ChromaticAbberration = gameCamera.GetComponent<VignetteAndChromaticAberration>();
-        Vortex = gameCamera.GetComponent<Vortex>(); 
+        Vortex = gameCamera.GetComponent<Vortex>();
+        ButtonMovement = DataManager.Settings.buttonMovement;
+        showFps = DataManager.Settings.showFps;
     }
 
     // Use this for initialization
@@ -65,6 +68,7 @@ public class Controller : MonoBehaviour
         startResolution = new Vector2(Screen.width, Screen.height);
         GameManager.OnLevelLoaded += DeactivateActionButton;
         PlayerDead += DeactivateActionButtonOnPlayerDeath;
+        Draw.ResetMedianFps();
     }
 
     void DeactivateActionButtonOnPlayerDeath(Character character)
@@ -96,13 +100,23 @@ public class Controller : MonoBehaviour
     IEnumerator PlayerDeadCoroutine(Character character)
     {
         yield return new WaitForSeconds(3f);
-        if(restarts > 0)
+        int currentRestarts = CollectionManager.Instance.GetCollection(character.ID, CollectionType.Restart);
+        var collections = DataManager.Collections;
+        if(collections.restarts > 0 || currentRestarts > 0)
         {
             character.movement.enabled = true;
             character.stats.health = 1;
             character.movement.characterHealth.AddHealth(character.stats.health);
             character.movement.anim.Play("Idle");
-            restarts--;
+            if (currentRestarts > 0)
+            {
+                CollectionManager.Instance.SetCollection(character.ID, CollectionType.Restart, currentRestarts - 1);
+            }
+            else
+            {
+                collections.restarts--;
+                DataManager.SaveData();
+            }
             character.rb.velocity = Vector3.zero;
             gameCamera.GetComponent<GameCamera>().target = character.transform;
             if (LastCheckpoint != null)
@@ -127,9 +141,11 @@ public class Controller : MonoBehaviour
 
     private void OnGUI()
     {
-        Draw.DisplayFps(Screen.width / 2, 10, Color.red, 40);
-        Draw.DisplayMedianFps(Screen.width / 2 - Screen.width*0.1f, 70);
-        // Draw.TextColorUnity(10, 180, Color.red, "Screen Resolution: " + Screen.width + "x" + Screen.height);
+        if (showFps)
+        {
+            Draw.DisplayFps(Screen.width / 2, 10, Color.red, 40);
+            Draw.DisplayMedianFps(Screen.width / 2 - Screen.width * 0.1f, 70);
+        }
 
     }
 

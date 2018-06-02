@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class ChestSignificant : Chest
 {
+    string propertyKey;
+    Engine.DataProperty<bool> itemCollected;
+
     public Color gold;
     public Color silver;
     public Color bronze;
@@ -18,7 +21,7 @@ public class ChestSignificant : Chest
     GameObject characterEntered;
 
     int possesedKeys;
-
+    bool collected;
 
     protected override void  Awake()
     {
@@ -39,36 +42,51 @@ public class ChestSignificant : Chest
             keySprite = keys[1];
         }
         requiredFrame.gameObject.SetActive(false);
+
     }
 
+    private void Start()
+    {
+        propertyKey = GetComponentInChildren<Significant>().propertyKey;
+        CheckCollected();
+    }
+
+    void CheckCollected()
+    {
+        itemCollected = Engine.DataProperty<bool>.Get(propertyKey, false);
+        if(itemCollected.Value)
+        {
+            GetComponent<SphereCollider>().enabled = false;
+            OpenChestImmediate();
+        }
+    }
 
 
     public override void Activate()
     {
-        if (Open())
+        if (!itemCollected.Value)
         {
-            base.Activate();
+            if (Open())
+            {
+                base.Activate();
+            }
+            itemCollected.Value = true;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == Layers.Character)
+        if (!itemCollected.Value)
         {
             Open();
             requiredFrame.gameObject.SetActive(true);
             AssignRequiredFrame();
-            characterEntered = other.gameObject;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == characterEntered)
-        {
-
-            requiredFrame.gameObject.SetActive(false);
-        }
+        requiredFrame.gameObject.SetActive(false);
     }
 
     void AssignRequiredFrame()
@@ -88,7 +106,7 @@ public class ChestSignificant : Chest
 
         int keys = CollectionManager.Instance.GetCollection(Character.GetLocalPlayer().ID, type);
 
-        var data = DataManager.GetData<CollectionsContainer.Container>();
+        var data = DataManager.Collections;
 
         if (type == CollectionType.KeyGold)
             keys += data.goldKeys;

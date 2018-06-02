@@ -24,7 +24,7 @@ public class ClockGUI : MonoBehaviour
         instance = GameTime.Instance;
         instance.OnTimeElapsed += SetTime;
         instance.OnTimeAdded += DisplayChild;
-        childText.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        childText.transform.localScale = new Vector3(1f, 1f, 1f);
         childText.enabled = false;
         showTime = 3;
        // GameManager.OnLevelLoaded -= Prepare;

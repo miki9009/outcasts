@@ -189,34 +189,34 @@ public class PathMovement : MonoBehaviour
     }
 
 
-#if UNITY_EDITOR
-	public float gizmoSize = 0.1f;
-	public Color pathColor = Color.blue;
+//#if UNITY_EDITOR
+//	public float gizmoSize = 0.1f;
+//	public Color pathColor;
 
 
 
-    void OnDrawGizmos ()
-	{
-		if (pathPoints != null && pathPoints.Length > 0) 
-		{
-			Gizmos.color = pathColor;
-			Vector3 prev = pathPoints [0];
-			Gizmos.DrawSphere (prev, gizmoSize * UnityEditor.HandleUtility.GetHandleSize (prev));
-			for (int i = 1; i < pathPoints.Length; i++) 
-			{
-				Vector3 next = pathPoints [i];
-				Gizmos.DrawSphere (next, gizmoSize * UnityEditor.HandleUtility.GetHandleSize (next));
-				prev = next;
-			}
-			Gizmos.color = Color.red;
-			Gizmos.DrawLine (transform.position, nextPathPoint);
-		}
-		if (localVelocityMag > 0) 
-		{
-			Gizmos.color = Color.yellow;
-			Gizmos.DrawLine (transform.position, transform.position + transform.TransformDirection (localVelocity));
-		}
+//    void OnDrawGizmos ()
+//	{
+//		if (pathPoints != null && pathPoints.Length > 0) 
+//		{
+//			Gizmos.color = pathColor;
+//			Vector3 prev = pathPoints [0];
+//			Gizmos.DrawSphere (prev, gizmoSize * UnityEditor.HandleUtility.GetHandleSize (prev));
+//			for (int i = 1; i < pathPoints.Length; i++) 
+//			{
+//				Vector3 next = pathPoints [i];
+//				Gizmos.DrawSphere (next, gizmoSize * UnityEditor.HandleUtility.GetHandleSize (next));
+//				prev = next;
+//			}
+//			Gizmos.color = Color.red;
+//			Gizmos.DrawLine (transform.position, nextPathPoint);
+//		}
+//		if (localVelocityMag > 0) 
+//		{
+//			Gizmos.color = Color.yellow;
+//			Gizmos.DrawLine (transform.position, transform.position + transform.TransformDirection (localVelocity));
+//		}
 			
-	}
-#endif
+//	}
+//#endif
 }

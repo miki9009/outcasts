@@ -420,6 +420,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114467728259983154, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: levels.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4700885017619380, guid: dbe408dd6328ad2488fcbfd418c2673e, type: 2}
       propertyPath: m_LocalPosition.x
       value: -8.689972
@@ -484,6 +489,31 @@ Prefab:
     - target: {fileID: 114819927616168116, guid: dbe408dd6328ad2488fcbfd418c2673e,
         type: 2}
       propertyPath: data.firstStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114467728259983154, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: levels.Array.data[2].sceneName
+      value: level1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114467728259983154, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: levels.Array.data[3].sceneName
+      value: level2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114467728259983154, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: levels.Array.data[0].sceneName
+      value: level1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114467728259983154, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: levels.Array.data[1].sceneName
+      value: level2
+      objectReference: {fileID: 0}
+    - target: {fileID: 20543790740481948, guid: dbe408dd6328ad2488fcbfd418c2673e,
+        type: 2}
+      propertyPath: m_HDR
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
