@@ -835,6 +835,31 @@ namespace Engine
             Rect rect = new Rect(x - (fontSize * text.Length/4), y, w, fontSize);
             UnityEngine.GUI.Label(rect, text, style);
         }
+        static float medianFps;
+        static int frame;
+        public static void DisplayFpsMedian(int x, int y, Color color, int fontSize)
+        {
+            deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+            int w = Screen.width;
+
+            GUIStyle style = new GUIStyle
+            {
+                fontSize = fontSize,
+                alignment = TextAnchor.UpperLeft
+            };
+            style.normal.textColor = color;
+            float msec = deltaTime * 1000.0f;
+            fps = 1.0f / deltaTime;
+            frame++;
+            if(frame %60==0)
+            {
+                frame = 0;
+                medianFps = fps;
+            }
+            string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, medianFps);
+            Rect rect = new Rect(x - (fontSize * text.Length / 4), y, w, fontSize);
+            UnityEngine.GUI.Label(rect, text, style);
+        }
         public static void DisplayFpsDebug(float x, float y, byte r, byte g, byte b, float a, bool logDropDowns)
         {
             deltaTime += (Time.deltaTime - deltaTime) * 0.1f;

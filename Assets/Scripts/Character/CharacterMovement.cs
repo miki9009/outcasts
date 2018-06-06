@@ -128,6 +128,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         }
         catch
         {
+            Movement = ButtonsMovement;
             Debug.Log("Buttons are not initialized, you can still use keyboard for movement");
             buttonsInitialized = false;
         }
@@ -417,12 +418,15 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     void ButtonsMovement()
     {
         horInput = 0;
-        if (btnRight.isTouched) horInput = 1;
-        if (btnLeft.isTouched) horInput = -1;
-        if (btnJump.isTouched)
-            jumpInput = 1;
-        else
-            jumpInput = 0;
+        if (buttonsInitialized)
+        {
+            if (btnRight.isTouched) horInput = 1;
+            if (btnLeft.isTouched) horInput = -1;
+            if (btnJump.isTouched)
+                jumpInput = 1;
+            else
+                jumpInput = 0;
+        }
     }
 
 

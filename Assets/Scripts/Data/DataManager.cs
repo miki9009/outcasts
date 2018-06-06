@@ -41,6 +41,11 @@ public class DataManager : MonoBehaviour
         instance = this;
     }
 
+    public static bool Exists()
+    {
+        return instance != null;
+    }
+
     public static void LoadData()
     {
         Debug.Log("Data Load");

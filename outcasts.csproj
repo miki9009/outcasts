@@ -360,6 +360,7 @@
     <Compile Include="Assets\Scripts\Misc\Pipe.cs" />
     <Compile Include="Assets\Scripts\Misc\Platform.cs" />
     <Compile Include="Assets\Scripts\Misc\RequiredUI.cs" />
+    <Compile Include="Assets\Scripts\Misc\SeaTrigger.cs" />
     <Compile Include="Assets\Scripts\Misc\Statistics.cs" />
     <Compile Include="Assets\Scripts\Misc\TwoDimensionTrigger.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />

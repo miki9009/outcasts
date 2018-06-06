@@ -23,6 +23,7 @@ public class Controller : MonoBehaviour
     }
 
     public float aspectRatio = 1;
+
     public bool ButtonMovement { get; set; }
     bool showFps;
 
@@ -33,6 +34,7 @@ public class Controller : MonoBehaviour
     [HideInInspector] public Camera gameCamera;
     [HideInInspector] public GameObject GUI;
     Vector2 startResolution;
+    public GameObject LightshaftParent;
 
 
     public VignetteAndChromaticAberration ChromaticAbberration { get; private set; }
@@ -49,8 +51,11 @@ public class Controller : MonoBehaviour
         GUI = transform.parent.gameObject;
         ChromaticAbberration = gameCamera.GetComponent<VignetteAndChromaticAberration>();
         Vortex = gameCamera.GetComponent<Vortex>();
-        ButtonMovement = DataManager.Settings.buttonMovement;
-        showFps = DataManager.Settings.showFps;
+        if (DataManager.Exists())
+        {
+            ButtonMovement = DataManager.Settings.buttonMovement;
+            showFps = DataManager.Settings.showFps;
+        }
     }
 
     // Use this for initialization
@@ -138,14 +143,23 @@ public class Controller : MonoBehaviour
 
 
 
-
+    bool rayOn = true;
+    GameObject[] rays;
     private void OnGUI()
     {
         if (showFps)
         {
-            Draw.DisplayFps(Screen.width / 2, 10, Color.red, 40);
-            Draw.DisplayMedianFps(Screen.width / 2 - Screen.width * 0.1f, 70);
+            Draw.DisplayFpsMedian(Screen.width / 2, 10, Color.red, 40);
+            //Draw.DisplayMedianFps(Screen.width / 2 - Screen.width * 0.1f, 70);
         }
+
+        if (UnityEngine.GUI.Button(new Rect(10, 60, 100, 50), "Sun Shuffts"))
+        {
+
+            rayOn = !rayOn;
+            LightshaftParent.gameObject.SetActive(rayOn);
+        }
+
 
     }
 
