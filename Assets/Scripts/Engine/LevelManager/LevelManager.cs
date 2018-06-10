@@ -59,10 +59,11 @@ public class LevelManager : MonoBehaviour
                     if (levels[i].sceneName == currentLevel)
                     {
                         levelIndex = i;
+                        Debug.Log("LEVEL LOADED: " + levels[levelIndex].sceneName);
                     }
                 }
             }
-            Debug.Log("LEVEL LOADED: " + levels[levelIndex].sceneName);
+
         };
     }
 

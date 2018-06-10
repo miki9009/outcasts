@@ -169,7 +169,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     }
 
 
-    public void Hit()
+    public void Hit(CharacterMovement character)
     {
         anim.SetTrigger("hit");
         dead = true;
@@ -189,7 +189,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
 
     public void OnHit()
     {
-        Hit();
+        Hit(null);
     }
 
 

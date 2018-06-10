@@ -12,12 +12,14 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
     Transform target;
     Animator anim;
     CollisionBroadcast collisionBroadcast;
-    bool canAttack = true;
+    public bool canAttack = false;
     int animationHash = Animator.StringToHash("Attack");
     SphereCollider sphere;
     bool dead;
     EnemyDeath enemyDeath;
     ParticleSystem starsExplosion;
+    public float minAttackTime = 1;
+    public float maxAttackTime = 3;
 
     public AnimatorBehaviour AnimatorBehaviour
     {
@@ -35,18 +37,19 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
         {
             if (animatorStateInfo.shortNameHash == animationHash)
             {
-                Invoke("PerformAttack", timeBetweenAttacks);
+                Invoke("PerformAttack", UnityEngine.Random.Range(minAttackTime, maxAttackTime));
+                canAttack = false;
             }
         };
     }
 
     void PerformAttack()
     {
-        canAttack = true;
         Debug.Log("Triggered Invoke");
         if (target != null && Vector3.Distance(transform.position, target.position) < sphere.radius)
         {
-            anim.Play("Attack");
+            canAttack = true;
+            anim.SetTrigger("Attack");
         }
     }
 
@@ -80,7 +83,7 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
         if (other.gameObject.layer == Layers.Character)
         {
             target = other.transform;
-            anim.Play("Attack");
+            Invoke("PerformAttack", UnityEngine.Random.Range(minAttackTime, maxAttackTime));
         }
     }
 
@@ -110,7 +113,7 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
         }
     }
 
-    public void Hit()
+    public void Hit(CharacterMovement character)
     {
         starsExplosion.transform.position = transform.position;
         starsExplosion.Play();
@@ -143,6 +146,6 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
 
     public void OnHit()
     {
-        Hit();
+        Hit(null);
     }
 }

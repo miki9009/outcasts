@@ -26,7 +26,9 @@ namespace Engine
             }
             if (GUILayout.Button("Clear data"))
             {
+                System.IO.File.Delete(script.dataFileName);
                 PlayerPrefs.DeleteAll();
+                DataManager.SaveData();
             }
         }
     }

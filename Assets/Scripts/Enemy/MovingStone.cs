@@ -56,6 +56,6 @@ public class MovingStone : MonoBehaviour
         }
 
         transform.position = curve.GetPointAt(movement);
-        transform.localEulerAngles = new Vector3(0, 0, transform.eulerAngles.z + (forward? speed * 5 : -speed * 5));
+        transform.Rotate(0, 0, (forward ? speed * 5 : -speed * 5));
     }
 }

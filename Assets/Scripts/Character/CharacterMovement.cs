@@ -314,12 +314,14 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         anim.SetBool("onGround", onGround);
     }
 
+    bool attackDown = false;
     Vector2 horTouched;
     Vector2 verTouched;
     bool horPressed;
     bool verPressed;
     float verDistance;
     float timeJumpWait = 1;
+    Vector3 lastAttackTouchPosition;
     void GestureMovement()
     {
         bool pressedHorizontalCurrent = false;
@@ -352,7 +354,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 }
                 else
                 {
-                    verDistance = Vector3.Distance(verTouched, touches[i].position);
+                    lastAttackTouchPosition = touches[i].position;
+                    verDistance = Vector3.Distance(verTouched, lastAttackTouchPosition);
                 }
             }
         }
@@ -383,7 +386,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 }
                 else
                 {
-                    verDistance = Vector3.Distance(verTouched, Input.mousePosition);
+                    lastAttackTouchPosition = Input.mousePosition;
+                    verDistance = Vector3.Distance(verTouched, lastAttackTouchPosition);
                 }
             }
         }
@@ -397,10 +401,26 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 horInput = 0;
             }
         }
-        if (verPressed && verDistance > 30)
+        if (verPressed)
         {
-            verPressed = false;
-            jumpInput = 1;
+            if (verDistance > 30)
+            {
+                verPressed = false;
+                jumpInput = 1;
+            }
+        }
+        else
+        {
+            if (verTouched.y < lastAttackTouchPosition.y)
+            {
+                if (!onGround)
+                {
+                    lastAttackTouchPosition.y = -10000;
+                    rb.velocity = Vector3.down * stats.attackForce;
+                    anim.SetTrigger("attack");
+                    anim.SetBool("attackStay", true);
+                }
+            }
         }
 
         if (verPressed && !pressedVerticalCurrent)
@@ -436,7 +456,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         //anim.SetFloat("hSpeed", velo.magnitude);
         if (horInput != 0 && Mathf.Abs(velo.magnitude) < stats.runSpeed && movementEnabled)
         {
-            velo += rotationEnabled ? transform.forward * verInput : Vector3.right * horInput;
+            velo += Vector3.right * horInput;
             rb.velocity = velo;
             rb.rotation = transform.rotation;
         }
@@ -445,49 +465,19 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 
     void Rotation()
     {
-        if (rotationEnabled)
-        {
-            if (horInput != 0)
-            {
-                var q = transform.rotation.eulerAngles;
-                transform.rotation = Quaternion.Euler(0, q.y + horInput * Time.deltaTime * stats.turningSpeed, 0);
-            }
-            if (modelZ < 10 && horInput == 1 && velocity.magnitude > 1)
-            {
-                modelZ += 0.25f;
-            }
-            else if (horInput == -1 && modelZ > -10 && velocity.magnitude > 1)
-            {
-                modelZ -= 0.25f;
-            }
-            else
-            {
-                if (modelZ > 0)
-                {
-                    modelZ -= 0.25f;
-                }
-                else if (modelZ < 0)
-                {
-                    modelZ += 0.25f;
-                }
-            }
-            model.localRotation = Quaternion.Euler(0, 0, -modelZ);
-        }
-        else
-        {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.right * direction2D), Time.deltaTime * stats.turningSpeed / 4);
-        }
+         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.right * direction2D), Time.deltaTime * stats.turningSpeed / 4);
     }
 
     void Attack()
     {
         if (!enabled || attack) return;
-        //if (!onGround && Mathf.Abs(velocity.y) > 5)
+        //if (!onGround && Mathf.Abs(velocity.y) > 0)
         //{
         //    rb.velocity = Vector3.down * stats.attackForce;
         //    attack = true;
         //    anim.SetTrigger("attack");
         //    anim.SetBool("attackStay", true);
+        //    Debug.Log("Attack");
         //}
         //else
         //{
@@ -553,7 +543,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         {
             if (script != null)
             {
-                script.Hit();
+                script.Hit(this);
                 smokeExplosion.transform.position = script.Transform.position;
                 smokeExplosion.Play();
                 //attack = false;
@@ -577,5 +567,6 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     {
         anim.SetTrigger(triggerName);
     }
+
 
 }

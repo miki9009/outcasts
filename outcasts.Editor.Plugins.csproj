@@ -380,6 +380,7 @@
     <None Include="Assets\Shaders\NoiseEffectShaderYUV.shader" />
     <None Include="Assets\Shaders\PrepareSunShaftsBlur.shader" />
     <None Include="Assets\Shaders\RadialBlur.shader" />
+    <None Include="Assets\Shaders\Ray.shader" />
     <None Include="Assets\Shaders\SSAOShader.shader" />
     <None Include="Assets\Shaders\ScreenSpaceAmbientObscurance.shader" />
     <None Include="Assets\Shaders\ScreenSpaceRaytrace.cginc" />

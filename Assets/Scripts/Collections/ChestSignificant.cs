@@ -78,7 +78,6 @@ public class ChestSignificant : Chest
     {
         if (!itemCollected.Value)
         {
-            Open();
             requiredFrame.gameObject.SetActive(true);
             AssignRequiredFrame();
         }

@@ -1,7 +1,5 @@
--Dodaæ collection Restart
--Zaj¹æ siê enemy
 -Dodaæ okno restart czy chcemy uzyc cofnac do checkpoint za restart czy od poczatku
-
+-dodac enemy ma³pe
 
 -BUGI:
 -Restart czasami wczytuje drugi raz ta sama scene

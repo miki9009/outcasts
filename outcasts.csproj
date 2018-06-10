@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2017.4.2f2</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -465,6 +463,7 @@
     <None Include="Assets\Shaders\NoiseEffectShaderYUV.shader" />
     <None Include="Assets\Shaders\PrepareSunShaftsBlur.shader" />
     <None Include="Assets\Shaders\RadialBlur.shader" />
+    <None Include="Assets\Shaders\Ray.shader" />
     <None Include="Assets\Shaders\SSAOShader.shader" />
     <None Include="Assets\Shaders\ScreenSpaceAmbientObscurance.shader" />
     <None Include="Assets\Shaders\ScreenSpaceRaytrace.cginc" />

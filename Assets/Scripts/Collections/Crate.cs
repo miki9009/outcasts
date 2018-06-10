@@ -28,6 +28,17 @@ public class Crate : MonoBehaviour, IDestructible
         }
     }
 
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    var rb = other.attachedRigidbody;
+    //    if (rb != null && rb.velocity.y < -10)
+    //    {
+    //        var velo = rb.velocity;
+    //        rb.AddForce(Vector3.up * 25, ForceMode.VelocityChange);
+    //        Debug.Log("New velocity: " + rb.velocity);
+    //    }
+    //}
+
     readonly Vector3[] dirs = {
         new Vector3(0,-0.5f,0),
         new Vector3(1, -0.5f, 1),
@@ -84,7 +95,7 @@ public class Crate : MonoBehaviour, IDestructible
         gameObject.SetActive(false);
     }
 
-    public void Hit()
+    public void Hit(CharacterMovement character)
     {
         crateExplosion.transform.position = transform.position;
         crateExplosion.Play();

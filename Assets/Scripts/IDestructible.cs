@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IDestructible
 {
-    void Hit();
+    void Hit(CharacterMovement character);
     Transform Transform { get;}
 }
