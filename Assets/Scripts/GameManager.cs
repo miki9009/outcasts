@@ -6,11 +6,12 @@ using UnityEngine.SceneManagement;
 [DefaultExecutionOrder(999)]
 public class GameManager : MonoBehaviour
 {
-    public static event Action OnLevelLoaded;
-    public static event Action OnLevelChanged;
-    public static event Action OnGameFinished;
-    public static bool LevelLoaded { get; private set; }
+    public static event Action LevelLoaded;
+    public static event Action<string> LevelChanged;
+    public static event Action GameFinished;
+    public static bool IsLevelLoaded { get; private set; }
     public static bool isLevel;
+    public static string CurrentLevel { get; set; }
     
     public static GameManager Instance { get; private set; }
 
@@ -27,19 +28,19 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         SceneManager.sceneLoaded += SceneLoaded;
-        SceneManager.activeSceneChanged += LevelChanged;
+        SceneManager.activeSceneChanged += OnLevelChanged;
     }
 
     private void Start()
     {
-        LevelLoaded = true;
+        IsLevelLoaded = true;
     }
 
-    void LevelChanged(Scene scene, Scene scene2)
+    void OnLevelChanged(Scene scene, Scene scene2)
     {
-        if (OnLevelChanged != null)
+        if (LevelChanged != null)
         {
-            OnLevelChanged();
+            LevelChanged(LevelName);
         }
         Debug.Log("Game Manager: Level Changed to: " + LevelName);
     }
@@ -47,22 +48,24 @@ public class GameManager : MonoBehaviour
     void SceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("Game Manager: Level Loaded: " + LevelName);
-        StartCoroutine(LevelLoadedCor());
+        if(scene.name == CurrentLevel)
+            StartCoroutine(LevelLoadedCor());
     }
 
     IEnumerator LevelLoadedCor()
     {
         if (Controller.Instance == null) yield break;
         yield return Engine.Game.WaitForFrames(1);
-        if (OnLevelLoaded != null)
+        if (LevelLoaded != null)
         {
-            OnLevelLoaded();
+            Debug.Log("Level Loaded: " + SceneManager.GetActiveScene().name);
+            LevelLoaded();
         }
         yield return null;
     }
 
 
-    public void GameFinished()
+    public void OnGameFinished()
     {
         var data = DataManager.Collections;
         var collectionManger = CollectionManager.Instance;
@@ -77,9 +80,9 @@ public class GameManager : MonoBehaviour
         DataManager.SaveData();
         Debug.Log("Game Saved");
         CollectionManager.Instance.ResetCollections();
-        if (OnGameFinished != null)
+        if (GameFinished != null)
         {
-            OnGameFinished();
+            GameFinished();
         }
     }
 

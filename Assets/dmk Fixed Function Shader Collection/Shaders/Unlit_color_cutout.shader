@@ -1,4 +1,4 @@
-﻿Shader "Mobile/Cutout/Transparent Color Cutout" {
+﻿Shader "Unlit/Transparent Color Cutout" {
 	Properties {
 	    _Color ("Color Tint", Color) = (1,1,1,1)
 	    _MainTex ("Base (RGB) Alpha (A)", 2D) = "white" {}

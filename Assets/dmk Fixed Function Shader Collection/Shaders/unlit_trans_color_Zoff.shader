@@ -12,7 +12,7 @@ SubShader {
 	Blend SrcAlpha OneMinusSrcAlpha 
 
 	Pass {
-		Lighting Off
+		Lighting OFF
 		SetTexture [_MainTex] {
 
             constantColor [_Color]
@@ -22,4 +22,5 @@ SubShader {
          } 
 	}
 }
+
 }

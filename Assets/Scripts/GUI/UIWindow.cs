@@ -301,7 +301,8 @@ namespace Engine.GUI
 
         public void GoToMenu()
         {
-            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+            LevelManager.ReturnToMenu();
+            //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
             //Camera.main.gameObject.SetActive(true);
         }
 

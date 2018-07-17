@@ -1,4 +1,4 @@
-﻿Shader "Mobile/Cutout/Transparent Color Cutout(supports lightmap)" {
+﻿Shader "Unlit/Transparent Color Cutout(supports lightmap)" {
 	Properties {
 	    _Color ("Color Tint", Color) = (1,1,1,1)
 	    _MainTex ("Base (RGB) Alpha (A)", 2D) = "white" {}

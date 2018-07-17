@@ -51,14 +51,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1794381667074824}
-  m_LocalRotation: {x: 0, y: 0.99873257, z: 0, w: 0.05033157}
-  m_LocalPosition: {x: 15.89, y: -16.35, z: -1.02}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 208.39, y: 9.838307, z: 7.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4540774082850292}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 174.23, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4540774082850292
 Transform:
   m_ObjectHideFlags: 1
@@ -85,6 +85,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 0
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 6bfde8876f3ce8b43b37ac691cef2d4f, type: 2}
   m_StaticBatchInfo:
@@ -125,13 +126,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 11
+  spawnName: GoldCoin
   val: 1
   emmitParticles: 1
   particlesAmmount: 5
   collected: 0
   rigid: {fileID: 0}
   deactivationTime: 0.1
-  propertyKey: 
 --- !u!135 &135681660976435360
 SphereCollider:
   m_ObjectHideFlags: 1

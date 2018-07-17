@@ -12,7 +12,7 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.OnLevelLoaded += () => guiWindow.FadeIn();
+        GameManager.LevelLoaded += () => guiWindow.FadeIn();
     }
 
     //public void ActivateCamera()

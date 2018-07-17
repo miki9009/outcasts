@@ -2,26 +2,42 @@
 using System.Collections;
 namespace Engine
 {
-    [RequireComponent(typeof(MeshFilter))]
-    [RequireComponent(typeof(MeshRenderer))]
     public class MeshMerge : MonoBehaviour
     {
+        public MeshFilter[] meshFilters;
+        public Transform parent;
+        Vector3 pos;
 
         public void Merge()
         {
-            MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
+            if(parent != null)
+            {
+                meshFilters = parent.GetComponentsInChildren<MeshFilter>();
+            }
+            transform.position = Vector3.zero;
             CombineInstance[] combine = new CombineInstance[meshFilters.Length];
             int i = 0;
+            pos = Vector3.zero;
             while (i < meshFilters.Length)
             {
+                pos += meshFilters[i].transform.position;
                 combine[i].mesh = meshFilters[i].sharedMesh;
+                combine[i].mesh.uv = meshFilters[i].sharedMesh.uv;
                 combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
-                meshFilters[i].gameObject.SetActive(false);
                 i++;
             }
-            transform.GetComponent<MeshFilter>().sharedMesh = new Mesh();
-            transform.GetComponent<MeshFilter>().sharedMesh.CombineMeshes(combine);
-            transform.gameObject.SetActive(true);
+            
+            var obj = new GameObject("Combined_"+meshFilters[0].name);
+            obj.transform.position = pos/meshFilters.Length;
+
+            var meshRenderer = obj.AddComponent<MeshRenderer>();
+            var filter = obj.AddComponent<MeshFilter>();
+            filter.sharedMesh = new Mesh();
+            filter.sharedMesh.CombineMeshes(combine);
+#if UNITY_EDITOR
+            UnityEditor.Unwrapping.GenerateSecondaryUVSet(filter.sharedMesh);
+#endif
+            meshRenderer.sharedMaterial = meshFilters[0].GetComponent<MeshRenderer>().sharedMaterial;
         }
     }
 }

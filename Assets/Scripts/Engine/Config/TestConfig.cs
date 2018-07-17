@@ -2,10 +2,10 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = fileName)]
+[CreateAssetMenu(menuName = PATH + FILENAME)]
 public class TestConfig : Config
 {
-    public const string fileName = "Configs/Test";
+    public new const string FILENAME = "Test";
 
     public string[] weekDays;
 }

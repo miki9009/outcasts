@@ -12,7 +12,7 @@ public class ClockGUI : MonoBehaviour
     void Awake()
     {
         text = GetComponentInChildren<Text>();
-        GameManager.OnLevelLoaded += Prepare;
+        GameManager.LevelLoaded += Prepare;
     }
 
     void Prepare()

@@ -18,13 +18,7 @@ public class LevelButton : MonoBehaviour
             Camera.main.gameObject.SetActive(false);
         }
         catch { }
-        SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
-        SceneManager.sceneLoaded += SetActiveScene;
+        LevelManager.BeginLevelLoadSequence(levelName);
     }
 
-    void SetActiveScene(Scene scene, LoadSceneMode mode)
-    {
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(levelName));
-        SceneManager.sceneLoaded -= SetActiveScene;
-    }
 }

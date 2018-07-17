@@ -31,10 +31,10 @@ public class GameCamera : MonoBehaviour
 	void Start ()
     {
         gameType = Controller.Instance.gameType;
+        UpFactorAtStart = upFactor;
         try
         {
             target = Controller.Instance.character.transform;
-            UpFactorAtStart = upFactor;
         }
         catch
         {
@@ -119,8 +119,37 @@ public class GameCamera : MonoBehaviour
 
     public void SetTarget(Transform target)
     {
-
+        this.target = target;
+        enabled = true;
+        gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="time">How long lasts</param>
+    /// <param name="force"> maximum force</param>
+    /// <param name="amplitude"> Range 0 - 1 position change per frame</param>
+    public void Shake(float time = 1, float force = 10, float amplitude = 0.1f)
+    {
+        if(shakeCor == null)
+            shakeCor = StartCoroutine(ShakeCor(time,force, amplitude));
+    }
+
+    Coroutine shakeCor;
+    IEnumerator ShakeCor(float time, float force, float amplitude)
+    {
+        float x, y, z;
+        while (time > 0)
+        {
+            x = Random.Range(-force, force);
+            y = Random.Range(-force, force);
+            z = Random.Range(-force, force);
+            transform.position = Vector3.Lerp(transform.position, transform.position + new Vector3(x, y, z), amplitude);
+            time -= Time.deltaTime;
+            yield return null;
+        }
+        shakeCor = null;
+    }
 
 }

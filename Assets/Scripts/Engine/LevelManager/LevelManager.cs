@@ -31,6 +31,8 @@ public class LevelManager : MonoBehaviour
     public List<string> scenes;
     public List<Scenes> levels;
     public string currentLevel;
+    [LevelSelector]
+    public string gameScene;
 
     public static string[] Scenes
     {
@@ -48,7 +50,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.OnLevelLoaded += () =>
+        GameManager.LevelLoaded += () =>
         {
             currentLevel = SceneManager.GetActiveScene().name;
             bool isLevel = levels.Exists(x => x.sceneName == currentLevel);
@@ -125,6 +127,35 @@ public class LevelManager : MonoBehaviour
             Debug.LogError("Make sure that /Scenes exist, and that scenes are inside of it");
         }
         return scenes.ToArray();
+    }
+
+    static string levelToLoad;
+    public static void BeginLevelLoadSequence(string levelName)
+    {
+        levelToLoad = levelName;
+        Debug.Log("Current level set to: " + levelToLoad);
+        GameManager.CurrentLevel = levelToLoad;
+        SceneManager.LoadSceneAsync(LevelManager.Instance.gameScene, LoadSceneMode.Additive);
+        SceneManager.sceneLoaded += instance.AddLevelScene;
+    }
+
+    void AddLevelScene(Scene scene, LoadSceneMode mode)
+    {
+        SceneManager.sceneLoaded -= AddLevelScene;
+        SceneManager.LoadSceneAsync(levelToLoad, LoadSceneMode.Additive);
+        SceneManager.sceneLoaded += SetActiveScene;
+    }
+
+    void SetActiveScene(Scene scene, LoadSceneMode mode)
+    {
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(levelToLoad));
+        SceneManager.sceneLoaded -= SetActiveScene;
+    }
+
+    public static void ReturnToMenu()
+    {
+        SceneManager.UnloadSceneAsync(instance.gameScene);
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
 
     public string NextLevel()

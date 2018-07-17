@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Restart : Collection
 {
-    public string propertyKey;
+    string propertyKey;
     Engine.DataProperty<bool> itemCollected;
 
     protected override void Start()

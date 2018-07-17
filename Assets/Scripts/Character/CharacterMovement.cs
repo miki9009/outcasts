@@ -7,6 +7,8 @@ using Engine.GUI;
 
 public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 {
+    public bool infiniteMovement;
+    public float laneSize = 5;
     public bool onGround = true;
     public ParticleSystem smoke2;
     public Transform model;
@@ -19,6 +21,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     protected CharacterStatistics stats;
     [NonSerialized]
     public Animator anim;
+    public event Action<CharacterMovement> MoveUp;
+    public event Action<CharacterMovement> MoveDown;
 
     private BoxCollider jumpCollider;
 
@@ -31,7 +35,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public Rigidbody rb;
     Vector3 curPos;
     public bool attack;
-    bool isAttacking = false;
+    public bool isAttacking = false;
 
     public Vector3 velocity;
     float hspeed;
@@ -55,8 +59,10 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     int attackAnimationHash;
 
     int direction2D = 1;
+    float disY;
 
     public bool Invincible { get; set; }
+    bool isInfinite;
 
     public AnimatorBehaviour AnimatorBehaviour
     {
@@ -71,6 +77,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         jumpCollider = GetComponent<BoxCollider>();
         smoke = GetComponentInChildren<ParticleSystem>();
         StartPosition = transform.position;
+        disY = Screen.height / 8;
     }
 
     Button btnLeft;
@@ -80,6 +87,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     Button btnForward;
     bool buttonsInitialized = true;
     bool canMove = true;
+ 
 
     // Use this for initialization
     void Start ()
@@ -91,7 +99,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         anim = character.anim;
         InitButtons();
         smokeExplosion = StaticParticles.Instance.smokeExplosion;
-        starsExplosion = StaticParticles.Instance.starsExplosion;        
+        starsExplosion = StaticParticles.Instance.starsExplosion;
+        isInfinite = InfiniteManager.Instance != null;
     }
 
     void InitButtons()
@@ -101,29 +110,34 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
             ButtonsInput = Controller.Instance.ButtonMovement;
             btnAttack = GameGUI.GetButtonByName("ButtonAttack");
             btnJump = GameGUI.GetButtonByName("ButtonForward");
-            if (ButtonsInput)
-            {
-                btnAttack.gameObject.SetActive(true);
-                btnAttack.OnTapPressed.AddListener(Attack);
-                btnLeft = GameGUI.GetButtonByName("ButtonLeft");
-                btnLeft.gameObject.SetActive(true);
-                btnRight = GameGUI.GetButtonByName("ButtonRight");
-                btnRight.gameObject.SetActive(true);              
-                btnJump.gameObject.SetActive(true);
-                var rect = GameGUI.GetButtonByName("Action").GetComponent<RectTransform>();
-                rect.anchoredPosition = new Vector2(700, rect.anchoredPosition.y);
-                Movement = ButtonsMovement;
 
+            if (infiniteMovement)
+            {
+                horInput = 1;
+                Movement = InfiniteMovement;
+                DeactivateButtons();
             }
             else
             {
-                btnAttack.gameObject.SetActive(false);
-                GameGUI.GetButtonByName("ButtonLeft").gameObject.SetActive(false);
-                GameGUI.GetButtonByName("ButtonRight").gameObject.SetActive(false);
-                btnJump.gameObject.SetActive(false) ;
-                var rect = GameGUI.GetButtonByName("Action").GetComponent<RectTransform>();
-                rect.anchoredPosition = new Vector2(0, rect.anchoredPosition.y);
-                Movement = GestureMovement;
+                if (ButtonsInput)
+                {
+                    btnAttack.gameObject.SetActive(true);
+                    btnAttack.OnTapPressed.AddListener(Attack);
+                    btnLeft = GameGUI.GetButtonByName("ButtonLeft");
+                    btnLeft.gameObject.SetActive(true);
+                    btnRight = GameGUI.GetButtonByName("ButtonRight");
+                    btnRight.gameObject.SetActive(true);
+                    btnJump.gameObject.SetActive(true);
+                    var rect = GameGUI.GetButtonByName("Action").GetComponent<RectTransform>();
+                    rect.anchoredPosition = new Vector2(700, rect.anchoredPosition.y);
+                    Movement = ButtonsMovement;
+
+                }
+                else
+                {
+                    DeactivateButtons();
+                    Movement = GestureMovement;
+                }
             }
         }
         catch
@@ -132,6 +146,17 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
             Debug.Log("Buttons are not initialized, you can still use keyboard for movement");
             buttonsInitialized = false;
         }
+        
+    }
+
+    private void DeactivateButtons()
+    {
+        btnAttack.gameObject.SetActive(false);
+        GameGUI.GetButtonByName("ButtonLeft").gameObject.SetActive(false);
+        GameGUI.GetButtonByName("ButtonRight").gameObject.SetActive(false);
+        btnJump.gameObject.SetActive(false);
+        var rect = GameGUI.GetButtonByName("Action").GetComponent<RectTransform>();
+        rect.anchoredPosition = new Vector2(0, rect.anchoredPosition.y);
     }
 
     private void OnTriggerExit(Collider other)
@@ -175,6 +200,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         if (other.gameObject.layer == 11)
         {
             var enemy = other.transform.root.gameObject.GetComponent<Enemy>();
+            if (enemy == null) return;
             if (!enemy.dead && enemy.isAttacking)
             {
                 enemy.isAttacking = false;
@@ -222,6 +248,10 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     {
         velocity = rb.velocity;
         hspeed = Mathf.Abs(velocity.x + velocity.z); //Mathf.Lerp(hspeed, velocity.x + velocity.z, 0.05f);
+        if(isInfinite)
+        {
+            hspeed = hspeed / 2;
+        }
         vspeed = velocity.y; //Mathf.Lerp(vspeed,velocity.y, 0.05f);
         anim.SetFloat("hSpeed", hspeed);
         anim.SetFloat("vSpeed", vspeed);
@@ -258,6 +288,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         if (jumpInput > 0 && onGround && timeLastJump < 0.1f)
         {
             timeLastJump = 1;
+            anim.Play("Jump");
             rb.AddForce(Vector3.up * stats.jumpForce, ForceMode.VelocityChange);
             jumpInput = 0;
             onGround = false;
@@ -314,13 +345,11 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         anim.SetBool("onGround", onGround);
     }
 
-    bool attackDown = false;
     Vector2 horTouched;
     Vector2 verTouched;
     bool horPressed;
     bool verPressed;
     float verDistance;
-    float timeJumpWait = 1;
     Vector3 lastAttackTouchPosition;
     void GestureMovement()
     {
@@ -329,6 +358,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         int touchCount = Input.touchCount;
         var touches = Input.touches;
         jumpInput = 0;
+        horDistance = 0;
         for (int i = 0; i < Input.touchCount; i++)
         {
             if (touches[i].position.x < Screen.width / 2)
@@ -342,6 +372,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 else
                 {
                     horInput = Mathf.Clamp((touches[i].position.x - horTouched.x)/50, -1, 1);
+                    lastLanePos = touches[i].position;
+                    horDistance = horTouched.y - lastLanePos.y;
                 }
             }
             else
@@ -373,7 +405,9 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 }
                 else
                 {
+                    lastLanePos = Input.mousePosition;
                     horInput = Mathf.Clamp((Input.mousePosition.x - horTouched.x), -1, 1);
+                    horDistance = horTouched.y - lastLanePos.y;
                 }
             }
             else
@@ -401,28 +435,29 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 horInput = 0;
             }
         }
-        if (verPressed)
+        if (!verPressed)
         {
             if (verDistance > 30)
             {
-                verPressed = false;
-                jumpInput = 1;
-            }
-        }
-        else
-        {
-            if (verTouched.y < lastAttackTouchPosition.y)
-            {
-                if (!onGround)
+                if (verTouched.y < lastAttackTouchPosition.y)
                 {
-                    lastAttackTouchPosition.y = -10000;
-                    rb.velocity = Vector3.down * stats.attackForce;
-                    anim.SetTrigger("attack");
-                    anim.SetBool("attackStay", true);
+                    jumpInput = 1;
+                    verTouched.y = 0;
+                    lastAttackTouchPosition.y = 0;
+                    verDistance = 0;
+                }
+                else
+                {
+                    if (!onGround)
+                    {
+                        lastAttackTouchPosition.y = 0;
+                        rb.velocity = Vector3.down * stats.attackForce;
+                        anim.SetTrigger("attack");
+                        anim.SetBool("attackStay", true);
+                    }
                 }
             }
         }
-
         if (verPressed && !pressedVerticalCurrent)
         {
             verPressed = false;
@@ -433,7 +468,370 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
             }
         }
         verDistance = Mathf.Clamp(verDistance - 1, 0, 50);
+        if(horDistance < -disY && MoveUp != null)
+        {
+            MoveUp(this);
+        }
+        if (horDistance > disY && MoveDown != null)
+        {
+            MoveDown(this);
+        }
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpInput = 1;
+        }
+        horInput = Input.GetAxis("Horizontal");
+#endif
     }
+
+    Vector2 lastLanePos;
+    float horDistance;
+    int lane = 0;
+    void InfiniteMovement()
+    {
+        bool pressedHorizontalCurrent = false;
+        bool pressedVerticalCurrent = false;
+        int touchCount = Input.touchCount;
+        var touches = Input.touches;
+        jumpInput = 0;
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            if (touches[i].position.x < Screen.width / 2)
+            {
+                pressedHorizontalCurrent = true;
+                if (!horPressed)
+                {
+                    horPressed = true;
+                    horTouched = touches[i].position;
+                }
+                else
+                {
+                    lastLanePos = touches[i].position;
+                    horDistance = Vector3.Distance(horTouched, lastLanePos);
+                }
+            }
+            else
+            {
+                pressedVerticalCurrent = true;
+                if (!verPressed)
+                {
+                    verPressed = true;
+                    verTouched = touches[i].position;
+                }
+                else
+                {
+                    lastAttackTouchPosition = touches[i].position;
+                    verDistance = Vector3.Distance(verTouched, lastAttackTouchPosition);
+                }
+            }
+        }
+
+#if UNITY_EDITOR
+        if (Input.GetMouseButton(0))
+        {
+            if (Input.mousePosition.x < Screen.width / 2)
+            {
+                pressedHorizontalCurrent = true;
+                if (!horPressed)
+                {
+                    horPressed = true;
+                    horTouched = Input.mousePosition;
+                }
+                else
+                {
+                    lastLanePos = Input.mousePosition;
+                    horDistance = Vector3.Distance(horTouched, lastLanePos);
+                }
+            }
+            else
+            {
+                pressedVerticalCurrent = true;
+                if (!verPressed)
+                {
+                    verPressed = true;
+                    verTouched = Input.mousePosition;
+                }
+                else
+                {
+                    lastAttackTouchPosition = Input.mousePosition;
+                    verDistance = Vector3.Distance(verTouched, lastAttackTouchPosition);
+                }
+            }
+        }
+#endif
+        if (horPressed && !pressedHorizontalCurrent)
+        {
+            if (horDistance > disY)
+            {
+                if (horTouched.y < lastLanePos.y)
+                {
+                    if (lane == -1)
+                    {
+                        lane = 0;
+                    }
+                    else if (lane == 0)
+                    {
+                        lane = 1;
+                    }
+                }
+                else
+                {
+                    if (lane == 1)
+                    {
+                        lane = 0;
+                    }
+                    else if (lane == 0)
+                    {
+                        lane = -1;
+                    }
+                }
+                horTouched.y = 0;
+                lastLanePos.y = 0;
+                horDistance = 0;
+                horPressed = false;
+            }
+        }
+        Vector3 dest = new Vector3(curPos.x, curPos.y, lane * laneSize);
+        transform.position = Vector3.Lerp(curPos, dest, Time.deltaTime * hspeed);
+        model.transform.rotation = Quaternion.LookRotation(Engine.Vector.Direction(curPos, dest + transform.forward));
+
+        if (!verPressed)
+        {
+            if (verDistance > 30)
+            {
+                if (verTouched.y < lastAttackTouchPosition.y)
+                {
+                    jumpInput = 1;
+                    verTouched.y = 0;
+                    lastAttackTouchPosition.y = 0;
+                    verDistance = 0;
+                }
+                else
+                {
+                    if (!onGround)
+                    {
+                        lastAttackTouchPosition.y = 0;
+                        rb.velocity = Vector3.down * stats.attackForce;
+                        anim.SetTrigger("attack");
+                        anim.SetBool("attackStay", true);
+                    }
+                }
+            }
+        }
+        if (verPressed && !pressedVerticalCurrent)
+        {
+            verPressed = false;
+            if (verDistance < 50)
+            {
+                jumpInput = 0;
+                Attack();
+            }
+        }
+        verDistance = Mathf.Clamp(verDistance - 1, 0, 50);
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpInput = 1;
+        }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            if (lane == -1)
+            {
+                lane = 0;
+            }
+            else if (lane == 0)
+            {
+                lane = 1;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            if (lane == 1)
+            {
+                lane = 0;
+            }
+            else if (lane == 0)
+            {
+                lane = -1;
+            }
+        }
+#endif
+    }
+    //    void InfiniteMovement()
+    //    {
+    //        bool pressedHorizontalCurrent = false;
+    //        bool pressedVerticalCurrent = false;
+    //        int touchCount = Input.touchCount;
+    //        var touches = Input.touches;
+    //        jumpInput = 0;
+    //        for (int i = 0; i < Input.touchCount; i++)
+    //        {
+    //            if (touches[i].position.x < Screen.width / 2)
+    //            {
+    //                pressedHorizontalCurrent = true;
+    //                if (!horPressed)
+    //                {
+    //                    horPressed = true;
+    //                    horTouched = touches[i].position;
+    //                }
+    //                else
+    //                {
+    //                    lastLanePos = touches[i].position;
+    //                    horDistance = Vector3.Distance(horTouched, lastLanePos);
+    //                }
+    //            }
+    //            else
+    //            {
+    //                pressedVerticalCurrent = true;
+    //                if (!verPressed)
+    //                {
+    //                    verPressed = true;
+    //                    verTouched = touches[i].position;
+    //                }
+    //                else
+    //                {
+    //                    lastAttackTouchPosition = touches[i].position;
+    //                    verDistance = Vector3.Distance(verTouched, lastAttackTouchPosition);
+    //                }
+    //            }
+    //        }
+
+    //#if UNITY_EDITOR
+    //        if (Input.GetMouseButton(0))
+    //        {
+    //            if (Input.mousePosition.x < Screen.width / 2)
+    //            {
+    //                pressedHorizontalCurrent = true;
+    //                if (!horPressed)
+    //                {
+    //                    horPressed = true;
+    //                    horTouched = Input.mousePosition;
+    //                }
+    //                else
+    //                {
+    //                    lastLanePos = Input.mousePosition;
+    //                    horDistance = Vector3.Distance(horTouched, lastLanePos);
+    //                }
+    //            }
+    //            else
+    //            {
+    //                pressedVerticalCurrent = true;
+    //                if (!verPressed)
+    //                {
+    //                    verPressed = true;
+    //                    verTouched = Input.mousePosition;
+    //                }
+    //                else
+    //                {
+    //                    lastAttackTouchPosition = Input.mousePosition;
+    //                    verDistance = Vector3.Distance(verTouched, lastAttackTouchPosition);
+    //                }
+    //            }
+    //        }
+    //#endif
+    //        if (horPressed && !pressedHorizontalCurrent)
+    //        {
+    //            if (horDistance > disY)
+    //            {
+    //                if (horTouched.y < lastLanePos.y)
+    //                {
+    //                    if (lane == -1)
+    //                    {
+    //                        lane = 0;
+    //                    }
+    //                    else if (lane == 0)
+    //                    {
+    //                        lane = 1;
+    //                    }
+    //                }
+    //                else
+    //                {
+    //                    if (lane == 1)
+    //                    {
+    //                        lane = 0;
+    //                    }
+    //                    else if (lane == 0)
+    //                    {
+    //                        lane = -1;
+    //                    }
+    //                }
+    //                horTouched.y = 0;
+    //                lastLanePos.y = 0;
+    //                horDistance = 0;
+    //                horPressed = false;
+    //            }
+    //        }
+    //        Vector3 dest = new Vector3(curPos.x, curPos.y, lane * laneSize);
+    //        transform.position = Vector3.Lerp(curPos, dest, Time.deltaTime * hspeed);
+    //        model.transform.rotation = Quaternion.LookRotation(Engine.Vector.Direction(curPos, dest + transform.forward));
+
+    //        if (!verPressed)
+    //        {
+    //            if (verDistance > 30)
+    //            {
+    //                if (verTouched.y < lastAttackTouchPosition.y)
+    //                {
+    //                    jumpInput = 1;
+    //                    verTouched.y = 0;
+    //                    lastAttackTouchPosition.y = 0;
+    //                    verDistance = 0;
+    //                }
+    //                else
+    //                {
+    //                    if (!onGround)
+    //                    {
+    //                        lastAttackTouchPosition.y = 0;
+    //                        rb.velocity = Vector3.down * stats.attackForce;
+    //                        anim.SetTrigger("attack");
+    //                        anim.SetBool("attackStay", true);
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        if (verPressed && !pressedVerticalCurrent)
+    //        {
+    //            verPressed = false;
+    //            if (verDistance < 50)
+    //            {
+    //                jumpInput = 0;
+    //                Attack();
+    //            }
+    //        }
+    //        verDistance = Mathf.Clamp(verDistance - 1, 0, 50);
+    //#if UNITY_EDITOR
+    //        if (Input.GetKeyDown(KeyCode.Space))
+    //        {
+    //            jumpInput = 1;
+    //        }
+
+    //            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+    //            {
+    //                if (lane == -1)
+    //                {
+    //                    lane = 0;
+    //                }
+    //                else if (lane == 0)
+    //                {
+    //                    lane = 1;
+    //                }
+    //            }
+    //            else if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+    //            {
+    //                if (lane == 1)
+    //                {
+    //                    lane = 0;
+    //                }
+    //                else if (lane == 0)
+    //                {
+    //                    lane = -1;
+    //                }
+    //            }
+    //#endif
+    //    }
+
+
 
     void ButtonsMovement()
     {
@@ -536,8 +934,9 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         RaycastHit[] hits = Physics.SphereCastAll(curPos, 2, Vector3.down, 10, collisionLayer.value,QueryTriggerInteraction.Ignore);
         for (int i = 0; i < hits.Length; i++)
         {
-            //Debug.Log("Hit: " + hits[i].transform.name);
-            scripts.Add(hits[i].collider.transform.root.gameObject.GetComponent<IDestructible>());
+            Debug.Log("Hit: " + hits[i].transform.name);
+            Debug.Log(hits[i].collider.GetType());
+            scripts.Add(hits[i].collider.GetComponentInParent<IDestructible>());
         }
         foreach (var script in scripts)
         {
@@ -568,5 +967,10 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         anim.SetTrigger(triggerName);
     }
 
+
+    void OnGUI()
+    {
+        Draw.TextColor(100, 10, 255, 0, 0, 1, "Screens Size: " + new Vector2(Screen.width, Screen.height));
+    }
 
 }

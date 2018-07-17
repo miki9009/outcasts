@@ -8,7 +8,7 @@ namespace Engine.GUI
         void Start()
         {
             var rect = GetComponent<RectTransform>();
-            transform.parent = GameGUI.Instance.transform;
+            transform.SetParent(GameGUI.Instance.transform);
             rect.anchoredPosition = Vector2.zero;
             rect.localScale = Vector3.one;
         }

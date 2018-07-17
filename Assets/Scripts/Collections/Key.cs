@@ -6,6 +6,7 @@ public class Key : Collection
     string propertyKey;
     Engine.DataProperty<bool> itemCollected;
 
+
     protected override void Start()
     {
         base.Start();

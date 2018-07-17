@@ -47,7 +47,7 @@ public class FirePlace : MonoBehaviour
 
     void EndGame()
     {
-        GameManager.Instance.GameFinished();
+        GameManager.Instance.OnGameFinished();
         Pause.Instance.PauseEnter();
         UIWindow.GetWindow("EndGameScreen").Show();
     }

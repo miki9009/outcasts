@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Engine;
-using UnityEngine.SceneManagement;
 using UnityStandardAssets.ImageEffects;
+using Engine;
 using Engine.GUI;
+using Engine.Config;
 
 [DefaultExecutionOrder(-100)]
 public class Controller : MonoBehaviour
@@ -20,6 +20,20 @@ public class Controller : MonoBehaviour
     {
         get;
         private set;
+    }
+    public bool IsRestarting { get; private set; }
+
+    static SpawnsConfig spawnsConfig;
+    public static SpawnsConfig SpawnsConfig
+    {
+        get
+        {
+            if(spawnsConfig == null)
+            {
+                spawnsConfig = ConfigsManager.GetConfig<SpawnsConfig>();
+            }
+            return spawnsConfig;
+        }
     }
 
     public float aspectRatio = 1;
@@ -51,11 +65,17 @@ public class Controller : MonoBehaviour
         GUI = transform.parent.gameObject;
         ChromaticAbberration = gameCamera.GetComponent<VignetteAndChromaticAberration>();
         Vortex = gameCamera.GetComponent<Vortex>();
+        GameManager.LevelLoaded += OnRestart;
         if (DataManager.Exists())
         {
             ButtonMovement = DataManager.Settings.buttonMovement;
             showFps = DataManager.Settings.showFps;
         }
+    }
+
+    void OnRestart()
+    {
+        IsRestarting = false;
     }
 
     // Use this for initialization
@@ -71,7 +91,7 @@ public class Controller : MonoBehaviour
         //}
         //catch { }
         startResolution = new Vector2(Screen.width, Screen.height);
-        GameManager.OnLevelLoaded += DeactivateActionButton;
+        GameManager.LevelLoaded += DeactivateActionButton;
         PlayerDead += DeactivateActionButtonOnPlayerDeath;
         Draw.ResetMedianFps();
     }
@@ -104,7 +124,11 @@ public class Controller : MonoBehaviour
 
     IEnumerator PlayerDeadCoroutine(Character character)
     {
+        if (IsRestarting)
+            yield break;
+        IsRestarting = true;
         yield return new WaitForSeconds(3f);
+
         int currentRestarts = CollectionManager.Instance.GetCollection(character.ID, CollectionType.Restart);
         var collections = DataManager.Collections;
         if(collections.restarts > 0 || currentRestarts > 0)
@@ -123,6 +147,7 @@ public class Controller : MonoBehaviour
                 DataManager.SaveData();
             }
             character.rb.velocity = Vector3.zero;
+            character.rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
             gameCamera.GetComponent<GameCamera>().target = character.transform;
             if (LastCheckpoint != null)
             {
@@ -155,7 +180,7 @@ public class Controller : MonoBehaviour
 
         if (UnityEngine.GUI.Button(new Rect(10, 60, 100, 50), "Sun Shuffts"))
         {
-
+            if (LightshaftParent == null) return;
             rayOn = !rayOn;
             LightshaftParent.gameObject.SetActive(rayOn);
         }

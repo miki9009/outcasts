@@ -11,7 +11,7 @@ public class CharacterHealth : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.OnLevelLoaded += AssignHealth;
+        GameManager.LevelLoaded += AssignHealth;
     }
 
     void AssignHealth()

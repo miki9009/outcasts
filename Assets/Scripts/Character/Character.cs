@@ -94,6 +94,7 @@ public class Character : MonoBehaviour
     {
         Controller.Instance.characters.Add(this);
         Controller.Instance.character = this;
+        Controller.Instance.gameCamera.GetComponent<GameCamera>().SetTarget(transform);
     }
 
     private void OnDestroy()

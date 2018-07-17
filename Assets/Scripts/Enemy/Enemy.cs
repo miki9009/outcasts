@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 
-public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAnimator
+public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAnimator, IPoolObject
 {
+    [SpawnsNames]
+    public string spawnName;
     public float offset = 10;
     public bool randomStartRotation;
     public float speed = 3;
@@ -18,9 +20,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     //2-idle
 
     Rigidbody rb;
-    Vector3 startPos;
-    Vector3 leftMax;
-    Vector3 rightMax;
+    protected Vector3 startPos;
 
     float idle = 1;
     public bool isAttacking;
@@ -31,6 +31,21 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     {
         get;set;
     }
+
+    public string SpawnName
+    {
+        get
+        {
+            return spawnName;
+        }
+    }
+
+    public GameObject GameObject
+    {
+        get { return gameObject; }
+    }
+
+    Collider[] colliders;
 
     [System.NonSerialized] public Transform target;
 
@@ -43,7 +58,12 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     private EnemyDeath enemyDeath;
     Vector3 startPosition;
     public bool dead = false;
-    bool canAttack = false;
+    protected bool canAttack = false;
+
+    void Awake()
+    {
+        colliders = GetComponents<Collider>();
+    }
 
 	protected virtual void Start ()
     {
@@ -69,9 +89,8 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         startPos = transform.position;
     }
 
-    private void OnCollisionEnter(Collision other)
+    protected virtual void OnCollisionEnter(Collision other)
     {
-        Debug.Log("Collision");
         if (other.gameObject.layer != Layers.Character)
         {
             dir = dir == left ? right : left;
@@ -85,7 +104,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (canAttack)
         {
@@ -153,7 +172,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         }
     }
 
-    void Attack()
+    protected void Attack()
     {
         Debug.Log("Attack");
         canAttack = false;
@@ -165,7 +184,8 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     void CanAttack()
     {
         canAttack = true;
-        anim.Play("Idle");
+        if(!dead)
+            anim.Play("Idle");
     }
 
 
@@ -174,17 +194,46 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         anim.SetTrigger("hit");
         dead = true;
         enemyDeath.StartCoroutine(enemyDeath.DestroyMe());
-        this.enabled = false;
-        var colliders = GetComponents<Collider>();
+        enabled = false;
+        if (colliders == null)
+        {
+            colliders = GetComponentsInChildren<Collider>();
+            Debug.Log("Colliders were null could be a problem in Infinite mode.");
+        }
         foreach (var col in colliders)
         {
             col.enabled = false;
         }
         rb.useGravity = false;
-        stars.SetActive(true);
+        //stars.SetActive(true);
         rb.velocity = Vector3.zero;
         starsExplosion.transform.position = transform.position;
-        starsExplosion.Play();
+        //starsExplosion.Play();
+    }
+
+    public virtual void Recycle()
+    {
+        dead = false;
+        enemyDeath.StopAllCoroutines();
+        anim.Play("Idle");
+        enabled = true;
+        if(colliders == null)
+        {
+            colliders = GetComponentsInChildren<Collider>();
+            Debug.Log("Colliders were null could be a problem in Infinite mode.");
+        }
+        if (colliders != null)
+        {
+            foreach (var col in colliders)
+            {
+                col.enabled = true;
+            }
+        }
+        rb.useGravity = true;
+        stars.SetActive(false);
+        rb.velocity = Vector3.zero;
+        starsExplosion.transform.position = transform.position;
+        starsExplosion.Stop();
     }
 
     public void OnHit()
@@ -193,9 +242,9 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     }
 
 
-    int attackHashName = Animator.StringToHash("Attack");
+    protected int attackHashName = Animator.StringToHash("Attack");
 
-    public void StateAnimatorInitialized()
+    public virtual void StateAnimatorInitialized()
     {
         AnimatorBehaviour.StateEnter += (animatorStateInfo) =>
         {

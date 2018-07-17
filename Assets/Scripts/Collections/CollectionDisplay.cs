@@ -24,7 +24,7 @@ public class CollectionDisplay : MonoBehaviour
 
     private void Start()
     {
-        GameManager.OnLevelLoaded += () => ammount = 0;
+        GameManager.LevelLoaded += () => ammount = 0;
     }
 
     public void ShowDisplay()

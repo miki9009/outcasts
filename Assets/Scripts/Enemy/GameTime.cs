@@ -42,7 +42,7 @@ public class GameTime : MonoBehaviour
             Destroy(gameObject);
             Debug.LogError("Instance of GameTime was already defined");
         }
-        GameManager.OnLevelLoaded += () => TimerRunning = true;
+        GameManager.LevelLoaded += () => TimerRunning = true;
     }
 
     private void FixedUpdate()

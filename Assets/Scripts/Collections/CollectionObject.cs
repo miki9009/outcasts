@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class CollectionObject : MonoBehaviour
+public abstract class CollectionObject : MonoBehaviour, IPoolObject
 {
     public CollectionType type;
+    [SpawnsNames]
+    public string spawnName;
     public int val;
     public bool emmitParticles;
     public int particlesAmmount;
@@ -70,9 +72,9 @@ public abstract class CollectionObject : MonoBehaviour
     private void Awake()
     {
         localScale = transform.localScale;
-        if (!GameManager.LevelLoaded)
+        if (!GameManager.IsLevelLoaded)
         {
-            GameManager.OnLevelLoaded += AssignDisplayOnLoad;
+            GameManager.LevelLoaded += AssignDisplayOnLoad;
         }
         else
         {
@@ -130,12 +132,28 @@ public abstract class CollectionObject : MonoBehaviour
     public static Vector3 eulers = Vector3.zero;
     public static Quaternion rotation = Quaternion.identity;
 
+
+    public string SpawnName
+    {
+        get
+        {
+            return spawnName;
+        }
+    }
+
+    public GameObject GameObject
+    {
+        get { return gameObject; }
+    }
+
+
     public void BackToCollection()
     {
-        if (character == null)
+        if (character != null)
         {
-            Debug.LogError("Character is null");
-            return;
+            transform.position = character.transform.position;
+            int collection = CollectionManager.Instance.GetCollection(character.ID, type);
+            CollectionManager.Instance.SetCollection(character.ID, type, collection - val);
         }
         gameObject.SetActive(true);
         if (collectedCoroutine != null)
@@ -144,10 +162,8 @@ public abstract class CollectionObject : MonoBehaviour
         }
         collected = true;
         GetComponent<Collider>().enabled = true;
-        transform.position = character.transform.position;
         OnLeaveTrigger += SetCollectionObjectActive;
-        int collection = CollectionManager.Instance.GetCollection(character.ID, type);
-        CollectionManager.Instance.SetCollection(character.ID, type, collection - val);
+
         transform.localScale = localScale;
     }
 
@@ -159,6 +175,11 @@ public abstract class CollectionObject : MonoBehaviour
             collected = false;
             OnLeaveTrigger -= SetCollectionObjectActive;
         }
+    }
+
+    public virtual void Recycle()
+    {
+        BackToCollection();
     }
 }
 

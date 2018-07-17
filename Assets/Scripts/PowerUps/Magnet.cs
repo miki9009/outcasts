@@ -69,7 +69,11 @@ public class Magnet : MonoBehaviour, ILefttArmItem
             {
                 var dir = Vector.Direction(coin.transform.position, curPos);
                 var dis = Vector3.Distance(curPos, coin.transform.position);
-                coin.transform.position += dir * magnetForce / dis;
+                if (dis > 0.1f)
+                {
+                    coin.transform.position += dir * magnetForce / dis;
+                }
+
                 if (coin.rigid == null)
                 {
                     coin.rigid = coin.GetComponent<Rigidbody>();

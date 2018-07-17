@@ -16,7 +16,7 @@ public class PowerUpDisplayManager : MonoBehaviour
     {
         Instance = this;
         displays = new HashSet<PowerUpDisplay>();
-        GameManager.OnLevelLoaded += ClearAllPowerUpsAndDisplays;
+        GameManager.LevelLoaded += ClearAllPowerUpsAndDisplays;
     }
 
     public PowerUpDisplay GetDisplay(CollectionType type)
@@ -55,7 +55,7 @@ public class PowerUpDisplayManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.OnLevelLoaded -= ClearAllPowerUpsAndDisplays;
+        GameManager.LevelLoaded -= ClearAllPowerUpsAndDisplays;
     }
 
     public void AddDisplay(PowerUp powerUp)

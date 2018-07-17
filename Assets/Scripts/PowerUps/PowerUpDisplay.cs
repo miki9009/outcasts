@@ -14,7 +14,7 @@ public class PowerUpDisplay : MonoBehaviour
     private void Start()
     {
         Effects.ScalePulse(transform, 2, 1);
-        GameManager.OnLevelChanged += () => time = 0;
+        GameManager.LevelChanged += (x) => time = 0;
     }
 
     public void ResetTo(PowerUp pwr)

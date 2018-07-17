@@ -590,6 +590,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: e2a2a42b8577903408e2c9a166a28cd8, type: 2}
   m_StaticBatchInfo:
@@ -677,6 +678,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114017155936228648
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -688,6 +690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ae96484e0b0e5e45b2b610561fcfae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnName: Native
   offset: 16.27
   randomStartRotation: 1
   speed: 4
@@ -810,6 +813,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: ffbcbd2db5ed0bc48b22db46828295f9, type: 2}
   m_StaticBatchInfo:

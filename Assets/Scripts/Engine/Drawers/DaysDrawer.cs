@@ -8,7 +8,7 @@ public class DaysDrawer : PopUpAttribute
 {
     public DaysDrawer()
     {
-        items = Config.GetConfig<TestConfig>(TestConfig.fileName).weekDays;
+   //     items = Config.GetConfig<TestConfig>(TestConfig.path).weekDays;
     }
 
 }
