@@ -370,6 +370,7 @@
     <None Include="Assets\OtherAssets\BezierCurves\readme.txt" />
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info snow assets.txt" />
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info.txt" />
+    <None Include="Assets\Resources\Levels\Level0.txt" />
     <None Include="Assets\Shaders\3\2ColorSidedShader.shader" />
     <None Include="Assets\Shaders\3\3DTextShader.shader" />
     <None Include="Assets\Shaders\3\AlphaBright.shader" />

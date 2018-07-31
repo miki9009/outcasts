@@ -313,13 +313,17 @@
     <Compile Include="Assets\Scripts\Benchmark.cs" />
     <Compile Include="Assets\Scripts\CameraAnchor.cs" />
     <Compile Include="Assets\Scripts\CameraAnchorTarget.cs" />
+    <Compile Include="Assets\Scripts\Character\Analog.cs" />
+    <Compile Include="Assets\Scripts\Character\BezierAssigner.cs" />
     <Compile Include="Assets\Scripts\Character\ChangeDirection.cs" />
     <Compile Include="Assets\Scripts\Character\Character.cs" />
     <Compile Include="Assets\Scripts\Character\CharacterAnimation.cs" />
     <Compile Include="Assets\Scripts\Character\CharacterHealth.cs" />
     <Compile Include="Assets\Scripts\Character\CharacterMovement.cs" />
     <Compile Include="Assets\Scripts\Character\CharacterStatistics.cs" />
+    <Compile Include="Assets\Scripts\Character\DirectionTest.cs" />
     <Compile Include="Assets\Scripts\Character\InAirCollider.cs" />
+    <Compile Include="Assets\Scripts\Character\ThreeDeCamera.cs" />
     <Compile Include="Assets\Scripts\Character\Weapons\Weapon.cs" />
     <Compile Include="Assets\Scripts\Collections\ActivationTrigger.cs" />
     <Compile Include="Assets\Scripts\Collections\ActiveObject.cs" />
@@ -343,6 +347,7 @@
     <Compile Include="Assets\Scripts\Collections\Rotate.cs" />
     <Compile Include="Assets\Scripts\Collections\Significant.cs" />
     <Compile Include="Assets\Scripts\Collections\WeaponCollect.cs" />
+    <Compile Include="Assets\Scripts\Configs\LevelsConfig.cs" />
     <Compile Include="Assets\Scripts\Configs\SpawnsConfig.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\Data\Containers\CollectionsContainer.cs" />
@@ -350,6 +355,7 @@
     <Compile Include="Assets\Scripts\Data\DataManager.cs" />
     <Compile Include="Assets\Scripts\DestroyAfterTime.cs" />
     <Compile Include="Assets\Scripts\Drawers\ConfigsDrawer.cs" />
+    <Compile Include="Assets\Scripts\Drawers\CustomLevelSelector.cs" />
     <Compile Include="Assets\Scripts\Drawers\SpawnsCollectionDrawer.cs" />
     <Compile Include="Assets\Scripts\Drawers\SpawnsNamesAttribute.cs" />
     <Compile Include="Assets\Scripts\Effects.cs" />
@@ -380,6 +386,7 @@
     <Compile Include="Assets\Scripts\Engine\Drawers\MethodsDrawer.cs" />
     <Compile Include="Assets\Scripts\Engine\Drawers\PopUpAttribute.cs" />
     <Compile Include="Assets\Scripts\Engine\EditorUtilities.cs" />
+    <Compile Include="Assets\Scripts\Engine\Effect.cs" />
     <Compile Include="Assets\Scripts\Engine\Engine.cs" />
     <Compile Include="Assets\Scripts\Engine\GameCamera.cs" />
     <Compile Include="Assets\Scripts\Engine\GUI\Button.cs" />
@@ -388,6 +395,9 @@
     <Compile Include="Assets\Scripts\Engine\Host.cs" />
     <Compile Include="Assets\Scripts\Engine\HostInitializer.cs" />
     <Compile Include="Assets\Scripts\Engine\HTTP\Http.cs" />
+    <Compile Include="Assets\Scripts\Engine\Level\Level.cs" />
+    <Compile Include="Assets\Scripts\Engine\Level\LevelElement.cs" />
+    <Compile Include="Assets\Scripts\Engine\Level\LevelElementInstantiator.cs" />
     <Compile Include="Assets\Scripts\Engine\LevelManager\LevelManager.cs" />
     <Compile Include="Assets\Scripts\Engine\LevelManager\LevelSelector.cs" />
     <Compile Include="Assets\Scripts\Engine\Materials.cs" />
@@ -446,6 +456,11 @@
     <Compile Include="Assets\Scripts\Misc\Statistics.cs" />
     <Compile Include="Assets\Scripts\Misc\TwoDimensionTrigger.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
+    <Compile Include="Assets\Scripts\Objectives\CollectionObjective.cs" />
+    <Compile Include="Assets\Scripts\Objectives\Objective.cs" />
+    <Compile Include="Assets\Scripts\Objectives\ObjectivePanel.cs" />
+    <Compile Include="Assets\Scripts\Objectives\ObjectivesManager.cs" />
+    <Compile Include="Assets\Scripts\Objectives\ObjectivesPanelManager.cs" />
     <Compile Include="Assets\Scripts\PowerUps\InvincibilityParticlesEffect.cs" />
     <Compile Include="Assets\Scripts\PowerUps\Magnet.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUp.cs" />
@@ -469,6 +484,7 @@
     <None Include="Assets\OtherAssets\BezierCurves\readme.txt" />
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info snow assets.txt" />
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info.txt" />
+    <None Include="Assets\Resources\Levels\Level0.txt" />
     <None Include="Assets\Shaders\3\2ColorSidedShader.shader" />
     <None Include="Assets\Shaders\3\3DTextShader.shader" />
     <None Include="Assets\Shaders\3\AlphaBright.shader" />

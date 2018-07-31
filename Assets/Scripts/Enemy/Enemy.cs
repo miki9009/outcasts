@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     public float offset = 10;
     public bool randomStartRotation;
     public float speed = 3;
+    public PathMovement pathMovement;
+    public float looseTargetDistance = 10;
 
     int right = 1;
     int left = -1;
@@ -47,7 +49,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
 
     Collider[] colliders;
 
-    [System.NonSerialized] public Transform target;
+    /*[System.NonSerialized] */public Transform target;
 
     [System.NonSerialized] public Animator anim;
     public float attackTime = 1;
@@ -59,6 +61,9 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     Vector3 startPosition;
     public bool dead = false;
     protected bool canAttack = false;
+    int pathIndex = 0;
+    Vector3 nextPathPoint;
+    Vector3[] path;
 
     void Awake()
     {
@@ -87,6 +92,9 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
             }
         }
         startPos = transform.position;
+        path = pathMovement.GetPath(pathMovement.GetRandomPointOnNavMesh());
+        pathIndex = 0;
+        Debug.Log("Path points: " + path.Length);
     }
 
     protected virtual void OnCollisionEnter(Collision other)
@@ -104,70 +112,47 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         }
     }
 
+
+    float pathUpdater = 1;
+    float curTimeUpdater = 0;
     protected virtual void Update()
     {
-        if (canAttack)
+        if (isAttacking) return;
+        if(target != null)
         {
-            var vec = rb.velocity;
-            anim.SetFloat("hSpeed", Mathf.Abs(vec.x));
-            if (action == 0)
+            if (pathUpdater > curTimeUpdater)
             {
-                rb.velocity = new Vector3(speed * dir, rb.velocity.y, 0);
-                if (dir == left)
-                {
-                    if (transform.position.x < startPos.x - offset)
-                    {
-                        action = 2;
-                        dir = right;
-                        rb.velocity = Vector3.zero;
-                    }
-                }
-                else
-                {
-                    if (transform.position.x > startPos.x + offset)
-                    {
-                        action = 2;
-                        dir = left;
-                        rb.velocity = Vector3.zero;
-                    }
-                }
-            }
-            else if (action == 1)
-            {
-                if (target != null)
-                {
-                    rb.velocity = new Vector3(speed * dir, rb.velocity.y, 0);
-                    if (target.position.x > transform.position.x)
-                    {
-                        dir = right;
-                        transform.rotation = Quaternion.LookRotation(Vector3.right);
-                    }
-                    else
-                    {
-                        dir = left;
-                        transform.rotation = Quaternion.LookRotation(Vector3.left);
-                    }
-                }
-                else
-                {
-                    action = 0;
-                }
+                curTimeUpdater += Time.deltaTime;
             }
             else
             {
-                if (idle > 0)
-                {
-                    idle -= Time.deltaTime;
-                }
-                else
-                {
-                    if (dir == right)
-                        transform.rotation = Quaternion.LookRotation(Vector3.right);
-                    else
-                        transform.rotation = Quaternion.LookRotation(Vector3.left);
-                    action = 0;
-                    idle = 1;
-                }
+                path = pathMovement.GetPath(target.position);
+                pathIndex = 0;
+                curTimeUpdater = 0;
+            }
+            var dis = Vector3.Distance(transform.position, target.position);
+            if (dis > looseTargetDistance)
+            {
+                target = null;
+            }
+        }
+        if (path != null && Vector3.Distance(transform.position, path[pathIndex]) > 2)
+        {
+
+            transform.rotation = Engine.Math.RotateTowardsTopDown(transform, path[pathIndex], Time.deltaTime * 50);
+            rb.velocity = transform.forward * speed;
+            anim.SetFloat("hSpeed", speed);
+        }
+        else
+        {
+            if (pathIndex + 1 < path.Length)
+            {
+                pathIndex++;
+            }
+            else
+            {
+                path = pathMovement.GetPath(pathMovement.GetRandomPointOnNavMesh());
+                pathIndex = 0;
             }
         }
     }
@@ -208,6 +193,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         //stars.SetActive(true);
         rb.velocity = Vector3.zero;
         starsExplosion.transform.position = transform.position;
+        CollectionManager.Instance.SetCollection(character.character.ID, CollectionType.KillEnemy, 1);
         //starsExplosion.Play();
     }
 
@@ -267,8 +253,11 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     public Color gizmoColor = Color.blue;
     private void OnDrawGizmos()
     {
-        Gizmos.color = gizmoColor;
-        Gizmos.DrawCube(transform.position + Vector3.one, new Vector3(offset * 2, 2, 2));
+        if (path != null && path.Length > 0)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawLine(transform.position, path[pathIndex]);
+        }
     }
 
 

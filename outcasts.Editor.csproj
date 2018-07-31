@@ -393,10 +393,13 @@
     <Compile Include="Assets\Scripts\Engine\Editor\ButtonInspector.cs" />
     <Compile Include="Assets\Scripts\Engine\Editor\EditorUtilitiesInspector.cs" />
     <Compile Include="Assets\Scripts\Engine\Editor\GameInitEditor.cs" />
+    <Compile Include="Assets\Scripts\Engine\Editor\LevelEditor.cs" />
     <Compile Include="Assets\Scripts\Engine\Editor\LevelManagerEditor.cs" />
     <Compile Include="Assets\Scripts\Engine\Editor\MaterialsEditor.cs" />
     <Compile Include="Assets\Scripts\Engine\Editor\MeshPainterEditor.cs" />
     <Compile Include="Assets\Scripts\Engine\Editor\MeshRendererEditor.cs" />
+    <Compile Include="Assets\Scripts\Engine\Editor\ObjExporter.cs" />
+    <Compile Include="Assets\Scripts\Engine\Editor\TerrainExporter.cs" />
     <Compile Include="Assets\Scripts\Engine\GUI\Editor\WeaponManagerEditor.cs" />
     <Compile Include="Assets\Scripts\Infinite\Editor\ChunkEditor.cs" />
     <Compile Include="Assets\Shaders\3\ImageEffects\Retro Pixel\Editor\RetroPixelEditor.cs" />
@@ -406,6 +409,7 @@
     <None Include="Assets\OtherAssets\BezierCurves\readme.txt" />
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info snow assets.txt" />
     <None Include="Assets\OtherAssets\MOBA and Tower Defense\info.txt" />
+    <None Include="Assets\Resources\Levels\Level0.txt" />
     <None Include="Assets\Shaders\3\2ColorSidedShader.shader" />
     <None Include="Assets\Shaders\3\3DTextShader.shader" />
     <None Include="Assets\Shaders\3\AlphaBright.shader" />

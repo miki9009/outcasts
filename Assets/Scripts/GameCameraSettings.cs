@@ -9,6 +9,7 @@ public class GameCameraSettings : MonoBehaviour
     public float rotationSpeed = 5;
     public float upFactor = 3;
     public float speed = 10;
+    public bool rotateAround;
 
     private void Start()
     {
@@ -25,6 +26,6 @@ public class GameCameraSettings : MonoBehaviour
         cam.rotationSpeed = rotationSpeed;
         cam.upFactor = upFactor;
         cam.speed = speed;
-
+        cam.rotateAround = rotateAround;
     }
 }

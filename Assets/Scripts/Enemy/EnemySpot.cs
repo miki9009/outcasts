@@ -14,22 +14,17 @@ public class EnemySpot : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 9)
-        {
-            target = other.transform.root;
-            enemy.target = target;
-        }
+        target = other.attachedRigidbody.transform;
+         enemy.target = target;
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == 9)
-        {
-            if (target == null) return;
-            if (other.transform.root == target)
-            {
-                target = null;
-            }
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (target == null) return;
+    //    if (other.attachedRigidbody.transform == target)
+    //    {
+    //        target = null;
+    //        enemy.target = null;
+    //    }
+    //}
 }

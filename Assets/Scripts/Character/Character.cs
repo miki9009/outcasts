@@ -19,10 +19,13 @@ public class Character : MonoBehaviour
     
     public IEquipment rightArmItem;
     public IEquipment leftArmItem;
+    public bool isDead { get; set; }
+
+
 
     Identification identity;
 
-    
+    public static event Action<Character> CharacterCreated;
 
 
     public int ID
@@ -94,6 +97,10 @@ public class Character : MonoBehaviour
     {
         Controller.Instance.characters.Add(this);
         Controller.Instance.character = this;
+        if(CharacterCreated!=null)
+        {
+            CharacterCreated(this);
+        }
         Controller.Instance.gameCamera.GetComponent<GameCamera>().SetTarget(transform);
     }
 

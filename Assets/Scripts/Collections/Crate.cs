@@ -97,6 +97,8 @@ public class Crate : MonoBehaviour, IDestructible
 
     public void Hit(CharacterMovement character)
     {
+        Debug.Log("Crate: " + this.GetInstanceID());
+        CollectionManager.Instance.SetCollection(character.character.ID, CollectionType.DestroyCrate, 1);
         crateExplosion.transform.position = transform.position;
         crateExplosion.Play();
         StartCoroutine(CollectionCreate());

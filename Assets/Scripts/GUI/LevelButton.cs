@@ -9,6 +9,8 @@ public class LevelButton : MonoBehaviour
 {
     [LevelSelector]
     public string levelName;
+    [CustomLevelSelector]
+    public string customLevel;
 
 
     public void GoToLevelAdditive()
@@ -18,7 +20,7 @@ public class LevelButton : MonoBehaviour
             Camera.main.gameObject.SetActive(false);
         }
         catch { }
-        LevelManager.BeginLevelLoadSequence(levelName);
+        LevelManager.BeginCustomLevelLoadSequence(levelName, customLevel);
     }
 
 }

@@ -15,12 +15,16 @@ public class GameCamera : MonoBehaviour
     public float rotationSpeed;
     public float upFactor;
     public float speed;
+    public bool rotateAround;
     public Transform[] camAnchors;
+    
 
     public Component vignatteAberration;
     public MotionBlur motionBlure;
     public CameraMotionBlur camMotionBlur;
     public bool move = true;
+
+    public float minDistance = 5;
 
     public float UpFactorAtStart { get; private set; }
 
@@ -48,39 +52,15 @@ public class GameCamera : MonoBehaviour
     float magnitude;
     private void FixedUpdate()
     {
-        if (move)
-        {
-            if (target)
-            {
-                if (gameType == Controller.GameType.Perspective)
-                {
-                    collide = CheckFreePosition();
-                    if (collide)
-                    {
-                        time = time > 0 ? time - Time.deltaTime : 0;
-                        transform.position = Vector3.Lerp(transform.position, target.position + target.forward * z + Vector3.up * y + target.right * x, (time > 0 ? speed * (2 - time) : speed) * Time.deltaTime);
-                        slerp = Quaternion.LookRotation(Math.DirectionVector(transform.position, target.position + Vector3.up * upFactor));
-                        transform.rotation = Quaternion.Slerp(transform.rotation, slerp, rotationSpeed * Time.deltaTime);
-                    }
-                    else
-                    {
-                        time = 2;
-                        transform.rotation = Quaternion.Slerp(transform.rotation, slerp, rotationSpeed * Time.deltaTime);
-                    }
-                }
-                else
-                {
-                    time = time > 0 ? time - Time.deltaTime : 0;
-                    transform.position = Vector3.Lerp(transform.position, target.position + target.forward * forwardFactor + new Vector3(x,y,z), (time > 0 ? speed * (2 - time) : speed) * Time.deltaTime);
-                    slerp = Quaternion.LookRotation(Math.DirectionVector(transform.position, target.position + Vector3.up * upFactor + target.forward * forwardFactor));
-                    transform.rotation = Quaternion.Slerp(transform.rotation, slerp, rotationSpeed * Time.deltaTime);
-                }
-            }           
-        }
-        else
-        {
-            transform.LookAt(target);
-        }
+        if (target == null) return;
+        Vector3 pos = transform.position;
+        pos.y = target.position.y;
+        Vector3 dir = Vector.Direction(target.position, pos);
+        pos = target.position + dir * minDistance;
+        pos.y += y;
+        transform.position = pos;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
+        //transform.LookAt(target.position + Vector3.up * upFactor);
     }
 
     public void Stay(bool move)

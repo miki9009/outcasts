@@ -1247,6 +1247,11 @@ namespace Engine
         {
             return new Quaternion(vec.x, vec.y, vec.z, vec.w);
         }
+
+        public static implicit operator Float4(Quaternion vec)
+        {
+            return new Float4(vec.x, vec.y, vec.z, vec.w);
+        }
     }
 
 

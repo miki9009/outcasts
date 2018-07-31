@@ -26,6 +26,15 @@ public class LevelManager : MonoBehaviour
             instance = value;
         }
     }
+
+    public string LastCustomLevel
+    {
+        get
+        {
+            return customLevelToLoad;
+        }
+    }
+
     public int levelIndex;
     public string scenesPath;
     public List<string> scenes;
@@ -130,6 +139,7 @@ public class LevelManager : MonoBehaviour
     }
 
     static string levelToLoad;
+    static string customLevelToLoad;
     public static void BeginLevelLoadSequence(string levelName)
     {
         levelToLoad = levelName;
@@ -139,6 +149,17 @@ public class LevelManager : MonoBehaviour
         SceneManager.sceneLoaded += instance.AddLevelScene;
     }
 
+    public static void BeginCustomLevelLoadSequence(string sceneName, string customLevel)
+    {
+        levelToLoad = sceneName;
+        customLevelToLoad = customLevel;
+        Debug.Log("Current level set to: " + levelToLoad);
+        GameManager.CurrentLevel = levelToLoad;
+        SceneManager.LoadSceneAsync(LevelManager.Instance.gameScene, LoadSceneMode.Additive);
+        SceneManager.sceneLoaded += instance.AddLevelScene;
+        LoadCustomLevel += OnLoadCustomLevel;
+    }
+
     void AddLevelScene(Scene scene, LoadSceneMode mode)
     {
         SceneManager.sceneLoaded -= AddLevelScene;
@@ -146,10 +167,15 @@ public class LevelManager : MonoBehaviour
         SceneManager.sceneLoaded += SetActiveScene;
     }
 
+    static event Action LoadCustomLevel;
     void SetActiveScene(Scene scene, LoadSceneMode mode)
     {
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(levelToLoad));
         SceneManager.sceneLoaded -= SetActiveScene;
+        if(LoadCustomLevel!=null)
+        {
+            LoadCustomLevel();
+        }
     }
 
     public static void ReturnToMenu()
@@ -157,6 +183,16 @@ public class LevelManager : MonoBehaviour
         SceneManager.UnloadSceneAsync(instance.gameScene);
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
+
+    static void OnLoadCustomLevel()
+    {
+        if(!string.IsNullOrEmpty(customLevelToLoad))
+        {
+            Level.Load(customLevelToLoad);
+        }
+        LoadCustomLevel -= OnLoadCustomLevel;
+    }
+
 
     public string NextLevel()
     {

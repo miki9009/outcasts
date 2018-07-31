@@ -251,6 +251,11 @@ public class BezierCurve : MonoBehaviour {
 		
 		return GetPoint(p1, p2, t / curvePercent);
 	}
+
+    public Vector3 GetDirection(float pos)
+    {
+        return Engine.Vector.Direction(GetPointAt(pos), GetPointAt(Mathf.Clamp01(pos + 0.01f)));
+    }
 	
 	/// <summary>
 	/// 	- Get the index of the given point in this curve

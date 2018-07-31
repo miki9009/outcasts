@@ -17,22 +17,27 @@ namespace Engine.Config
             return (T)Resources.Load(PATH + typeof(T));
         }
 
-//        public static T GetConfigEditor<T>() where T : Config
-//        {
-//#if UNITY_EDITOR
-//            return UnityEditor.AssetDatabase.LoadAssetAtPath<T>("Assets/Resources/" + PATH + typeof(T) +".asset");
-//#endif
-//        }
+        public static T GetConfigEditor<T>(string key) where T : Config
+        {
+            return (T)Resources.Load(key);
+        }
+
+        //        public static T GetConfigEditor<T>() where T : Config
+        //        {
+        //#if UNITY_EDITOR
+        //            return UnityEditor.AssetDatabase.LoadAssetAtPath<T>("Assets/Resources/" + PATH + typeof(T) +".asset");
+        //#endif
+        //        }
 
         public virtual void OnBeforeSerialize()
         {
-            if (Name != GetType().ToString())
-            {
-#if UNITY_EDITOR
-                UnityEditor.AssetDatabase.RenameAsset(UnityEditor.AssetDatabase.GetAssetPath(this), GetType().ToString());
-#endif
-                Name = name;
-            }
+//            if (Name != GetType().ToString())
+//            {
+//#if UNITY_EDITOR
+//                UnityEditor.AssetDatabase.RenameAsset(UnityEditor.AssetDatabase.GetAssetPath(this), GetType().ToString());
+//#endif
+//                Name = name;
+//            }
 
 
         }

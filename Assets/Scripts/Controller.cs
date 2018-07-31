@@ -65,7 +65,7 @@ public class Controller : MonoBehaviour
         GUI = transform.parent.gameObject;
         ChromaticAbberration = gameCamera.GetComponent<VignetteAndChromaticAberration>();
         Vortex = gameCamera.GetComponent<Vortex>();
-        GameManager.LevelLoaded += OnRestart;
+        GameManager.Restart += OnRestart;
         if (DataManager.Exists())
         {
             ButtonMovement = DataManager.Settings.buttonMovement;
@@ -73,9 +73,15 @@ public class Controller : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        GameManager.Restart -= OnRestart;
+    }
+
     void OnRestart()
     {
         IsRestarting = false;
+        RestartCharacter(Character.GetLocalPlayer());
     }
 
     // Use this for initialization
@@ -115,55 +121,62 @@ public class Controller : MonoBehaviour
     public event System.Action<Character> PlayerDead;
     public void OnPlayerDead(Character character)
     {
-        StartCoroutine(PlayerDeadCoroutine(character));
+        float time = character.isDead ? 3 : 0f;
+        StartCoroutine(PlayerDeadCoroutine(character, time));
         if(PlayerDead != null)
         {
             PlayerDead(character);
         }
     }
 
-    IEnumerator PlayerDeadCoroutine(Character character)
+    IEnumerator PlayerDeadCoroutine(Character character, float waitTime)
     {
         if (IsRestarting)
             yield break;
         IsRestarting = true;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(waitTime);
 
         int currentRestarts = CollectionManager.Instance.GetCollection(character.ID, CollectionType.Restart);
         var collections = DataManager.Collections;
         if(collections.restarts > 0 || currentRestarts > 0)
         {
-            character.movement.enabled = true;
-            character.stats.health = 1;
-            character.movement.characterHealth.AddHealth(character.stats.health);
-            character.movement.anim.Play("Idle");
-            if (currentRestarts > 0)
-            {
-                CollectionManager.Instance.SetCollection(character.ID, CollectionType.Restart, currentRestarts - 1);
-            }
-            else
-            {
-                collections.restarts--;
-                DataManager.SaveData();
-            }
-            character.rb.velocity = Vector3.zero;
-            character.rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
-            gameCamera.GetComponent<GameCamera>().target = character.transform;
-            if (LastCheckpoint != null)
-            {
-                LastCheckpoint.ResetToCheckpoint(character);
-            }
-            else
-            {
-                character.transform.position = character.movement.StartPosition;
-            }
-            
+            RestartCharacter(character);
         }
         else
         {
             UIWindow.GetWindow(UIWindow.END_SCREEN).RestartLevel();
         }
         yield return null;
+    }
+
+    void RestartCharacter(Character character)
+    {
+        character.movement.enabled = true;
+        character.stats.health = 1;
+        character.movement.characterHealth.AddHealth(character.stats.health);
+        character.movement.anim.Play("Idle");
+        int currentRestarts = CollectionManager.Instance.GetCollection(character.ID, CollectionType.Restart);
+        var collections = DataManager.Collections;
+        if (currentRestarts > 0)
+        {
+            CollectionManager.Instance.SetCollection(character.ID, CollectionType.Restart, currentRestarts - 1);
+        }
+        else
+        {
+            collections.restarts--;
+            DataManager.SaveData();
+        }
+        character.rb.velocity = Vector3.zero;
+        //character.rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
+        gameCamera.GetComponent<GameCamera>().target = character.transform;
+        if (LastCheckpoint != null)
+        {
+            LastCheckpoint.ResetToCheckpoint(character);
+        }
+        else
+        {
+            character.transform.position = character.movement.StartPosition;
+        }
     }
 
 

@@ -14,7 +14,9 @@ namespace Engine
             {
                 meshFilters = parent.GetComponentsInChildren<MeshFilter>();
             }
-            transform.position = Vector3.zero;
+            var parentParent = parent.parent;
+            var prevPos = parent.position;
+            parent.position = Vector3.zero;
             CombineInstance[] combine = new CombineInstance[meshFilters.Length];
             int i = 0;
             pos = Vector3.zero;
@@ -38,6 +40,14 @@ namespace Engine
             UnityEditor.Unwrapping.GenerateSecondaryUVSet(filter.sharedMesh);
 #endif
             meshRenderer.sharedMaterial = meshFilters[0].GetComponent<MeshRenderer>().sharedMaterial;
+            parent.position = prevPos;
+            meshRenderer.transform.position = prevPos;
+            if(parentParent != null)
+            {
+                meshRenderer.transform.SetParent(parentParent);
+                meshRenderer.transform.SetSiblingIndex(parent.GetSiblingIndex());
+            }
+            parent.gameObject.SetActive(false);
         }
     }
 }

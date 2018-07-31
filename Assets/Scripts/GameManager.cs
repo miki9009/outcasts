@@ -9,11 +9,13 @@ public class GameManager : MonoBehaviour
     public static event Action LevelLoaded;
     public static event Action<string> LevelChanged;
     public static event Action GameFinished;
+    public static event Action Restart;
     public static bool IsLevelLoaded { get; private set; }
     public static bool isLevel;
     public static string CurrentLevel { get; set; }
     
     public static GameManager Instance { get; private set; }
+
 
     private string currentName;
     public string LevelName
@@ -36,20 +38,34 @@ public class GameManager : MonoBehaviour
         IsLevelLoaded = true;
     }
 
-    void OnLevelChanged(Scene scene, Scene scene2)
+    public void OnLevelChangedEvent(string levelName)
     {
         if (LevelChanged != null)
         {
             LevelChanged(LevelName);
         }
+    }
+
+    void OnLevelChanged(Scene scene, Scene scene2)
+    {
+        OnLevelChangedEvent(LevelName);
         Debug.Log("Game Manager: Level Changed to: " + LevelName);
     }
 
-    void SceneLoaded(Scene scene, LoadSceneMode mode)
+
+    public void SceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("Game Manager: Level Loaded: " + LevelName);
         if(scene.name == CurrentLevel)
             StartCoroutine(LevelLoadedCor());
+    }
+
+    public static void OnRestart()
+    {
+        if(Restart != null)
+        {
+            Restart();
+        }
     }
 
     IEnumerator LevelLoadedCor()

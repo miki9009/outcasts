@@ -115,6 +115,8 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
 
     public void Hit(CharacterMovement character)
     {
+        if (dead) return;
+        CollectionManager.Instance.SetCollection(character.character.ID, CollectionType.KillEnemy, 1);
         starsExplosion.transform.position = transform.position;
         starsExplosion.Play();
         collisionBroadcast.CollisionEntered -= Attack;

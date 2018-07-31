@@ -40,7 +40,7 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
             display.ShowDisplay();
             character = other.GetComponentInParent<Character>();
             int playerID = character.ID;
-            CollectionManager.Instance.SetCollection(playerID, type, val);
+            CollectionManager.Instance.SetCollection(playerID, type, val);            
             collectedCoroutine = StartCoroutine(Collected());
             if (emmitParticles)
             {
@@ -65,7 +65,7 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
             if (manager != null)
                 manager.DeactivatedByManager = false;
             else
-                Debug.LogError("Should be Deactivated by Manager, but manager is null");
+                Debug.Log("Should be Deactivated by Manager, but manager is null");
         }
     }
 
@@ -196,6 +196,8 @@ public enum CollectionType
     KeyGold = 8,
     KeySilver = 9,
     KeyBronze = 10,
-    Restart = 11
+    Restart = 11,
+    DestroyCrate = 12,
+    KillEnemy = 13
 }
 

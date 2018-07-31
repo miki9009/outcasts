@@ -13,8 +13,6 @@ public class PathMovement : MonoBehaviour
 
     int pathPointIndex;
 
-
-
     public float followDistance;
     public bool isClose;
 
@@ -46,7 +44,7 @@ public class PathMovement : MonoBehaviour
     public event TargetPoint OnReachDestination;
     public bool noPath = false;
 
-    void Start()
+    void Awake()
     {
         startPos = transform.position;
         curPos = startPos;
@@ -90,39 +88,29 @@ public class PathMovement : MonoBehaviour
         horInput = -(Vector3.Angle(right, direction) > 180 ? Vector3.Dot(right, direction) : -Vector3.Dot(right, direction));
     }
 
-    public void Rotation(float horInput, float speed)
-    {
-        var euler = transform.rotation.eulerAngles;
-        euler.x = 0;
-        euler.z = 0;
-        
-        euler.y += horInput * 10;
-        transform.rotation = Quaternion.Euler(euler);
-    }
-
     private void SpawnOnNavMesh()
     {
         transform.position = GetRandomPointOnNavMesh() + Vector3.up * 1.5f;
     }
 
-    public void GetPath(Vector3 targetPoint)
+    public Vector3[] GetPath(Vector3 targetPoint)
     {
         Vector3 startPoint = transform.position;
         if (NavMesh.CalculatePath(GetNavMeshPosition(startPoint), GetNavMeshPosition(targetPoint), queryFilter, path))
         {
             if (path.status == NavMeshPathStatus.PathComplete)
             {
-                SetupPath(path.corners);
+                return SetupPath(path.corners);
             }
             else
             {
                 noPath = true;
             }
         }
+        return new Vector3[] { transform.position };
     }
 
-
-    private void GetPath()
+    public void GetPath()
     {
         var newTargetPosition = GetRandomPointOnNavMesh();
         GetPath(newTargetPosition);
@@ -135,7 +123,6 @@ public class PathMovement : MonoBehaviour
         index = index - (index % 3);
         Vector3 point = Vector3.Lerp(data.vertices[data.indices[index]], data.vertices[data.indices[index + 1]], (float)rndGenerator.NextDouble());
         point = Vector3.Lerp(point, data.vertices[data.indices[index + 2]], (float)rndGenerator.NextDouble());
-        Debug.DrawLine(transform.position + Vector3.up, point + Vector3.up, Color.magenta, 1);
         return point;
     }
 
@@ -168,9 +155,8 @@ public class PathMovement : MonoBehaviour
         }
     }
 
-    private void SetupPath(Vector3[] pathPoints)
+    private Vector3[] SetupPath(Vector3[] pathPoints)
     {
-
         List<Vector3> points = new List<Vector3>();
         float sqrDistance = Mathf.Pow(followDistance * 1.2f, 2f);
         foreach (var p in pathPoints)
@@ -186,6 +172,7 @@ public class PathMovement : MonoBehaviour
         {
             nextPathPoint = this.pathPoints[pathPointIndex];
         }
+        return pathPoints;
     }
 
 

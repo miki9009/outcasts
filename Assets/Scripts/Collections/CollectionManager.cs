@@ -47,6 +47,15 @@ public class CollectionManager : MonoBehaviour
 
     Dictionary<int, CollectionSet> collections;
 
+    public event System.Action<int, CollectionType, int> Collected;
+    public void OnCollected(int id, CollectionType collection, int amount)
+    {
+        if(Collected != null)
+        {
+            Collected(id, collection, amount);
+        }
+    }
+
     public Dictionary<int, CollectionSet> AllCollections()
     {
         return collections;
@@ -59,6 +68,7 @@ public class CollectionManager : MonoBehaviour
             if (collections[playerID].Collection.ContainsKey(type))
             {
                 collections[playerID].Collection[type] += val;
+                OnCollected(playerID, type, val);
             }
             else
             {
@@ -71,6 +81,7 @@ public class CollectionManager : MonoBehaviour
             collections.Add(playerID, new CollectionSet(type, playerID));
             SetCollection(playerID, type, val);
         }
+
     }
 
     public int GetCollection(int playerID, CollectionType type)

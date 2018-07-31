@@ -308,10 +308,15 @@ namespace Engine.GUI
 
         public void RestartLevel()
         {
-            levelName = SceneManager.GetActiveScene().name;
-            SceneManager.UnloadSceneAsync(levelName);
-            SceneManager.sceneUnloaded += Restart;
-
+            //levelName = SceneManager.GetActiveScene().name;
+            //SceneManager.UnloadSceneAsync(levelName);
+            //SceneManager.sceneUnloaded += Restart;
+            if(!string.IsNullOrEmpty(LevelManager.Instance.LastCustomLevel))
+                Level.Load(LevelManager.Instance.LastCustomLevel);
+            if(GameManager.Instance!=null)
+            {
+                GameManager.OnRestart();
+            }
         }
 
         void Restart(Scene scene)
@@ -326,6 +331,7 @@ namespace Engine.GUI
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(levelName));
             SceneManager.sceneLoaded -= SetActiveScene;
+            Level.Load(LevelManager.Instance.LastCustomLevel);
         }
 
         public void GoToNextLevel()
