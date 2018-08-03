@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &400000
 Transform:
@@ -23,7 +23,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 103.41734, y: 30.209297, z: 20.70783}
+  m_LocalPosition: {x: 59.40961, y: 30.20929, z: 74.88289}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4231864977650850}
@@ -125,7 +125,7 @@ LODGroup:
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LODs:
-  - screenRelativeHeight: 0.0153418
+  - screenRelativeHeight: 0.035159532
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 23979522814141484}

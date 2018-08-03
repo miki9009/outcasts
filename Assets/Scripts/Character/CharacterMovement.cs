@@ -54,9 +54,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public ThrowableObject ThrowObject { get; set; }
     public Vector3 StartPosition { get; private set; }
     public bool ButtonsInput { get; set; }
-    [System.NonSerialized] public BezierCurve bezier;
-    public BezierAssigner bezierAssigner;
-
+    public float addForce = 1;
 
     //ANIMATIONS
     int throwAnimationHash;
@@ -105,6 +103,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     Button btnMovement;
     bool buttonsInitialized = true;
     bool canMove = true;
+
  
 
     // Use this for initialization
@@ -135,7 +134,6 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 horInput = 1;
                 Movement = GestureMovement;
                 DeactivateButtons();
-                bezier = bezierAssigner.curve;
             }
             else
             {
@@ -174,6 +172,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         GameGUI.GetButtonByName("ButtonLeft").gameObject.SetActive(false);
         GameGUI.GetButtonByName("ButtonRight").gameObject.SetActive(false);
     }
+
 
     private void OnTriggerExit(Collider other)
     {
@@ -274,6 +273,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         anim.SetFloat("vSpeed", vspeed);
         Move();
         Rotation();
+        if(onGround)
+            rb.AddForce(Vector3.up * addForce);
     }
 
     private void Update()

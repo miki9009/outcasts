@@ -12,19 +12,13 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     public float speed = 3;
     public PathMovement pathMovement;
     public float looseTargetDistance = 10;
+    public float patrolDistance = 10;
 
-    int right = 1;
-    int left = -1;
-    int dir;
+
     public int action = 0;
-    //0-move
-    //1-follow
-    //2-idle
 
     Rigidbody rb;
     protected Vector3 startPos;
-
-    float idle = 1;
     public bool isAttacking;
 
     public Transform Transform { get { return transform; } set { Transform = value; } }
@@ -62,7 +56,6 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     public bool dead = false;
     protected bool canAttack = false;
     int pathIndex = 0;
-    Vector3 nextPathPoint;
     Vector3[] path;
 
     void Awake()
@@ -78,19 +71,6 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         anim = GetComponentInChildren<Animator>();
         starsExplosion = StaticParticles.Instance.starsExplosion;
         enemyDeath = GetComponent<EnemyDeath>();
-        if (randomStartRotation)
-        {
-            if (Engine.Math.Probability(0.5f))
-            {
-                dir = right;
-                transform.rotation = Quaternion.LookRotation(Vector3.right);
-            }
-            else
-            {
-                dir = left;
-                transform.rotation = Quaternion.LookRotation(Vector3.left);
-            }
-        }
         startPos = transform.position;
         path = pathMovement.GetPath(pathMovement.GetRandomPointOnNavMesh());
         pathIndex = 0;
@@ -99,13 +79,9 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
 
     protected virtual void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer != Layers.Character)
+        if (other.gameObject.layer == Layers.Character)
         {
-            dir = dir == left ? right : left;
-            transform.rotation = Quaternion.LookRotation(dir == right ? Vector3.right : Vector3.left);
-        }
-        else
-        {
+            transform.rotation = Quaternion.LookRotation(Vector.Direction(transform.position, other.gameObject.transform.position));
             target = other.transform;
             if(canAttack)
                 Attack();
@@ -138,9 +114,11 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         }
         if (path != null && Vector3.Distance(transform.position, path[pathIndex]) > 2)
         {
-
-            transform.rotation = Engine.Math.RotateTowardsTopDown(transform, path[pathIndex], Time.deltaTime * 50);
-            rb.velocity = transform.forward * speed;
+            transform.rotation = Engine.Math.RotateTowardsTopDown(transform, path[pathIndex], Time.deltaTime * 5);
+            float y = rb.velocity.y;
+            Vector3 velo = transform.forward * speed;
+            velo.y = y;
+            rb.velocity = velo;
             anim.SetFloat("hSpeed", speed);
         }
         else
@@ -151,8 +129,13 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
             }
             else
             {
-                path = pathMovement.GetPath(pathMovement.GetRandomPointOnNavMesh());
-                pathIndex = 0;
+                Vector3 destination;
+                if(pathMovement.RandomPoint(startPos, patrolDistance, out destination))
+                {
+                    path = pathMovement.GetPath(destination);
+                    pathIndex = 0;
+                }
+
             }
         }
     }

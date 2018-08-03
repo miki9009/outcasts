@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Engine;
+using Engine.GUI;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -72,12 +74,32 @@ public class GameManager : MonoBehaviour
     {
         if (Controller.Instance == null) yield break;
         yield return Engine.Game.WaitForFrames(1);
+        State = GameState.Idle;
         if (LevelLoaded != null)
         {
             Debug.Log("Level Loaded: " + SceneManager.GetActiveScene().name);
             LevelLoaded();
         }
         yield return null;
+    }
+
+    public enum GameState
+    {
+        Idle,
+        Completed, 
+        Failed
+    }
+
+    public static GameState State
+    {
+        get;set;
+    }
+
+    public void EndGame(GameState state)
+    {
+        State = state;
+        OnGameFinished();
+        UIWindow.GetWindow("EndGameScreen").Show();
     }
 
 

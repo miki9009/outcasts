@@ -109,6 +109,10 @@ namespace Engine
                     levelElement.data = (Dictionary<string, object>)element.Key;
                     levelElement.OnLoad();
                 }
+                else
+                {
+                    Debug.LogError("Object was null, make sure it was in the LevelElements folder set in the config");
+                }
             }
         }
     }

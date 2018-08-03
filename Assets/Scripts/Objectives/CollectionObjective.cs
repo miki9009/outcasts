@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using UnityEngine;
 
 namespace Objectives
 {
@@ -8,6 +10,13 @@ namespace Objectives
         public int collectionAmount;
         public CollectionType collectionType;
         int collected;
+        public bool isTimer;
+        public float time;
+
+        [NonSerialized]
+        public float startTimer;
+
+        public event Action ClockUpdate;
 
         public override float Progress
         {
@@ -19,7 +28,6 @@ namespace Objectives
 
         void UpdateProgress(int id, CollectionType collection, int val)
         {
-            UnityEngine.Debug.Log("Objective Updated: " + title + " val: " + val);
             if (collection == collectionType)
             {
                 collected += val;
@@ -37,23 +45,52 @@ namespace Objectives
 
         public void Failed()
         {
-            if (CollectionManager.Instance != null)
-                CollectionManager.Instance.Collected -= UpdateProgress;
             state = State.Failed;
             OnFinished();
+            if (!optional && !ObjectivesManager.EndingGame)
+            {
+                CoroutineHost.Start(ObjectivesManager.EndGame(GameManager.GameState.Failed));
+            }
         }
+
+        void Timer()
+        {
+            if(time > 0)
+            {
+                time--;
+            }
+            else
+            {
+                Failed();
+            }
+            if(ClockUpdate!= null)
+            {
+                ClockUpdate();
+            }
+        }
+
 
 
         public override void Start()
         {
             state = State.InProgress;
             CollectionManager.Instance.Collected += UpdateProgress;
+            if(isTimer)
+            {
+                GameTime.Instance.TimeElapsed += Timer;
+                startTimer = time;
+            }
         }
 
-        //~CollectionObjective()
-        //{
-        //    if (CollectionManager.Instance != null)
-        //        CollectionManager.Instance.Collected -= UpdateProgress;
-        //}
+        protected override void OnFinished()
+        {
+            base.OnFinished();
+            if (CollectionManager.Instance != null)
+            {
+                CollectionManager.Instance.Collected -= UpdateProgress;
+            }
+            if (isTimer)
+                GameTime.Instance.TimeElapsed -= Timer;
+        }
     }
 }

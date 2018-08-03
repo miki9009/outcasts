@@ -144,7 +144,8 @@ public class Controller : MonoBehaviour
         }
         else
         {
-            UIWindow.GetWindow(UIWindow.END_SCREEN).RestartLevel();
+            GameManager.Instance.EndGame(GameManager.GameState.Failed);
+            //UIWindow.GetWindow(UIWindow.END_SCREEN).RestartLevel();
         }
         yield return null;
     }

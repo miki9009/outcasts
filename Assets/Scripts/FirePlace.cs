@@ -42,15 +42,10 @@ public class FirePlace : MonoBehaviour
     IEnumerator WaitSecond()
     {
         yield return new WaitForSeconds(2);
-        EndGame();
+        GameManager.Instance.EndGame(GameManager.GameState.Completed);
     }
 
-    void EndGame()
-    {
-        GameManager.Instance.OnGameFinished();
-        Pause.Instance.PauseEnter();
-        UIWindow.GetWindow("EndGameScreen").Show();
-    }
+
 
     void CanGoToNextLevel()
     {

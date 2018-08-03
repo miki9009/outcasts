@@ -20,6 +20,6 @@ public class BezierAssigner : MonoBehaviour
 
     void Assign(Character character)
     {
-        character.movement.bezierAssigner = this;
+        //character.movement.bezierAssigner = this;
     }
 }

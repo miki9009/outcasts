@@ -6,9 +6,9 @@ public class GameTime : MonoBehaviour
     float curTime = 0;
     int seconds = 0;
 
-    public event Action OnTimeElapsed;
-    public event Action<int> OnTimeAdded;
-    public event Action OnEndOfTime;
+    public event Action TimeElapsed;
+    public event Action<int> TimeAdded;
+    public event Action EndOfTime;
     public static bool TimerRunning { get; set; }
 
     private static GameTime instance;
@@ -45,12 +45,13 @@ public class GameTime : MonoBehaviour
         GameManager.LevelLoaded += () => TimerRunning = true;
     }
 
+    bool finished;
     private void FixedUpdate()
     {
         if (TimerRunning)
         {
             curTime += Time.fixedDeltaTime;
-            if (curTime >= 1)
+            if (curTime >= 1 || finished)
             {
                 curTime = 0;
                 seconds++;
@@ -61,14 +62,15 @@ public class GameTime : MonoBehaviour
                 else
                 {
                     Debug.Log("TIME ELAPSED");
-                    if (OnEndOfTime != null)
+                    finished = true;
+                    if (EndOfTime != null)
                     {
-                        OnEndOfTime();
+                        EndOfTime();
                     }
                 }
-                if (OnTimeElapsed != null)
+                if (TimeElapsed != null)
                 {
-                    OnTimeElapsed();
+                    TimeElapsed();
                 }
             }
         }
@@ -77,9 +79,9 @@ public class GameTime : MonoBehaviour
     public void AddTime(int time)
     {
         timeToFinish += time;
-        if (OnTimeAdded != null)
+        if (TimeAdded != null)
         {
-            OnTimeAdded(time);
+            TimeAdded(time);
         }
     }
 }

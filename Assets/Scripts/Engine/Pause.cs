@@ -21,6 +21,12 @@ namespace Engine
         private void Awake()
         {
             Instance = this;
+            GameManager.GameFinished += PauseEnter;
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.GameFinished -= PauseEnter;
         }
 
         public void PauseEnter()

@@ -446,6 +446,7 @@
     <Compile Include="Assets\Scripts\Misc\CoroutineHost.cs" />
     <Compile Include="Assets\Scripts\Misc\DeactivateAfterTime.cs" />
     <Compile Include="Assets\Scripts\Misc\DeathTrigger.cs" />
+    <Compile Include="Assets\Scripts\Misc\EndScreenLabel.cs" />
     <Compile Include="Assets\Scripts\Misc\FastWater.cs" />
     <Compile Include="Assets\Scripts\Misc\LightIncrease.cs" />
     <Compile Include="Assets\Scripts\Misc\MovingPlatform.cs" />

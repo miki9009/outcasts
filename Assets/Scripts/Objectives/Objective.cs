@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using UnityEngine.Events;
-
+//https://docs.unity3d.com/ScriptReference/EditorGUILayout.html
 namespace Objectives
 {
     [Serializable]
@@ -9,7 +9,10 @@ namespace Objectives
     {
         public string title;
         public bool startOnAwake;
+        public bool optional;
 
+
+        public bool IsFinished { get; set; }
         public virtual float Progress { get; private set; }
         [HideInInspector]
         public State state;
@@ -40,6 +43,8 @@ namespace Objectives
 
         protected virtual void OnFinished()
         {
+            IsFinished = true;
+            ObjectivesManager.OnObjectiveEnded(this);
             if(Finished!= null)
             {
                 Finished(this);
