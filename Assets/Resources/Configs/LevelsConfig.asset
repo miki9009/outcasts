@@ -14,5 +14,7 @@ MonoBehaviour:
   levelPaths: Levels/
   levelElementsPath: LevelElements/
   levels:
-  - sceneName: level6
+  - sceneName: Temple
     levelName: Level0
+  - sceneName: Temple
+    levelName: Level1

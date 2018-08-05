@@ -106,7 +106,7 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
             dis2 = Vector3.Distance(character.transform.position, transform.position);
             if (dis2 < dis1)
             {
-                Debug.Log(character.name);
+ //               Debug.Log(character.name);
                 target = character.transform;
                 dis1 = dis2;
             }

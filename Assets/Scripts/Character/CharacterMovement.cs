@@ -219,7 +219,6 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
             if (enemy == null) return;
             if (!enemy.dead && enemy.isAttacking)
             {
-                enemy.isAttacking = false;
                 Hit(enemy);
             }
         }

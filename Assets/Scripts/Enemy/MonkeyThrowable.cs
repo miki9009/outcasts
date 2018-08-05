@@ -106,10 +106,10 @@ public class MonkeyThrowable : Enemy
         }
     }
 
-    protected override void OnCollisionEnter(Collision other)
-    {
+    //protected override void OnCollisionEnter(Collision other)
+    //{
         
-    }
+    //}
 
 
 }

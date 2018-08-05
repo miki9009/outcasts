@@ -693,12 +693,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnName: Native
+  collisionLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   offset: 16.27
   randomStartRotation: 1
   speed: 4
   pathMovement: {fileID: 114237988752770848}
-  looseTargetDistance: 10
+  looseTargetDistance: 20
   patrolDistance: 10
+  attackDistance: 3
+  waitTime: 3
   action: 0
   isAttacking: 0
   target: {fileID: 0}
@@ -807,7 +812,7 @@ SphereCollider:
   m_GameObject: {fileID: 1279714649643924}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.15
   m_Center: {x: 0, y: 0.15, z: 0}
@@ -835,7 +840,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0.61, z: 0}
+  m_Center: {x: 0, y: 0.52, z: 0}
 --- !u!137 &137409283954314852
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

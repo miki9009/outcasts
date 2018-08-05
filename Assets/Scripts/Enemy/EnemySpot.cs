@@ -14,8 +14,9 @@ public class EnemySpot : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        target = other.attachedRigidbody.transform;
+        target = other.attachedRigidbody.GetComponentInParent<Character>().transform;
          enemy.target = target;
+        Debug.Log("Target: " + target);
     }
 
     //private void OnTriggerExit(Collider other)

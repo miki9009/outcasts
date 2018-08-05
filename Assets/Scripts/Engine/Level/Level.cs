@@ -86,6 +86,11 @@ namespace Engine
                 }
             }
             TextAsset asset = Resources.Load(Config.levelPaths + levelName) as TextAsset;
+            if(asset == null)
+            {
+                Debug.Log("Level was null");
+                return;
+            }
             Debug.Log("Path: " + Config.levelPaths + levelName);
             var bytes = asset.bytes;
             var data = Data.DesirializeFile(bytes);

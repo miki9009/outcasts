@@ -7,17 +7,21 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
 {
     [SpawnsNames]
     public string spawnName;
+    public LayerMask collisionLayer;
     public float offset = 10;
     public bool randomStartRotation;
     public float speed = 3;
     public PathMovement pathMovement;
     public float looseTargetDistance = 10;
     public float patrolDistance = 10;
+    public float attackDistance = 3;
 
+    [Label("Wait time before next path")]
+    public float waitTime = 3;
 
     public int action = 0;
 
-    Rigidbody rb;
+    protected Rigidbody rb;
     protected Vector3 startPos;
     public bool isAttacking;
 
@@ -72,29 +76,38 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         starsExplosion = StaticParticles.Instance.starsExplosion;
         enemyDeath = GetComponent<EnemyDeath>();
         startPos = transform.position;
+        Vector3 destination = startPos;
+        if(pathMovement.RandomPoint(startPos, patrolDistance, out destination))
+        {
+            path = pathMovement.GetPath(destination);
+        }
         path = pathMovement.GetPath(pathMovement.GetRandomPointOnNavMesh());
         pathIndex = 0;
-        Debug.Log("Path points: " + path.Length);
+ //       Debug.Log("Path points: " + path.Length);
     }
 
-    protected virtual void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.layer == Layers.Character)
-        {
-            transform.rotation = Quaternion.LookRotation(Vector.Direction(transform.position, other.gameObject.transform.position));
-            target = other.transform;
-            if(canAttack)
-                Attack();
-        }
-    }
+    //protected virtual void OnCollisionEnter(Collision other)
+    //{
+    //    if (other.gameObject.layer == Layers.Character)
+    //    {
+    //transform.rotation = Quaternion.LookRotation(Vector.Direction(transform.position, other.gameObject.transform.position));
+    //        target = other.transform;
+    //        if(canAttack)
+    //            Attack();
+    //    }
+    //}
 
 
+    protected float waitTimeCur;
     float pathUpdater = 1;
     float curTimeUpdater = 0;
+    Vector3 prevPos;
+    bool isColliding = true;
+    float collidingTime;
     protected virtual void Update()
     {
-        if (isAttacking) return;
-        if(target != null)
+        anim.SetFloat("hSpeed", rb.velocity.magnitude);
+        if (target != null)
         {
             if (pathUpdater > curTimeUpdater)
             {
@@ -111,34 +124,68 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
             {
                 target = null;
             }
-        }
-        if (path != null && Vector3.Distance(transform.position, path[pathIndex]) > 2)
-        {
-            transform.rotation = Engine.Math.RotateTowardsTopDown(transform, path[pathIndex], Time.deltaTime * 5);
-            float y = rb.velocity.y;
-            Vector3 velo = transform.forward * speed;
-            velo.y = y;
-            rb.velocity = velo;
-            anim.SetFloat("hSpeed", speed);
-        }
-        else
-        {
-            if (pathIndex + 1 < path.Length)
+            else if(dis < attackDistance)
             {
-                pathIndex++;
+                rb.velocity = Vector3.zero;
+                transform.rotation = Quaternion.LookRotation(Vector.Direction(transform.position, target.position));
+                if (canAttack)
+                {
+                    Attack();
+                }
+            }
+        }
+        if (!isAttacking)
+        {
+            if (target == null && waitTimeCur > 0)
+            {
+                waitTimeCur -= Time.deltaTime;
+                if(isColliding)
+                {
+                    rb.velocity = Vector3.zero;
+                }
+                if(collidingTime > 0)
+                {
+                    collidingTime -= Time.deltaTime;
+                }
+                else
+                {
+                    isColliding = Physics.Raycast(new Ray(transform.position + Vector3.up, Vector3.down), 3, collisionLayer.value);
+                    collidingTime = 1;
+                }
+
+                return;
+            }
+            if (path != null && Vector3.Distance(transform.position, path[pathIndex]) > 2)
+            {
+                //transform.rotation = Math.RotateTowardsTopDown(transform, path[pathIndex], Time.deltaTime * 5);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector.Direction(transform.position, path[pathIndex])), 0.25f);
+                float y = rb.velocity.y;
+                Vector3 velo = transform.forward * speed;
+                velo.y = y;
+                rb.velocity = velo;
             }
             else
             {
-                Vector3 destination;
-                if(pathMovement.RandomPoint(startPos, patrolDistance, out destination))
+                if (pathIndex + 1 < path.Length)
                 {
-                    path = pathMovement.GetPath(destination);
-                    pathIndex = 0;
+                    pathIndex++;
                 }
-
+                else
+                {
+                    Vector3 destination;
+                    if (pathMovement.RandomPoint(startPos, patrolDistance, out destination))
+                    {
+                        Debug.Log("Next path");
+                        rb.velocity = Vector3.zero;
+                        path = pathMovement.GetPath(destination);
+                        waitTimeCur = waitTime;
+                        pathIndex = 0;
+                    }
+                }
             }
         }
     }
+
 
     protected void Attack()
     {
