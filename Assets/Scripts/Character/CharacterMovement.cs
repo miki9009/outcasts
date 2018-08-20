@@ -5,86 +5,81 @@ using UnityEngine;
 using Engine;
 using Engine.GUI;
 
-public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
+public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
 {
-    public bool infiniteMovement;
-    public float laneSize = 5;
     public bool onGround = true;
     public ParticleSystem smoke2;
     public Transform model;
     public LayerMask enemyLayer;
     public ParticleSystem attackParticles;
-    bool rotationEnabled = true;
     [NonSerialized]
     public bool movementEnabled = true;
     [HideInInspector]
     public Character character;
-    protected CharacterStatistics stats;
-    [NonSerialized]
-    public Animator anim;
-    //public event Action<CharacterMovement> MoveUp;
-    //public event Action<CharacterMovement> MoveDown;
-
-    private BoxCollider jumpCollider;
-
-    private ParticleSystem smoke;
-
-    float verInput = 0;
-    float horInput = 0;
-    float jumpInput = 0;
-    [NonSerialized]
-    public Rigidbody rb;
-    Vector3 curPos;
-    public bool attack;
-    public bool isAttacking = false;
-
-    public Vector3 velocity;
-    float hspeed;
-    float vspeed;
-    public float pipeFactor;
-
-    float timeLastJump = 0;
-    bool jumpReleased = true;
-    float modelZ = 0;
-    ParticleSystem smokeExplosion;
-    ParticleSystem starsExplosion;
     [HideInInspector] public CharacterHealth characterHealth;
     public Action MeleeAttack;
     public event Action<IThrowable, Vector3> Thrown;
+    public float addForce = 1;
+    public bool attack;
+    public bool isAttacking = false;
+    [NonSerialized]
+    public Rigidbody rb;
+    public Vector3 velocity;
+    public float pipeFactor;
+    [NonSerialized]
+    public Animator anim;
+
+    public bool Invincible { get; set; }
     public ThrowableObject ThrowObject { get; set; }
     public Vector3 StartPosition { get; private set; }
     public bool ButtonsInput { get; set; }
-    public float addForce = 1;
+    public AnimatorBehaviour AnimatorBehaviour
+    {
+        get; set;
+    }
+    public bool IsLocalPlayer
+    {
+        get
+        {
+            return character == Character.GetLocalPlayer();
+        }
+    }
+
+    protected CharacterStatistics stats;
+    protected float verInput = 0;
+    protected float horInput = 0;
+    protected float jumpInput = 0;
+    protected float forwardPower;
+    protected Action Movement;
+
+    ParticleSystem smokeExplosion;
+    ParticleSystem starsExplosion;
+    Vector3 curPos;
 
     //ANIMATIONS
     int throwAnimationHash;
     int attackAnimationHash;
-
-    int direction2D = 1;
     float disY;
+    float timeLastJump = 0;
+    bool jumpReleased = true;
+    float modelZ = 0;
+    float hspeed;
+    float vspeed;
 
-    public bool Invincible { get; set; }
-    bool isInfinite;
+    private BoxCollider jumpCollider;
+    private ParticleSystem smoke;
 
-    public AnimatorBehaviour AnimatorBehaviour
-    {
-        get;set;
-    }
+    protected Vector3 targetEuler;
+    protected bool canMove = true;
 
-    Action Movement;
+    protected abstract void Initialize();
+    protected abstract void Inputs();
+    protected abstract void Rotation();
 
-    Transform cam;
-    public Transform Camera
-    {
-        get
-        {
-            if(cam==null)
-            {
-                cam = Controller.Instance.gameCamera.transform;
-            }
-            return cam;
-        }
-    }
+    public bool isRemoteControl { get; set; }
+    public abstract bool IsPlayer { get; }
+
+
 
     private void Awake()
     {
@@ -95,86 +90,21 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         disY = Screen.height / 8;
     }
 
-    Button btnLeft;
-    Button btnRight;
-    Button btnJump;
-    Button btnAttack;
-    Button btnForward;
-    Button btnMovement;
-    bool buttonsInitialized = true;
-    bool canMove = true;
-
- 
-
     // Use this for initialization
     void Start ()
     {
-        rotationEnabled = Controller.Instance.gameType == Controller.GameType.Perspective;
         curPos = transform.position;
         stats = character.stats;
         rb = character.rb;
         anim = character.anim;
-        InitButtons();
         smokeExplosion = StaticParticles.Instance.smokeExplosion;
         starsExplosion = StaticParticles.Instance.starsExplosion;
-        isInfinite = InfiniteManager.Instance != null;
+        Initialize();
+        if (isRemoteControl)
+            enabled = false;
     }
 
-    void InitButtons()
-    {
-        try
-        {
-            btnMovement = GameGUI.GetButtonByName("ButtonMovement");
-            ButtonsInput = Controller.Instance.ButtonMovement;
-            btnAttack = GameGUI.GetButtonByName("ButtonAttack");
-            btnJump = GameGUI.GetButtonByName("ButtonForward");
-            btnAttack.OnTapPressed.AddListener(Attack);
-            if (infiniteMovement)
-            {
-                horInput = 1;
-                Movement = GestureMovement;
-                DeactivateButtons();
-            }
-            else
-            {
-                if (ButtonsInput)
-                {
-                    btnAttack.gameObject.SetActive(true);
-
-                    btnLeft = GameGUI.GetButtonByName("ButtonLeft");
-                    btnLeft.gameObject.SetActive(true);
-                    btnRight = GameGUI.GetButtonByName("ButtonRight");
-                    btnRight.gameObject.SetActive(true);
-                    btnJump.gameObject.SetActive(true);
-                    var rect = GameGUI.GetButtonByName("Action").GetComponent<RectTransform>();
-                    rect.anchoredPosition = new Vector2(700, rect.anchoredPosition.y);
-                    Movement = ButtonsMovement;
-
-                }
-                else
-                {
-                    DeactivateButtons();
-                    Movement = GestureMovement;
-                }
-            }
-        }
-        catch
-        {
-            Movement = ButtonsMovement;
-            Debug.Log("Buttons are not initialized, you can still use keyboard for movement");
-            buttonsInitialized = false;
-        }
-        
-    }
-
-    private void DeactivateButtons()
-    {
-        GameGUI.GetButtonByName("ButtonLeft").gameObject.SetActive(false);
-        GameGUI.GetButtonByName("ButtonRight").gameObject.SetActive(false);
-    }
-
-
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         onGround = false;
         smoke.Stop();
@@ -191,10 +121,11 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     {
         enabled = false;
         StopAllCoroutines();
-        Controller.Instance.OnPlayerDead(character);
+        if(IsLocalPlayer)
+            Controller.Instance.OnPlayerDead(character);
     }
 
-    private void OnTriggerStay(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         if (other.gameObject.layer == Layers.Environment)
         {
@@ -211,7 +142,7 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 11)
         {
@@ -232,11 +163,16 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
     public void Hit(Enemy enemy = null, int hp = 1, bool heavyAttack = false)
     {
         if (stats.health <= 0 || Invincible || (isAttacking && !heavyAttack)) return;
-        hp = Mathf.Clamp(hp,1,stats.health);
+        hp = Mathf.Clamp(hp, 1, stats.health);
 
-        for (int i = 0; i < hp; i++)
+        if (IsLocalPlayer)
         {
-            characterHealth.RemoveHealth(stats.health -i-1);
+            {
+                for (int i = 0; i < hp; i++)
+                {
+                    characterHealth.RemoveHealth(stats.health - i - 1);
+                }
+            }
         }
 
         stats.health -= hp;
@@ -258,18 +194,21 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
         starsExplosion.Play();
     }
 
-    // Update is called once per frame
-    void FixedUpdate ()
+    public void SetAnimationHorizontal(Vector3 velo)
     {
-        velocity = rb.velocity;
-        hspeed = rb.velocity.magnitude;
-        if(isInfinite)
-        {
-            hspeed = hspeed / 2;
-        }
+        if (anim == null) return;
+        velocity = velo;
+        hspeed = velocity.magnitude;
         vspeed = velocity.y; //Mathf.Lerp(vspeed,velocity.y, 0.05f);
         anim.SetFloat("hSpeed", hspeed);
         anim.SetFloat("vSpeed", vspeed);
+        anim.SetBool("onGround", onGround);
+    }
+
+    // Update is called once per frame
+    void FixedUpdate ()
+    {
+        SetAnimationHorizontal(rb.velocity);
         Move();
         Rotation();
         if(onGround)
@@ -307,216 +246,12 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
             timeLastJump = 1;
             anim.Play("Jump");
             rb.AddForce(Vector3.up * stats.jumpForce, ForceMode.VelocityChange);
-            jumpInput = 0;
+            jumpInput = 0; 
             onGround = false;
         }
         else
         {
             timeLastJump -= Time.deltaTime;
-        }
-    }
-
-    void Inputs()
-    {        
-        if (canMove)
-        {
-            if (buttonsInitialized)
-            {
-                if (verInput < 0)
-                {
-                    verInput = 1;
-                    direction2D = 1;
-                }
-                if (verInput > 0)
-                {
-                    verInput = 1;
-                    direction2D = -1;
-                }
-            }
-
-#if UNITY_EDITOR
-            //verInput = Input.GetAxisRaw("Vertical");
-            if(horInput == 0)
-                horInput = Input.GetAxisRaw("Horizontal");
-
-            if (jumpInput == 0)
-            {
-                if (Input.GetKey(KeyCode.Space))
-                {
-                    jumpInput = 1;
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftControl))
-            {
-                //Debug.Log("Attack Invoked");
-                btnAttack.OnTapPressedInvoke();
-            }
-#endif
-        }
-        //anim.SetFloat("vSpeed", velocity.y);
-        if (horInput > 0)
-            direction2D = 1;
-        else if (horInput < 0)
-            direction2D = -1;
-        anim.SetBool("onGround", onGround);
-    }
-
-    Vector2 horTouched;
-    Vector2 verTouched;
-    bool horPressed;
-    bool verPressed;
-    float verDistance;
-    float horDistance;
-    Vector3 lastAttackTouchPosition;
-    Vector3 curHorTouched;
-    Vector3 pointingDir;
-    float forwardPower;
-    float angle;
-    Vector3 targetEuler;
-    public bool Touched
-    {
-        get
-        { return horPressed; }
-    }
-    public Vector2 StartTouchedPosition
-    {
-        get
-        {
-            return horTouched;
-        }
-    }
-    public Vector2 CurrentTouchedPosition
-    {
-        get
-        {
-            return curHorTouched;
-        }
-    }
-    void GestureMovement()
-    {
-        bool pressedHorizontalCurrent = false;
-        int touchCount = Input.touchCount;
-        var touches = Input.touches;
-        jumpInput = 0;
-        horDistance = 0;
-        forwardPower = 0;
-        pressedHorizontalCurrent = false;
-        angle = 0;
-
-        if (btnMovement.isTouched || horPressed)
-        {
-            for (int i = 0; i < Input.touchCount; i++)
-            {
-                if (touches[i].position.x < Screen.width / 2)
-                {
-                    pressedHorizontalCurrent = true;
-                    if (!horPressed)
-                    {
-                        horPressed = true;
-                        horTouched = btnMovement.transform.position;
-                    }
-                    else
-                    {
-                        curHorTouched = touches[i].position;
-                        horDistance = Vector3.Distance(horTouched, curHorTouched);
-                    }
-                }
-            }
-
-#if UNITY_EDITOR
-            if (Input.GetMouseButton(0))
-            {
-                if (Input.mousePosition.x < Screen.width / 2)
-                {
-                    pressedHorizontalCurrent = true;
-                    if (!horPressed)
-                    {
-                        horPressed = true;
-                        horTouched = btnMovement.transform.position;
-                    }
-                    else
-                    {
-                        curHorTouched = Input.mousePosition;
-                        horDistance = Vector3.Distance(horTouched, curHorTouched);
-                    }
-                }
-            }
-#endif
-        }
-
-#if UNITY_EDITOR
-        float hor = Input.GetAxisRaw("Horizontal");
-        float ver = Input.GetAxisRaw("Vertical");
-        if (hor < 0) angle = 270;
-        if (hor > 0) angle = 90;
-        if (ver > 0) angle = 0;
-        if (ver < 0) angle = 180;
-        if (ver > 0 && hor > 0) angle = 45;
-        if (ver > 0 && hor < 0) angle = 315;
-        if (ver < 0 && hor > 0) angle = 135;
-        if (ver < 0 && hor < 0) angle = 225;
-        if (hor != 0 || ver != 0)
-        {
-            forwardPower = 1;
-        }
-        targetEuler = new Vector3(0, Camera.eulerAngles.y + angle, 0);
-#endif
-
-        if (horDistance > 1)
-        {
-            pointingDir = Vector.Direction(horTouched, curHorTouched);
-            angle = -Vector2.SignedAngle(Vector2.up, pointingDir);
-            forwardPower = Mathf.Clamp(horDistance, 0, 50)/50;
-            targetEuler = new Vector3(0, Camera.eulerAngles.y + angle, 0);
-        }
-
-        if (!pressedHorizontalCurrent && horPressed)
-        {
-            horPressed = false;
-        }
-
-        if (!verPressed)
-        {
-            if (verDistance > 30)
-            {
-                if (verTouched.y < lastAttackTouchPosition.y)
-                {
-                    jumpInput = 1;
-                    verTouched.y = 0;
-                    lastAttackTouchPosition.y = 0;
-                    verDistance = 0;
-                }
-                else
-                {
-                    if (!onGround)
-                    {
-                        lastAttackTouchPosition.y = 0;
-                        rb.velocity = Vector3.down * stats.attackForce;
-                        anim.SetTrigger("attack");
-                        anim.SetBool("attackStay", true);
-                    }
-                }
-            }
-        }
-
-        if(btnJump.isTouched)
-        {
-            jumpInput = 1;
-        }
-    }
-
-    void ButtonsMovement()
-    {
-        horInput = 0;
-        if (buttonsInitialized)
-        {
-            if (btnRight.isTouched) horInput = 1;
-            if (btnLeft.isTouched) horInput = -1;
-            if (btnJump.isTouched)
-                jumpInput = 1;
-            else
-                jumpInput = 0;
         }
     }
 
@@ -535,18 +270,9 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
             rb.rotation = transform.rotation;
         }
     }
-    float sinus;
-    void Rotation()
-    {
-        var vec = Controller.Instance.gameCamera.transform.forward;
-        vec.y = 0;
-        transform.eulerAngles = targetEuler;
-        //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(targetEuler), 0.2f);
-        sinus = Mathf.Lerp(sinus, angle < 90 && angle > -90 ? angle : angle > 0 ? 180 - angle : -180 - angle, Time.deltaTime * 10);
-        model.transform.localEulerAngles = new Vector3(0, 0, Mathf.Clamp(-sinus/3, -15, 15));
-    }
 
-    void Attack()
+
+    protected void Attack()
     {
         if (!enabled || attack) return;
 
@@ -569,11 +295,8 @@ public class CharacterMovement : MonoBehaviour, IThrowable, IStateAnimator
                 anim.Play("Attack");
                 isAttacking = true;
                 attackParticles.Play();
-                if (MeleeAttack != null)
-                {
-                    MeleeAttack();
-                }
-            }
+                MeleeAttack?.Invoke();
+        }
         //}
     }
 

@@ -192,12 +192,14 @@ public class Controller : MonoBehaviour
             //Draw.DisplayMedianFps(Screen.width / 2 - Screen.width * 0.1f, 70);
         }
 
-        if (UnityEngine.GUI.Button(new Rect(10, 60, 100, 50), "Sun Shuffts"))
-        {
-            if (LightshaftParent == null) return;
-            rayOn = !rayOn;
-            LightshaftParent.gameObject.SetActive(rayOn);
-        }
+        //if (UnityEngine.GUI.Button(new Rect(10, 60, 100, 50), "Sun Shuffts"))
+        //{
+        //    if (LightshaftParent == null) return;
+        //    rayOn = !rayOn;
+        //    LightshaftParent.gameObject.SetActive(rayOn);
+        //}
+
+        
 
 
     }

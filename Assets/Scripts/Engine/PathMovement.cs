@@ -100,6 +100,7 @@ public class PathMovement : MonoBehaviour
         {
             if (path.status == NavMeshPathStatus.PathComplete)
             {
+                Debug.Log("FOUND PATH");
                 return SetupPath(path.corners);
             }
             else
@@ -107,8 +108,11 @@ public class PathMovement : MonoBehaviour
                 noPath = true;
             }
         }
+        Debug.Log("DIDN'T FIND PATH");
         return new Vector3[] { transform.position };
     }
+
+
 
     public void GetPath()
     {

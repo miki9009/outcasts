@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Engine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,9 +38,10 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
             {
                 OnCollected(obj);
             }
-            display.ShowDisplay();
             character = other.GetComponentInParent<Character>();
             int playerID = character.ID;
+            if(character.movement.IsLocalPlayer)
+                display.ShowDisplay();
             CollectionManager.Instance.SetCollection(playerID, type, val);            
             collectedCoroutine = StartCoroutine(Collected());
             if (emmitParticles)
@@ -57,6 +59,11 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
         }
     }
 
+    void OnEnable()
+    {
+        AddToLevelCollection();
+    }
+
     private void OnDisable()
     {
         if(collected && collectedCoroutine != null)
@@ -67,11 +74,30 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
             else
                 Debug.Log("Should be Deactivated by Manager, but manager is null");
         }
+        RemoveFromLevelCollection();
+
+    }
+
+    void RemoveFromLevelCollection()
+    {
+        if (collected && CollectionManager.Instance.LevelCollections.ContainsKey(this))
+        {
+            CollectionManager.Instance.LevelCollections.Remove(this);
+        }
+    }
+
+    void AddToLevelCollection()
+    {
+        if (!collected && !CollectionManager.Instance.LevelCollections.ContainsKey(this))
+        {
+            CollectionManager.Instance.LevelCollections.Add(this, type);
+        }
     }
 
     private void Awake()
     {
         localScale = transform.localScale;
+        
         if (!GameManager.IsLevelLoaded)
         {
             GameManager.LevelLoaded += AssignDisplayOnLoad;
@@ -198,6 +224,7 @@ public enum CollectionType
     KeyBronze = 10,
     Restart = 11,
     DestroyCrate = 12,
-    KillEnemy = 13
+    KillEnemy = 13,
+    WaypointVisited = 14
 }
 

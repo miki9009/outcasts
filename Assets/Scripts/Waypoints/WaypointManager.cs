@@ -18,4 +18,19 @@ public class WaypointManager : MonoBehaviour
             return instance;
         }
     }
+
+    private void Awake()
+    {
+        GameManager.LevelClear += Clear;
+    }
+
+
+
+    void Clear()
+    {
+        Debug.Log("Waypoints Manager cleard");
+        instance = null;
+        GameManager.LevelClear -= Clear;
+        Destroy(gameObject);
+    }
 }

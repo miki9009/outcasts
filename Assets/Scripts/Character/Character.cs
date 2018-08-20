@@ -7,6 +7,7 @@ using System;
 [DefaultExecutionOrder(-50)]
 public class Character : MonoBehaviour
 {
+    public PhotonView networking;
     public CharacterStatistics stats;
     [HideInInspector] public Animator anim;
     [HideInInspector] public Rigidbody rb;
@@ -82,26 +83,46 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void CreateLocalPlayer()
+    {
+        localPlayer = this;
+        Controller.Instance.character = this;
+        Controller.Instance.gameCamera.GetComponent<GameCamera>().SetTarget(transform);
+        CharacterCreated?.Invoke(this);
+    }
+
 
     private void Awake()
     {
         movement = GetComponent<CharacterMovement>();
         identity = new Identification();
-        ID = identity.ID;
+
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
-        localPlayer = this;
+
     }
 
     void Start()
     {
         Controller.Instance.characters.Add(this);
-        Controller.Instance.character = this;
-        if(CharacterCreated!=null)
+        if (movement.GetType() == typeof(CharacterMovementPlayer))
         {
-            CharacterCreated(this);
+            if(networking.isMine || !PhotonManager.IsMultiplayer)
+            {
+                CreateLocalPlayer();
+            }
+            else if(PhotonManager.IsMultiplayer)
+            {
+                DisableOnNotMine();
+            }
+            ID = networking.viewID;
+
         }
-        Controller.Instance.gameCamera.GetComponent<GameCamera>().SetTarget(transform);
+        else
+        {
+            ID = identity.ID;
+        }
+
     }
 
     private void OnDestroy()
@@ -109,13 +130,23 @@ public class Character : MonoBehaviour
         Controller.Instance.characters.Remove(this);
     }
 
+    void DisableOnNotMine()
+    {
+        movement.isRemoteControl = true;
+        rb.useGravity = false;
+    }
+
+
+
+
+
 
 }
 public class Identification
 {
     private static int counter = 0;
 
-    private readonly int id = -1;
+    private readonly int id = 1000;
     public int ID
     {
         get

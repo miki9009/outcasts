@@ -15,8 +15,17 @@ public class EnemySpot : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         target = other.attachedRigidbody.GetComponentInParent<Character>().transform;
-         enemy.target = target;
-        Debug.Log("Target: " + target);
+        if(enemy.target!=null)
+        {
+            if(Vector3.Distance(enemy.target.position, transform.position) >
+                Vector3.Distance(target.position, transform.position))
+            {
+                enemy.target = null;
+            }
+        }
+        if(enemy.target==null)
+            enemy.target = target;
+        Debug.Log("Target: " + other.attachedRigidbody.GetComponentInParent<Character>());
     }
 
     //private void OnTriggerExit(Collider other)

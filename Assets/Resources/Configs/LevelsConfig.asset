@@ -18,3 +18,7 @@ MonoBehaviour:
     levelName: Level0
   - sceneName: Temple
     levelName: Level1
+  - sceneName: Temple
+    levelName: Level2
+  - sceneName: SnowMoutain
+    levelName: Level3

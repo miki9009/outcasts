@@ -7,6 +7,7 @@ using System.Linq;
 public class CollectionManager : MonoBehaviour
 {
     static CollectionManager instance;
+    public Dictionary<CollectionObject, CollectionType> LevelCollections = new Dictionary<CollectionObject, CollectionType>();
     public ParticleSystem[] particles;
     public static CollectionManager Instance
     {
@@ -29,6 +30,7 @@ public class CollectionManager : MonoBehaviour
     private void OnDestroy()
     {
         instance = null;
+        GameManager.LevelClear -= Clear;
     }
 
     CollectionManager()
@@ -43,6 +45,7 @@ public class CollectionManager : MonoBehaviour
         {
             instance = this;
         }
+        GameManager.LevelClear += Clear;
     }
 
     Dictionary<int, CollectionSet> collections;
@@ -54,6 +57,11 @@ public class CollectionManager : MonoBehaviour
         {
             Collected(id, collection, amount);
         }
+    }
+
+    void Clear()
+    {
+        LevelCollections.Clear();
     }
 
     public Dictionary<int, CollectionSet> AllCollections()

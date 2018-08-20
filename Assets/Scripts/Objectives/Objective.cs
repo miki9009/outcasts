@@ -11,7 +11,7 @@ namespace Objectives
         public bool startOnAwake;
         public bool optional;
 
-
+        
         public bool IsFinished { get; set; }
         public virtual float Progress { get; private set; }
         [HideInInspector]
@@ -22,7 +22,6 @@ namespace Objectives
 
         public virtual void Start()
         {
-
         }
 
         protected void OnStart()

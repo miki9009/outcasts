@@ -77,7 +77,7 @@ Material:
     m_Floats:
     - PixelSnap: 0
     - _BumpScale: 1
-    - _Cutoff: 0.42857143
+    - _Cutoff: 0.098
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _EnableExternalAlpha: 0
@@ -90,6 +90,10 @@ Material:
     - _Opacity: 0.8
     - _Outline: 0.005
     - _Parallax: 0.02
+    - _ShakeBending: 1
+    - _ShakeDisplacement: 1
+    - _ShakeTime: 0.638
+    - _ShakeWindspeed: 1
     - _Shininess: 0.617
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

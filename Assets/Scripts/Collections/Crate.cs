@@ -81,23 +81,11 @@ public class Crate : MonoBehaviour, IDestructible
                 if (coins[i] != null)
                     coins[i].GetComponent<Collection>().enabled = true;
             }
-        if (Controller.Instance.gameType == Controller.GameType.Ortographic)
-        {            
-            for (int j = 0; j < coins.Length; j++)
-            {
-                if (coins[j] != null)
-                {
-                    coins[j].transform.position = Character.GetLocalPlayer().transform.position;
-                }
-                yield return null;
-            }
-        }
         gameObject.SetActive(false);
     }
 
     public void Hit(CharacterMovement character)
     {
-        Debug.Log("Crate: " + this.GetInstanceID());
         CollectionManager.Instance.SetCollection(character.character.ID, CollectionType.DestroyCrate, 1);
         crateExplosion.transform.position = transform.position;
         crateExplosion.Play();

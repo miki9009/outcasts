@@ -286,6 +286,8 @@ GameObject:
   - component: {fileID: 136111449908194306}
   - component: {fileID: 135932300472324808}
   - component: {fileID: 65057494990185086}
+  - component: {fileID: 114668861302155250}
+  - component: {fileID: 114847762505081622}
   - component: {fileID: 114479674008454256}
   - component: {fileID: 114260549044847582}
   m_Layer: 9
@@ -568,14 +570,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1741745381642808}
   m_LocalRotation: {x: -0, y: 0.7455342, z: -0, w: 0.6664675}
-  m_LocalPosition: {x: 2.75, y: 1.2, z: -2.14}
+  m_LocalPosition: {x: 109.28, y: 37.41, z: 43.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4623327186587614}
   - {fileID: 4761896993031244}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 96.41, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 63.04, z: 0}
 --- !u!4 &4799106042533150
 Transform:
   m_ObjectHideFlags: 1
@@ -663,7 +665,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 88
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &65057494990185086
 BoxCollider:
@@ -703,11 +705,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1741745381642808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6f8ca6e070f8854791f5d2f722a3e63, type: 3}
+  m_Script: {fileID: 11500000, guid: 3eabeb107b2a992449023ba35d472df5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  infiniteMovement: 0
-  laneSize: 5
   onGround: 1
   smoke2: {fileID: 198795286452334074}
   model: {fileID: 4761896993031244}
@@ -715,12 +715,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   attackParticles: {fileID: 198694120996659492}
+  character: {fileID: 0}
+  characterHealth: {fileID: 0}
+  addForce: 500
   attack: 0
   isAttacking: 0
   velocity: {x: 0, y: 0, z: 0}
   pipeFactor: 0
-  characterHealth: {fileID: 0}
-  bezierAssigner: {fileID: 0}
   collisionLayer:
     serializedVersion: 2
     m_Bits: 39168
@@ -735,6 +736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e4b9bb05897683489fe9403008a844b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networking: {fileID: 114668861302155250}
   stats:
     runSpeed: 8
     health: 1
@@ -749,6 +751,43 @@ MonoBehaviour:
   leftLowerArm: {fileID: 4063311992194988}
   rightUpperArm: {fileID: 4799106042533150}
   rightLowerArm: {fileID: 4574165934073940}
+--- !u!114 &114668861302155250
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1741745381642808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 114847762505081622}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
+--- !u!114 &114847762505081622
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1741745381642808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1a72b7f2fa794f44b78d3233d27d82d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &135926904139250542
 SphereCollider:
   m_ObjectHideFlags: 1

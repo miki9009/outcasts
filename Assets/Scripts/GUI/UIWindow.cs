@@ -308,14 +308,9 @@ namespace Engine.GUI
 
         public void RestartLevel()
         {
-            //levelName = SceneManager.GetActiveScene().name;
-            //SceneManager.UnloadSceneAsync(levelName);
-            //SceneManager.sceneUnloaded += Restart;
-            if(!string.IsNullOrEmpty(LevelManager.Instance.LastCustomLevel))
-                Level.Load(LevelManager.Instance.LastCustomLevel);
             if(GameManager.Instance!=null)
             {
-                GameManager.OnRestart();
+                GameManager.Instance.RestartLevel();
             }
         }
 

@@ -10,8 +10,8 @@ public class Analog : MonoBehaviour
 
     Vector3 childStartPos;
 
-    CharacterMovement characterMovement;
-    CharacterMovement CharacterMovement
+    CharacterMovementPlayer characterMovement;
+    CharacterMovementPlayer CharacterMovement
     {
         get
         {
@@ -22,7 +22,7 @@ public class Analog : MonoBehaviour
                     var character = Controller.Instance.character;
                     if (character != null)
                     {
-                        characterMovement = character.movement;
+                        characterMovement = (CharacterMovementPlayer)character.movement;
                     }
                 }
             }

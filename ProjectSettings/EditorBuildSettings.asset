@@ -20,6 +20,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Temple.unity
     guid: 2fa5426740aca6649a9f778ef1bcf02e
+  - enabled: 1
+    path: Assets/Scenes/SnowMoutain.unity
+    guid: 4cf6ee13707d6104690b28323979ab15
+  - enabled: 1
+    path: Assets/Scenes/LowPoly.unity
+    guid: 65f37402fad52414b95946c0a9e38b48
   - enabled: 0
     path: Assets/Scenes/test.unity
     guid: 9ccdbb4d7223ddf42b4681624655b56f

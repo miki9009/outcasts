@@ -55,7 +55,8 @@ namespace Engine
 #endif
             foreach (var element in elements)
             {
-                DestroyImmediate(element.gameObject);
+                if(element!=null && element.gameObject!=null)
+                    DestroyImmediate(element.gameObject);
             }
         }
 
@@ -64,7 +65,8 @@ namespace Engine
             var elements = GameObject.FindObjectsOfType<LevelElement>();
             foreach (var element in elements)
             {
-                DestroyImmediate(element.gameObject);
+                if (element != null && element.gameObject != null)
+                    DestroyImmediate(element.gameObject);
             }
         }
 

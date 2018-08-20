@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 [DefaultExecutionOrder(999)]
 public class GameManager : MonoBehaviour
 {
+    public static event Action LevelClear;
     public static event Action LevelLoaded;
     public static event Action<string> LevelChanged;
     public static event Action GameFinished;
@@ -42,10 +43,7 @@ public class GameManager : MonoBehaviour
 
     public void OnLevelChangedEvent(string levelName)
     {
-        if (LevelChanged != null)
-        {
-            LevelChanged(LevelName);
-        }
+        LevelChanged?.Invoke(LevelName);
     }
 
     void OnLevelChanged(Scene scene, Scene scene2)
@@ -64,10 +62,12 @@ public class GameManager : MonoBehaviour
 
     public static void OnRestart()
     {
-        if(Restart != null)
-        {
-            Restart();
-        }
+        Restart?.Invoke();
+    }
+
+    static void OnLevelClear()
+    {
+        LevelClear?.Invoke();
     }
 
     IEnumerator LevelLoadedCor()
@@ -105,6 +105,7 @@ public class GameManager : MonoBehaviour
 
     public void OnGameFinished()
     {
+        OnLevelClear();
         var data = DataManager.Collections;
         var collectionManger = CollectionManager.Instance;
         int localID = Character.GetLocalPlayer().ID;
@@ -121,6 +122,20 @@ public class GameManager : MonoBehaviour
         if (GameFinished != null)
         {
             GameFinished();
+        }
+    }
+
+    public void RestartLevel()
+    {
+        //levelName = SceneManager.GetActiveScene().name;
+        //SceneManager.UnloadSceneAsync(levelName);
+        //SceneManager.sceneUnloaded += Restart;
+        OnLevelClear();
+        if (!string.IsNullOrEmpty(LevelManager.Instance.LastCustomLevel))
+            Level.Load(LevelManager.Instance.LastCustomLevel);
+        if (Instance != null)
+        {
+            OnRestart();
         }
     }
 

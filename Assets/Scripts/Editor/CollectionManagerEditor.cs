@@ -13,15 +13,17 @@ public class CollectionManagerEditor : Editor
         {
             string collectionString = "";
             var collections = script.AllCollections();
-            foreach (var set in collections.Values)
+            foreach (var set in collections)
             {
                 //collectionString += collection.Key + ": " + collection.Value.Collection.Values + "\n";
-                foreach (var item in set.Collection)
+                collectionString = "ID: " + set.Key;
+                foreach (var item in set.Value.Collection)
                 {
                     collectionString += item.Key + ": " + item.Value + "\n";
                 }
+                Debug.Log("Collections: \n" + collectionString);
             }
-            Debug.Log("Collections: \n" + collectionString);
+
         }
     }
 }

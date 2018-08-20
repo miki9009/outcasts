@@ -7,6 +7,8 @@ namespace Engine
 {
     public class LevelElement : MonoBehaviour
     {
+        public TargetPointerActivator ArrowActivator { get; set; }
+        public bool arrowTarget;
         public Dictionary<string, object> data;
         public string GetName()
         {
@@ -28,17 +30,35 @@ namespace Engine
             data.Add("Rotation", rotation);
             Vector scale = transform.localScale;
             data.Add("Scale", scale);
+            data.Add("ArrowTarget", arrowTarget);
         }
 
         public virtual void OnLoad()
         {
+            GameManager.LevelClear += OnLevelClear;
+
             if (data.ContainsKey("Position"))
                 transform.position = (Vector)data["Position"];
             if (data.ContainsKey("Rotation"))
                 transform.rotation = (Float4)data["Rotation"];
             if (data.ContainsKey("Scale"))
                 transform.localScale = (Vector)data["Scale"];
+            if (data.ContainsKey("ArrowTarget"))
+                arrowTarget = (bool)data["ArrowTarget"];
+
+            if(arrowTarget)
+            {
+                var character = Character.GetLocalPlayer();
+                if(character != null)
+                    TargetPointerManager.PrepareArrow(character.transform, transform);
+            }
         }
 
+        protected virtual void OnLevelClear()
+        {
+            if (gameObject == null) return;
+            GameManager.LevelClear -= OnLevelClear;
+            Destroy(gameObject);
+        }
     }
 }
