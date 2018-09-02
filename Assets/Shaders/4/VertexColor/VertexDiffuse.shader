@@ -1,6 +1,6 @@
 ﻿Shader "VertexColor/Diffuse" {
 Properties {
-//    _Color ("Main Color", Color) = (1,1,1,1)
+    _Color ("Main Color", Color) = (1,1,1,1)
 //    _MainTex ("Base (RGB)", 2D) = "white" {}
 }
  
@@ -12,7 +12,7 @@ CGPROGRAM
 #pragma surface surf Lambert vertex:vert
  
 //sampler2D _MainTex;
-//fixed4 _Color;
+fixed4 _Color;
  
 struct Input {
 //    float2 uv_MainTex;
@@ -27,7 +27,7 @@ void vert (inout appdata_full v, out Input o) {
 void surf (Input IN, inout SurfaceOutput o) {
 //    fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
 //    o.Albedo = c.rgb * IN.vertColor;
-    o.Albedo = IN.vertColor;
+    o.Albedo = IN.vertColor*_Color;
 //    o.Alpha = c.a;
 }
 ENDCG

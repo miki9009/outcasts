@@ -19,6 +19,7 @@ ModelImporter:
     100026: thigh_R
     100028: upper_arm_L
     100030: upper_arm_R
+    100032: Body_000
     400000: Body
     400002: //RootNode
     400004: chest
@@ -35,9 +36,11 @@ ModelImporter:
     400026: thigh_R
     400028: upper_arm_L
     400030: upper_arm_R
+    400032: Body_000
     2300000: Body
     3300000: Body
     4300000: Body
+    4300002: Body_000
     7400000: Die
     7400002: metarig_metarig_a_Attack_metarig_a_Attack
     7400004: metarig_metarig_a_Fall_metarig_a_Fall
@@ -60,6 +63,7 @@ ModelImporter:
     7400038: JumpCrate
     9500000: //RootNode
     13700000: Body
+    13700002: Body_000
     2186277476908879412: ImportLogs
   externalObjects:
   - first:

@@ -85,6 +85,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 0
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 6bfde8876f3ce8b43b37ac691cef2d4f, type: 2}
   m_StaticBatchInfo:
@@ -125,12 +126,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+  spawnName: GoldCoin
   val: 1
   emmitParticles: 1
   particlesAmmount: 10
   collected: 0
   rigid: {fileID: 0}
-  display: {fileID: 0}
   deactivationTime: 0.1
   time: 10
 --- !u!135 &135540705139504538

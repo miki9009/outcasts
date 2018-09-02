@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 64764609692498928}
   m_Layer: 10
   m_Name: Pine2
-  m_TagString: Untagged
+  m_TagString: EditorRotation
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

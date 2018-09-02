@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 64063264611812070}
   m_Layer: 10
   m_Name: Tree1
-  m_TagString: EditorRotation
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

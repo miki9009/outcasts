@@ -35,10 +35,11 @@ namespace Engine
             var meshRenderer = obj.AddComponent<MeshRenderer>();
             var filter = obj.AddComponent<MeshFilter>();
             filter.sharedMesh = new Mesh();
+            filter.sharedMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
             filter.sharedMesh.CombineMeshes(combine);
-#if UNITY_EDITOR
-            UnityEditor.Unwrapping.GenerateSecondaryUVSet(filter.sharedMesh);
-#endif
+//#if UNITY_EDITOR
+//            UnityEditor.Unwrapping.GenerateSecondaryUVSet(filter.sharedMesh);
+//#endif
             meshRenderer.sharedMaterial = meshFilters[0].GetComponent<MeshRenderer>().sharedMaterial;
             parent.position = prevPos;
             meshRenderer.transform.position = prevPos;

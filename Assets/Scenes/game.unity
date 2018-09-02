@@ -213,17 +213,17 @@ Prefab:
     - target: {fileID: 114053849689877406, guid: 2719bd86fbe8575458e16ef1ac5e7544,
         type: 2}
       propertyPath: minDistance
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114053849689877406, guid: 2719bd86fbe8575458e16ef1ac5e7544,
         type: 2}
       propertyPath: upFactor
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114053849689877406, guid: 2719bd86fbe8575458e16ef1ac5e7544,
         type: 2}
       propertyPath: y
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4998460083595360, guid: 2719bd86fbe8575458e16ef1ac5e7544, type: 2}
       propertyPath: m_RootOrder
@@ -241,6 +241,56 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114053849689877406, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+        type: 2}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114053849689877406, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+        type: 2}
+      propertyPath: z
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114053849689877406, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+        type: 2}
+      propertyPath: vignatteAberration
+      value: 
+      objectReference: {fileID: 2081299069}
+    - target: {fileID: 114053849689877406, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+        type: 2}
+      propertyPath: motionBlure
+      value: 
+      objectReference: {fileID: 2081299068}
+    - target: {fileID: 114053849689877406, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+        type: 2}
+      propertyPath: camMotionBlur
+      value: 
+      objectReference: {fileID: 2081299067}
+    - target: {fileID: 20175152103574964, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+        type: 2}
+      propertyPath: m_BackGroundColor.r
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 20175152103574964, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+        type: 2}
+      propertyPath: m_BackGroundColor.g
+      value: 0.739604
+      objectReference: {fileID: 0}
+    - target: {fileID: 20175152103574964, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+        type: 2}
+      propertyPath: m_BackGroundColor.b
+      value: 0.5254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 20175152103574964, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+        type: 2}
+      propertyPath: field of view
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 20175152103574964, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+        type: 2}
+      propertyPath: far clip plane
+      value: 90
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2719bd86fbe8575458e16ef1ac5e7544, type: 2}
   m_IsPrefabParent: 0
@@ -249,3 +299,21 @@ Transform:
   m_PrefabParentObject: {fileID: 4827371802553914, guid: 2719bd86fbe8575458e16ef1ac5e7544,
     type: 2}
   m_PrefabInternal: {fileID: 2081299065}
+--- !u!114 &2081299067 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114640328737431512, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+    type: 2}
+  m_PrefabInternal: {fileID: 2081299065}
+  m_Script: {fileID: 11500000, guid: 97e9b95cf609d96409b6c40519432957, type: 3}
+--- !u!114 &2081299068 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114230248278258138, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+    type: 2}
+  m_PrefabInternal: {fileID: 2081299065}
+  m_Script: {fileID: 11500000, guid: 478a2083ad114a07d000fbfb8d76c639, type: 3}
+--- !u!114 &2081299069 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114024389579281356, guid: 2719bd86fbe8575458e16ef1ac5e7544,
+    type: 2}
+  m_PrefabInternal: {fileID: 2081299065}
+  m_Script: {fileID: 11500000, guid: dd6d4281e5d7cd44d8c6e38bc2c1b8d8, type: 3}
