@@ -47,14 +47,14 @@ namespace LPWAsset {
 
         #region Unity functions
 
-		void OnGUI()
-		{
-			if (GUI.Button (new Rect (Screen.width * 0.6f, Screen.height * 0.4f, Screen.width * 0.1f, Screen.height * 0.05f), "Reflection: " + (enableReflection ? "ON" : "OFF"))) {
-				enableReflection = !enableReflection;
-				this.enabled = false;
-				this.enabled = true;
-			}
-		}
+		//void OnGUI()
+		//{
+		//	if (GUI.Button (new Rect (Screen.width * 0.6f, Screen.height * 0.4f, Screen.width * 0.1f, Screen.height * 0.05f), "Reflection: " + (enableReflection ? "ON" : "OFF"))) {
+		//		enableReflection = !enableReflection;
+		//		this.enabled = false;
+		//		this.enabled = true;
+		//	}
+		//}
 
         void OnEnable() {
             #if UNITY_EDITOR

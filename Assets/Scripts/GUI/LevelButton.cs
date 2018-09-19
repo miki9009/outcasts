@@ -20,7 +20,7 @@ public class LevelButton : MonoBehaviour
             Camera.main.gameObject.SetActive(false);
         }
         catch { }
-        LevelManager.BeginCustomLevelLoadSequence(levelName, customLevel);
+        LevelManager.BeginCustomLevelLoadSequenceAdditive(levelName, customLevel);
     }
 
 }

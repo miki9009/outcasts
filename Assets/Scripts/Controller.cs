@@ -9,6 +9,8 @@ using Engine.Config;
 [DefaultExecutionOrder(-100)]
 public class Controller : MonoBehaviour
 {
+    public BloomOptimized bloom;
+    public Antialiasing antialiasing;
     public enum GameType { Perspective, Ortographic}
     public GameType gameType = GameType.Perspective;
     public GameObject gameUI;
@@ -45,10 +47,9 @@ public class Controller : MonoBehaviour
 
     [HideInInspector] public List<Character> characters = new List<Character>();
 
-    [HideInInspector] public Camera gameCamera;
+    [HideInInspector] public GameCamera gameCamera;
     [HideInInspector] public GameObject GUI;
     Vector2 startResolution;
-    public GameObject LightshaftParent;
 
 
     public VignetteAndChromaticAberration ChromaticAbberration { get; private set; }
@@ -57,7 +58,7 @@ public class Controller : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        gameCamera = Camera.main;
+        gameCamera = Camera.main.GetComponentInParent<GameCamera>();
         if (gameCamera == null)
         {
             Debug.LogError("Main camera is not set");
@@ -192,14 +193,16 @@ public class Controller : MonoBehaviour
             //Draw.DisplayMedianFps(Screen.width / 2 - Screen.width * 0.1f, 70);
         }
 
-        //if (UnityEngine.GUI.Button(new Rect(10, 60, 100, 50), "Sun Shuffts"))
-        //{
-        //    if (LightshaftParent == null) return;
-        //    rayOn = !rayOn;
-        //    LightshaftParent.gameObject.SetActive(rayOn);
-        //}
+        if (UnityEngine.GUI.Button(new Rect(10, 60, 100, 50), "Bloom: " + bloom.enabled))
+        {
+            if (bloom != null) bloom.enabled = !bloom.enabled;
+        }
+        if (UnityEngine.GUI.Button(new Rect(110, 60, 100, 50), "Antialiasing: " + antialiasing.enabled))
+        {
+            if (antialiasing != null) antialiasing.enabled = !antialiasing.enabled;
+        }
 
-        
+
 
 
     }

@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Moutain.unity
     guid: 824f2e0c2bdf2c149b0e9f66d8f55947
+  - enabled: 1
+    path: Assets/Scenes/Village.unity
+    guid: 5fe5e95395d98f440b7d7336c9628f07
   - enabled: 0
     path: Assets/Scenes/test.unity
     guid: 9ccdbb4d7223ddf42b4681624655b56f

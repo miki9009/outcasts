@@ -7,17 +7,11 @@ public class TriggerBroadcast : MonoBehaviour
     public event System.Action<Collider> TriggerExit;
     void OnTriggerEnter(Collider collider)
     {
-        if (TriggerEntered != null)
-        {
-            TriggerEntered(collider);
-        }
+        TriggerEntered?.Invoke(collider);
     }
 
     void OnTriggerExit(Collider collider)
     {
-        if (TriggerExit != null)
-        {
-            TriggerExit(collider);
-        }
+        TriggerExit?.Invoke(collider);
     }
 }

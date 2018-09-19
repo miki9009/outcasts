@@ -8,6 +8,7 @@ using UnityStandardAssets.ImageEffects;
 public class GameCamera : MonoBehaviour
 {
     public Transform target;
+    public Camera mainCamera;
     public float x;
     public float y;
     public float z;
@@ -17,6 +18,7 @@ public class GameCamera : MonoBehaviour
     public float speed;
     public bool rotateAround;
     public Transform[] camAnchors;
+    public float maxDistance = 20;
     
 
     public Component vignatteAberration;
@@ -29,9 +31,12 @@ public class GameCamera : MonoBehaviour
     public float UpFactorAtStart { get; private set; }
 
     Controller.GameType gameType;
+    TriggerBroadcast triggerBroadcast;
+    Collision lastCollision;
 
     float time = 0;
-
+    public bool collides;
+    Collider col;
 	void Start ()
     {
         gameType = Controller.Instance.gameType;
@@ -46,10 +51,14 @@ public class GameCamera : MonoBehaviour
             enabled = false;
         }
         magnitude = new Vector3(x, y, z).magnitude;
-	}
+        triggerBroadcast = GetComponentInChildren<TriggerBroadcast>();
+        triggerBroadcast.TriggerEntered += (x) => { collides = true; };
+        triggerBroadcast.TriggerExit += (x) => collides = false;
+    }
 
     Quaternion slerp;
     float magnitude;
+
     private void FixedUpdate()
     {
         if (target == null) return;
@@ -60,7 +69,30 @@ public class GameCamera : MonoBehaviour
         pos.y += y;
         transform.position = pos;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
-        //transform.LookAt(target.position + Vector3.up * upFactor);
+
+        CheckFreePosition();
+    }
+
+    float freeTime; 
+    void CheckFreePosition()
+    {
+        if (collides && Vector3.Distance(mainCamera.transform.position, target.position) > 5)
+        {
+            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, target.position - target.forward * 3 + target.up * 2, Time.deltaTime);
+            mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, target.rotation, Time.deltaTime);
+            freeTime = 0.5f;
+        }
+        else
+        {
+            if (freeTime <= 0)
+            {
+                mainCamera.transform.localPosition = Vector3.Lerp(mainCamera.transform.localPosition, Vector3.zero, Time.deltaTime);
+                mainCamera.transform.localRotation = Quaternion.Lerp(mainCamera.transform.localRotation, Quaternion.identity, Time.deltaTime);
+            }
+            else
+                freeTime -= Time.deltaTime;
+        }
+
     }
 
     public void Stay(bool move)
@@ -77,25 +109,6 @@ public class GameCamera : MonoBehaviour
     public Transform lastCollideObject;
     RaycastHit hit;
     public LayerMask collisionLayer;
-    public bool collide;
-    bool CheckFreePosition()
-    {
-        Vector3 dir = target.forward * z + Vector3.up * y + target.right * x;
-        Debug.DrawLine(target.position + Vector3.up * 2, target.position + dir, Color.red);
-        if (Physics.SphereCast(target.position + Vector3.up * 2, 0.5f, dir.normalized, out hit, dir.magnitude, collisionLayer.value, QueryTriggerInteraction.Ignore))
-        {
-            lastCollideObject = hit.transform;
-            Vector3 pos = hit.point - dir.normalized;
-            if (pos.y < target.position.y + 2)
-            {
-                pos.y = target.position.y + 2;
-            }
-            slerp = Quaternion.LookRotation(Math.DirectionVector(transform.position, target.position + target.forward * 10));
-            transform.position = Vector3.Slerp(transform.position, pos, speed * Time.deltaTime);
-            return false;
-        }
-        return true;
-    }
 
     public void SetTarget(Transform target)
     {
@@ -131,5 +144,13 @@ public class GameCamera : MonoBehaviour
         }
         shakeCor = null;
     }
+
+    private void OnDrawGizmos()
+    {
+        if(target!=null)
+            Gizmos.DrawLine(target.position +Vector3.up, target.position + Vector3.up + Vector.Direction(target.position, transform.position) * minDistance);
+    }
+
+
 
 }

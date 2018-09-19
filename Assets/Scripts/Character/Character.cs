@@ -87,7 +87,7 @@ public class Character : MonoBehaviour
     {
         localPlayer = this;
         Controller.Instance.character = this;
-        Controller.Instance.gameCamera.GetComponent<GameCamera>().SetTarget(transform);
+        Controller.Instance.gameCamera.SetTarget(transform);
         CharacterCreated?.Invoke(this);
     }
 

@@ -3,3 +3,5 @@
 
 -BUGI:
 -Restart czasami wczytuje drugi raz ta sama scene
+
+-Parent => Object > with automatic weights

@@ -149,14 +149,28 @@ public class LevelManager : MonoBehaviour
         SceneManager.sceneLoaded += instance.AddLevelScene;
     }
 
-    public static void BeginCustomLevelLoadSequence(string sceneName, string customLevel)
+    public static void BeginCustomLevelLoadSequenceAdditive(string sceneName, string customLevel)
     {
         levelToLoad = sceneName;
         customLevelToLoad = customLevel;
         Debug.Log("Current level set to: " + levelToLoad);
         GameManager.CurrentLevel = levelToLoad;
+        Resources.UnloadUnusedAssets();
         SceneManager.LoadSceneAsync(LevelManager.Instance.gameScene, LoadSceneMode.Additive);
         SceneManager.sceneLoaded += instance.AddLevelScene;
+        LoadCustomLevel += OnLoadCustomLevel;
+    }
+
+    public static void ChangeLevel(string sceneName, string customLevel)
+    {
+        if(sceneName != GameManager.CurrentLevel)
+            SceneManager.UnloadSceneAsync(GameManager.CurrentLevel);
+        levelToLoad = sceneName;
+        customLevelToLoad = customLevel;
+        Debug.Log("Current level set to: " + levelToLoad);
+        GameManager.CurrentLevel = levelToLoad;
+        Resources.UnloadUnusedAssets();
+        instance.AddLevelScene(SceneManager.GetSceneByName(sceneName), LoadSceneMode.Additive);
         LoadCustomLevel += OnLoadCustomLevel;
     }
 
