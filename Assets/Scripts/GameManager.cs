@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
         //SceneManager.sceneUnloaded += Restart;
         OnLevelClear();
         if (!string.IsNullOrEmpty(LevelManager.Instance.LastCustomLevel))
-            Level.Load(LevelManager.Instance.LastCustomLevel);
+            Level.LoadWithScene(SceneManager.GetActiveScene().name, LevelManager.Instance.LastCustomLevel);
         if (Instance != null)
         {
             OnRestart();

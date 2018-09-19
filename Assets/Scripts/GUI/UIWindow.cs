@@ -326,7 +326,7 @@ namespace Engine.GUI
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(levelName));
             SceneManager.sceneLoaded -= SetActiveScene;
-            Level.Load(LevelManager.Instance.LastCustomLevel);
+            Level.LoadWithScene(SceneManager.GetActiveScene().name, LevelManager.Instance.LastCustomLevel);
         }
 
         public void GoToNextLevel()

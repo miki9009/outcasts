@@ -14,11 +14,9 @@ MonoBehaviour:
   levelPaths: Levels/
   levelElementsPath: LevelElements/
   levels:
-  - sceneName: Temple
-    levelName: Level0
-  - sceneName: Temple
-    levelName: Level1
-  - sceneName: Temple
-    levelName: Level2
-  - sceneName: SnowMoutain
-    levelName: Level3
+  - sceneName: Village
+    levels:
+    - 0
+  - sceneName: Moutain
+    levels:
+    - 0

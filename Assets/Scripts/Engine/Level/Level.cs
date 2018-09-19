@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.IO;
 
 namespace Engine
 {
@@ -8,7 +9,7 @@ namespace Engine
     {
         static LevelsConfig config;
 
-        static LevelsConfig Config
+        public static LevelsConfig Config
         {
             get
             {
@@ -31,6 +32,9 @@ namespace Engine
         static Dictionary<object, string> levelElements;
         [CustomLevelSelector]
         public string levelName;
+
+        public static string sceneName;
+
         public static void Save(string levelName)
         {
             levelElements = new Dictionary<object, string>();
@@ -42,7 +46,20 @@ namespace Engine
                     element.OnSave();
                     levelElements.Add(element.data, element.GetName());
                 }
-                string savePath = Application.dataPath + "/Resources/" + Config.levelPaths + levelName + ".txt";
+
+                if(string.IsNullOrEmpty(sceneName))
+                {
+                    Debug.LogError("Scene Name is empty, did not save");
+                    return;
+                }
+
+                string levelsPath = Config.levelPaths + "/"+ sceneName;
+                string partPath = Application.dataPath + "/Resources/" + levelsPath;
+                if (!Directory.Exists(partPath))
+                {
+                    Directory.CreateDirectory(partPath);
+                }
+                string savePath = partPath + "/"+ levelName + ".txt";
                 Data.Save(savePath, levelElements, true);
             }
             catch(Exception ex)
@@ -70,6 +87,12 @@ namespace Engine
             }
         }
 
+        public static void LoadWithScene(string scene, string levelName)
+        {
+            sceneName = scene;
+            Load(levelName);
+        }
+
         public static void Load(string levelName)
         {
             var elements = GameObject.FindObjectsOfType<LevelElement>();
@@ -87,13 +110,19 @@ namespace Engine
                     DestroyImmediate(elements[i].gameObject);
                 }
             }
-            TextAsset asset = Resources.Load(Config.levelPaths + levelName) as TextAsset;
+            string partPath = Config.levelPaths + sceneName;
+            if (!Directory.Exists(partPath))
+            {
+                Directory.CreateDirectory(partPath);
+            }
+            string assetPath = partPath +"/" + levelName;
+            TextAsset asset = Resources.Load(assetPath) as TextAsset;
             if(asset == null)
             {
                 Debug.Log("Level was null");
                 return;
             }
-            Debug.Log("Path: " + Config.levelPaths + levelName);
+            Debug.Log("Path: " + assetPath);
             var bytes = asset.bytes;
             var data = Data.DesirializeFile(bytes);
             levelElements = (Dictionary<object, string>)data;

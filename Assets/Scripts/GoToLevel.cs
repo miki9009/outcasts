@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class GoToLevel : LevelElement
 {
-    [LevelSelector]
-    public string levelName;
+
     [CustomLevelSelector]
     public string customLevel;
 
@@ -21,7 +20,7 @@ public class GoToLevel : LevelElement
 
     void GoToLevelAdditive()
     {
-        LevelManager.ChangeLevel(levelName, customLevel);
+        LevelManager.ChangeLevel(LevelsConfig.GetSceneName(customLevel), LevelsConfig.GetLevelName(customLevel));
     }
 
     public override void OnLoad()
@@ -29,8 +28,6 @@ public class GoToLevel : LevelElement
         base.OnLoad();
         if(data!=null)
         {
-            if (data.ContainsKey("LevelName"))
-                levelName = (string)data["LevelName"];
             if (data.ContainsKey("CustomLevel"))
                 customLevel = (string)data["CustomLevel"];
         }
@@ -41,7 +38,6 @@ public class GoToLevel : LevelElement
         base.OnSave();
         if(data!=null)
         {
-            data["LevelName"] = levelName;
             data["CustomLevel"] = customLevel;
         }
     }

@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
+
 [SerializableAttribute]
 public class CustomLevelSelector : Engine.PopUpAttribute
 {
@@ -20,7 +21,13 @@ public class CustomLevelSelector : Engine.PopUpAttribute
             items = new string[] { "No config" };
         }
         var list = new List<string>();
-        config.levels.ForEach(x => list.Add(x.levelName));
+        foreach (var levelGroup in config.levels)
+        {
+            for (int i = 0; i < levelGroup.levels.Count; i++)
+            {
+                list.Add(LevelsConfig.GetFullName(levelGroup.sceneName, levelGroup.levels[i]));
+            }
+        }
         items = list.ToArray();
 
     }

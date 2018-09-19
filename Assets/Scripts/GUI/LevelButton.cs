@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class LevelButton : MonoBehaviour
 {
-    [LevelSelector]
-    public string levelName;
     [CustomLevelSelector]
     public string customLevel;
 
@@ -20,7 +18,7 @@ public class LevelButton : MonoBehaviour
             Camera.main.gameObject.SetActive(false);
         }
         catch { }
-        LevelManager.BeginCustomLevelLoadSequenceAdditive(levelName, customLevel);
+        LevelManager.BeginCustomLevelLoadSequenceAdditive(LevelsConfig.GetSceneName(customLevel), LevelsConfig.GetLevelName(customLevel));
     }
 
 }

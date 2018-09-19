@@ -202,7 +202,7 @@ public class LevelManager : MonoBehaviour
     {
         if(!string.IsNullOrEmpty(customLevelToLoad))
         {
-            Level.Load(customLevelToLoad);
+            Level.LoadWithScene(SceneManager.GetActiveScene().name, customLevelToLoad);
         }
         LoadCustomLevel -= OnLoadCustomLevel;
     }
