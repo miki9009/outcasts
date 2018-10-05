@@ -75,6 +75,23 @@ namespace Engine
             Setter = SetBool;
         }
 
+        DataProperty(string key, T val)
+        {
+            this.key = key;
+            string temp;
+            if (PlayerPrefs.HasKey(key))
+            {
+                temp = PlayerPrefs.GetString(key);
+            }
+            else
+            {
+                temp = Data.SerializeJSON(val);
+                PlayerPrefs.SetString(key, temp);
+            }
+            this.val = Data.DeserializeJSON<T>(temp);
+            Setter = SetObject;
+        }
+
         public T Value
         {
             get
@@ -86,6 +103,12 @@ namespace Engine
                 val = value;
                 Setter(value);
             }
+        }
+
+        void SetObject(object val)
+        {
+            var temp = Data.SerializeJSON(val);
+            PlayerPrefs.SetString(key, temp);
         }
 
         void SetString(object val)
@@ -132,5 +155,10 @@ namespace Engine
             return new DataProperty<bool>(key, defaultValue);
         }
 
+        public static DataProperty<T> Get(string key, T defaultValue) 
+        {
+            if (string.IsNullOrEmpty(key)) Debug.LogError("Key is empty");
+            return new DataProperty<T>(key, defaultValue);
+        }
     }
 }

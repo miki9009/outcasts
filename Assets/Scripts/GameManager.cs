@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
         if (Controller.Instance == null) yield break;
         yield return Engine.Game.WaitForFrames(1);
         State = GameState.Idle;
+        Resources.UnloadUnusedAssets();
         if (LevelLoaded != null)
         {
             Debug.Log("Level Loaded: " + SceneManager.GetActiveScene().name);

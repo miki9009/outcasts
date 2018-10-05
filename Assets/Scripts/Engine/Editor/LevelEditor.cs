@@ -57,11 +57,6 @@ namespace Engine
             {
                 script.Clear();
             }
-
-
-
-
-
         }
     }
 }

@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Engine;
 using System.IO;
+using System.Collections;
+using Engine.GUI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -74,6 +76,7 @@ public class LevelManager : MonoBehaviour
                     }
                 }
             }
+            StartCoroutine(HideLoadingScreen());
 
         };
     }
@@ -82,11 +85,7 @@ public class LevelManager : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(sceneName);
 
-        if (LevelSelected != null)
-        {
-            LevelSelected();
-
-        }
+        LevelSelected?.Invoke();
     }
 
     public void GetScenes()
@@ -138,6 +137,14 @@ public class LevelManager : MonoBehaviour
         return scenes.ToArray();
     }
 
+    static void LoadScene(string sceneName, LoadSceneMode mode)
+    {
+        UIWindow.GetWindow(UIWindow.LOADING_SCREEN).Show();
+        Debug.Log("Show loading screen");
+        SceneManager.LoadSceneAsync(sceneName, mode);
+    }
+
+
     static string levelToLoad;
     static string customLevelToLoad;
     public static void BeginLevelLoadSequence(string levelName)
@@ -145,7 +152,7 @@ public class LevelManager : MonoBehaviour
         levelToLoad = levelName;
         Debug.Log("Current level set to: " + levelToLoad);
         GameManager.CurrentLevel = levelToLoad;
-        SceneManager.LoadSceneAsync(LevelManager.Instance.gameScene, LoadSceneMode.Additive);
+        LoadScene(LevelManager.Instance.gameScene, LoadSceneMode.Additive);
         SceneManager.sceneLoaded += instance.AddLevelScene;
     }
 
@@ -155,11 +162,12 @@ public class LevelManager : MonoBehaviour
         customLevelToLoad = customLevel;
         Debug.Log("Current level set to: " + levelToLoad);
         GameManager.CurrentLevel = levelToLoad;
-        Resources.UnloadUnusedAssets();
-        SceneManager.LoadSceneAsync(LevelManager.Instance.gameScene, LoadSceneMode.Additive);
+        LoadScene(LevelManager.Instance.gameScene, LoadSceneMode.Additive);
         SceneManager.sceneLoaded += instance.AddLevelScene;
         LoadCustomLevel += OnLoadCustomLevel;
     }
+
+
 
     public static void ChangeLevel(string sceneName, string customLevel)
     {
@@ -169,7 +177,6 @@ public class LevelManager : MonoBehaviour
         customLevelToLoad = customLevel;
         Debug.Log("Current level set to: " + levelToLoad);
         GameManager.CurrentLevel = levelToLoad;
-        Resources.UnloadUnusedAssets();
         instance.AddLevelScene(SceneManager.GetSceneByName(sceneName), LoadSceneMode.Additive);
         LoadCustomLevel += OnLoadCustomLevel;
     }
@@ -177,7 +184,7 @@ public class LevelManager : MonoBehaviour
     void AddLevelScene(Scene scene, LoadSceneMode mode)
     {
         SceneManager.sceneLoaded -= AddLevelScene;
-        SceneManager.LoadSceneAsync(levelToLoad, LoadSceneMode.Additive);
+        LoadScene(levelToLoad, LoadSceneMode.Additive);
         SceneManager.sceneLoaded += SetActiveScene;
     }
 
@@ -186,10 +193,7 @@ public class LevelManager : MonoBehaviour
     {
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(levelToLoad));
         SceneManager.sceneLoaded -= SetActiveScene;
-        if(LoadCustomLevel!=null)
-        {
-            LoadCustomLevel();
-        }
+        LoadCustomLevel?.Invoke();
     }
 
     public static void ReturnToMenu()
@@ -216,6 +220,13 @@ public class LevelManager : MonoBehaviour
             index = levelIndex + 1;
         }
         return levels[index].sceneName;
+    }
+
+    IEnumerator HideLoadingScreen()
+    {
+        UIWindow.GetWindow(UIWindow.LOADING_SCREEN).Hide();
+        Debug.Log("Screen Hide");
+        yield return null;
     }
 }
 

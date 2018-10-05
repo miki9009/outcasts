@@ -6350,93 +6350,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f973e9ce8fb8efe45800942640d0fed8, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &810312580
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4766519781073992, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 161.97
-      objectReference: {fileID: 0}
-    - target: {fileID: 4766519781073992, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 37.68
-      objectReference: {fileID: 0}
-    - target: {fileID: 4766519781073992, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 145.88
-      objectReference: {fileID: 0}
-    - target: {fileID: 4766519781073992, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4766519781073992, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0.7455342
-      objectReference: {fileID: 0}
-    - target: {fileID: 4766519781073992, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4766519781073992, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 0.6664675
-      objectReference: {fileID: 0}
-    - target: {fileID: 4766519781073992, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1741745381642808, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_Name
-      value: Character (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 114668861302155250, guid: b8f40a4a55d33d74b844dff1b9a89653,
-        type: 2}
-      propertyPath: viewIdField
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114668861302155250, guid: b8f40a4a55d33d74b844dff1b9a89653,
-        type: 2}
-      propertyPath: instantiationId
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534124666533388, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4633234088238098, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4294712709505026, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1532330171323832, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 137924348840373068, guid: b8f40a4a55d33d74b844dff1b9a89653,
-        type: 2}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 4300008, guid: fb31433985699c24989f3d578625414a, type: 3}
-    - target: {fileID: 136111449908194306, guid: b8f40a4a55d33d74b844dff1b9a89653,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114260549044847582, guid: b8f40a4a55d33d74b844dff1b9a89653,
-        type: 2}
-      propertyPath: addForce
-      value: 1000
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &815629321
 Prefab:
   m_ObjectHideFlags: 0
@@ -11849,7 +11762,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4190321489243866, guid: 72f58e414fef7ec4785ed44da97b06ef, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114179033014359114, guid: 72f58e414fef7ec4785ed44da97b06ef,
         type: 2}

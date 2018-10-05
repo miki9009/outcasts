@@ -12,6 +12,7 @@ namespace Engine.GUI
     [RequireComponent(typeof(CanvasGroup))]
     public class UIWindow : MonoBehaviour
     {
+        public const string LOADING_SCREEN = "LoadingScreen";
         public enum Anchor
         {
             Left,
@@ -185,10 +186,7 @@ namespace Engine.GUI
 
         IEnumerator ShowE()
         {
-            if (BeginShow != null)
-            {
-                BeginShow();
-            }
+            BeginShow?.Invoke();
             switch (anchor)
             {
                 case Anchor.Left:
@@ -238,10 +236,7 @@ namespace Engine.GUI
 
         IEnumerator HideE()
         {
-            if (BeginHide != null)
-            {
-                BeginHide();
-            }
+            BeginHide?.Invoke();
             switch (anchor)
             {
                 case Anchor.Left:
@@ -281,10 +276,7 @@ namespace Engine.GUI
             }
             canvasGroup.alpha = 0;
             gameObject.SetActive(false);
-            if (Hidden != null)
-            {
-                Hidden();
-            }
+            Hidden?.Invoke();
             hide = null;
             yield return null;
         }

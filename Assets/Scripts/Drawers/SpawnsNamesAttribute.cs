@@ -13,7 +13,7 @@ public class SpawnsNamesAttribute : PopUpAttribute
     {
         if(config == null)
         {
-            config = Config.GetConfig<SpawnsConfig>();
+            config = ConfigsManager.GetConfig<SpawnsConfig>();
         }
         if(config == null || config.spawnsNames == null)
         {

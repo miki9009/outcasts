@@ -1,7 +1,7 @@
 ﻿using Engine.Singletons;
 using UnityEngine;
 
-public class SingletonTest : Singleton
+public class ModuleTest : Module
 {
     public override void Initialize()
     {

@@ -12,6 +12,7 @@ public class CharacterStatistics
     public float turningSpeed;
     public float damage;
     public float attackForce;
+    public string armorType = "Normal";
 }
 
 

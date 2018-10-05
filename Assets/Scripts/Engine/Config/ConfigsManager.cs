@@ -8,21 +8,36 @@ public class ConfigsManager : MonoBehaviour
 {
     public List<UnityEngine.Object> configs;
 
-    static ConfigsManager instance;
+    private static ConfigsManager instance;
+    static ConfigsManager Instance
+    {
+        get
+        {
+            if (instance == null)
+                instance = GameObject.FindObjectOfType<ConfigsManager>();
+            return instance;
+        }
+
+        set
+        {
+            instance = value;
+        }
+    }
+
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     public static T GetConfig<T>() where T : Config
     {
-        return (T)instance.configs.SingleOrDefault(x => x.GetType() == typeof(T));
+        return (T)Instance.configs.SingleOrDefault(x => x.GetType() == typeof(T));
     }
 
     public static T GetConfigs<T>() where T : Config
     {
-        return (T)instance.configs.Where(x => x.GetType() == typeof(T));
+        return (T)Instance.configs.Where(x => x.GetType() == typeof(T));
     }
 
 }

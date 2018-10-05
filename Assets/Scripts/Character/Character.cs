@@ -17,11 +17,11 @@ public class Character : MonoBehaviour
     public Transform leftLowerArm;
     public Transform rightUpperArm;
     public Transform rightLowerArm;
+    public SkinnedMeshRenderer bodyMeshRenderer;
     
     public IEquipment rightArmItem;
     public IEquipment leftArmItem;
     public bool isDead { get; set; }
-
 
 
     Identification identity;
@@ -88,6 +88,8 @@ public class Character : MonoBehaviour
         localPlayer = this;
         Controller.Instance.character = this;
         Controller.Instance.gameCamera.SetTarget(transform);
+        stats = CharacterSettingsModule.Statistics;
+        ChangeArmor(stats.armorType);
         CharacterCreated?.Invoke(this);
     }
 
@@ -136,7 +138,11 @@ public class Character : MonoBehaviour
         rb.useGravity = false;
     }
 
-
+    public void ChangeArmor(string armorID)
+    {
+        var config = ConfigsManager.GetConfig<CharacterConfig>();
+        bodyMeshRenderer.sharedMesh = config.GetMesh(armorID);
+    }
 
 
 

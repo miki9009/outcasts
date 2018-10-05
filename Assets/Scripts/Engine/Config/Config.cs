@@ -12,10 +12,10 @@ namespace Engine.Config
 
         protected string Name { get; set; }
 
-        public static T GetConfig<T>() where T : Config
-        {
-            return (T)Resources.Load(PATH + typeof(T));
-        }
+        //public static T GetConfig<T>() where T : Config
+        //{
+        //    return (T)Resources.Load(PATH + typeof(T));
+        //}
 
         public static T GetConfigEditor<T>(string key) where T : Config
         {

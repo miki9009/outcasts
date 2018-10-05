@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
 using UnityEngine;
 
 namespace Engine
@@ -54,10 +55,7 @@ namespace Engine
                     saved = false;
                 }
             }
-            if (Saved != null)
-            {
-                Saved();
-            }
+            Saved?.Invoke();
             if (saved)
             {
                 Debug.Log("Save successful");
@@ -97,10 +95,7 @@ namespace Engine
                     saved = false;
                 }
             }
-            if (Saved != null)
-            {
-                Saved();
-            }
+            Saved?.Invoke();
             return saved;
         }
 
@@ -145,14 +140,11 @@ namespace Engine
                     file.Close();
                 }
             }
-            if (Loaded != null)
-            {
-                Loaded();
-            }
+            Loaded?.Invoke();
             return data;
         }
 
-        public static object DesirializeFile(string file)
+        public static object DeserializeFile(string file)
         {
             BinaryFormatter bf = new BinaryFormatter();
             return bf.Deserialize(GenerateStreamFromString(file));
@@ -162,6 +154,16 @@ namespace Engine
         {
             BinaryFormatter bf = new BinaryFormatter();
             return bf.Deserialize(new MemoryStream(bytes));
+        }
+
+        public static string SerializeJSON(object obj)
+        {
+            return JsonUtility.ToJson(obj);
+        }
+
+        public static T DeserializeJSON<T>(string str)
+        {
+            return JsonUtility.FromJson<T>(str);
         }
 
         static Stream GenerateStreamFromString(string s)

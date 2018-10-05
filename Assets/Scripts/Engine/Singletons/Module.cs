@@ -1,10 +1,11 @@
 ﻿
 namespace Engine.Singletons
 {
-    public abstract class Singleton
+    public abstract class Module
     {
-        public Singleton()
+        public Module()
         {
+            ModuleActivator.AddModule(this);
             Initialize();
         }
 

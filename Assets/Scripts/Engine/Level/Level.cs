@@ -111,10 +111,7 @@ namespace Engine
                 }
             }
             string partPath = Config.levelPaths + sceneName;
-            if (!Directory.Exists(partPath))
-            {
-                Directory.CreateDirectory(partPath);
-            }
+
             string assetPath = partPath +"/" + levelName;
             TextAsset asset = Resources.Load(assetPath) as TextAsset;
             if(asset == null)
