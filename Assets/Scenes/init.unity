@@ -156,6 +156,7 @@ MonoBehaviour:
   configs:
   - {fileID: 11400000, guid: 8369019b5a8a6ec49a7d52f9776b331d, type: 2}
   - {fileID: 11400000, guid: aea88ab7ddc1f8f4f9f2eed08071123c, type: 2}
+  - {fileID: 11400000, guid: 92432af8712c8dc45aeda6d4523c8712, type: 2}
 --- !u!1 &310046170
 GameObject:
   m_ObjectHideFlags: 0

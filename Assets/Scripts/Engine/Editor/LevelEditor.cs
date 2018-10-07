@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace Engine
 {
@@ -9,6 +10,7 @@ namespace Engine
     {
         static int selected;
         static int levelSelected;
+        bool firstTime = true;
         LevelSelector levels;
 
 
@@ -18,6 +20,17 @@ namespace Engine
 
             if(levels == null)
                 levels = new LevelSelector();
+
+            if (firstTime)
+            {
+                string sceneName = SceneManager.GetActiveScene().name;
+                for (int i = 0; i < levels.items.Length; i++)
+                {
+                    if (sceneName == levels.items[i])
+                        selected = i;
+                }
+                firstTime = false;
+            }
 
             EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Scene Name: ");

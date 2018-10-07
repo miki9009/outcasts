@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml.Serialization;
 using UnityEngine;
+
 
 namespace Engine
 {
@@ -14,7 +14,7 @@ namespace Engine
         public static event Action Loaded;
         public static event Action Saved;
         private static Dictionary<string, Data> datas = new Dictionary<string, Data>();
-
+        
         public string id;
 
         /// <summary>
@@ -156,15 +156,19 @@ namespace Engine
             return bf.Deserialize(new MemoryStream(bytes));
         }
 
-        public static string SerializeJSON(object obj)
+        public static string SerializeJSON<T>(T obj)
         {
-            return JsonUtility.ToJson(obj);
+            //return JsonUtility.ToJson(obj);
+            return JsonHelper.ToJson<T>(obj);
         }
+
 
         public static T DeserializeJSON<T>(string str)
         {
-            return JsonUtility.FromJson<T>(str);
+            //return JsonUtility.FromJson<T>(str);
+            return JsonHelper.FromJson<T>(str);
         }
+
 
         static Stream GenerateStreamFromString(string s)
         {
@@ -202,6 +206,33 @@ namespace Engine
         string ID { get; }
     }
 
+    public static class JsonHelper
+    {
+        public static T FromJson<T>(string json)
+        {
+            Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
+            return wrapper.Items;
+        }
 
+        public static string ToJson<T>(T array)
+        {
+            Wrapper<T> wrapper = new Wrapper<T>();
+            wrapper.Items = array;
+            return JsonUtility.ToJson(wrapper);
+        }
+
+        public static string ToJson<T>(T array, bool prettyPrint)
+        {
+            Wrapper<T> wrapper = new Wrapper<T>();
+            wrapper.Items = array;
+            return JsonUtility.ToJson(wrapper, prettyPrint);
+        }
+
+        [Serializable]
+        private class Wrapper<T>
+        {
+            public T Items;
+        }
+    }
 
 }

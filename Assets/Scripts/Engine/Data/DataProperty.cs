@@ -88,6 +88,25 @@ namespace Engine
                 temp = Data.SerializeJSON(val);
                 PlayerPrefs.SetString(key, temp);
             }
+            Console.WriteLine(temp, Console.LogColor.Red);
+            this.val = Data.DeserializeJSON<T>(temp);
+            Setter = SetObject;
+        }
+
+        DataProperty(string key, T[] val)
+        {
+            this.key = key;
+            string temp;
+            if (PlayerPrefs.HasKey(key))
+            {
+                temp = PlayerPrefs.GetString(key);
+            }
+            else
+            {
+                temp = Data.SerializeJSON(val);
+                PlayerPrefs.SetString(key, temp);
+            }
+            Console.WriteLine(temp, Console.LogColor.Red);
             this.val = Data.DeserializeJSON<T>(temp);
             Setter = SetObject;
         }
@@ -159,6 +178,12 @@ namespace Engine
         {
             if (string.IsNullOrEmpty(key)) Debug.LogError("Key is empty");
             return new DataProperty<T>(key, defaultValue);
+        }
+
+        public static DataProperty<T[]> Get(string key, T[] defaultValue)
+        {
+            if (string.IsNullOrEmpty(key)) Debug.LogError("Key is empty");
+            return new DataProperty<T[]>(key, defaultValue);
         }
     }
 }
