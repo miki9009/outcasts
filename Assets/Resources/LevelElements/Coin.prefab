@@ -127,7 +127,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  spawnName: GoldCoin
   val: 1
   emmitParticles: 1
   particlesAmmount: 5

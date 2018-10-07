@@ -37,6 +37,8 @@ public class TargetPointerManager : MonoBehaviour
         targetPointer.target = target;
         targetPointer.origin = origin;
         levelElement.ArrowActivator.AssignArrow(targetPointer);
+        if (arrow != null)
+            arrow.SetActive(true);
         return targetPointer;
     }
 

@@ -46,10 +46,14 @@ namespace Engine
             if (data.ContainsKey("ArrowTarget"))
                 arrowTarget = (bool)data["ArrowTarget"];
 
-            if(arrowTarget)
+            Character.CharacterCreated += CheckTargetPointer;
+        }
+
+        void CheckTargetPointer(Character character)
+        {
+            if (arrowTarget)
             {
-                var character = Character.GetLocalPlayer();
-                if(character != null)
+                if (character != null)
                     TargetPointerManager.PrepareArrow(character.transform, transform);
             }
         }
@@ -57,6 +61,7 @@ namespace Engine
         protected virtual void OnLevelClear()
         {
             if (gameObject == null) return;
+            Character.CharacterCreated -= CheckTargetPointer;
             GameManager.LevelClear -= OnLevelClear;
             Destroy(gameObject);
         }

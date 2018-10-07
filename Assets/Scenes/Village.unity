@@ -112,7 +112,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 191a4c6e166904b419865075220749d8, type: 2}
 --- !u!1001 &6384924
 Prefab:
   m_ObjectHideFlags: 0

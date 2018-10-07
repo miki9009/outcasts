@@ -7,8 +7,6 @@ using UnityEngine;
 public abstract class CollectionObject : MonoBehaviour, IPoolObject
 {
     public CollectionType type;
-    [SpawnsNames]
-    public string spawnName;
     public int val;
     public bool emmitParticles;
     public int particlesAmmount;
@@ -34,10 +32,7 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
         {
             if (collected) return;
             collected = true;
-            if (OnCollected != null)
-            {
-                OnCollected(obj);
-            }
+            OnCollected?.Invoke(obj);
             character = other.GetComponentInParent<Character>();
             int playerID = character.ID;
             if(character.movement.IsLocalPlayer)
@@ -48,15 +43,15 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
             {
                 CollectionManager.Instance.EmmitParticles(type, transform.position + Vector3.up, particlesAmmount);
             }
+            TargetPointerActivator pointerActivator = GetComponent<TargetPointerActivator>();
+            if (pointerActivator != null)
+                pointerActivator.enabled = false;
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (OnLeaveTrigger != null)
-        {
-            OnLeaveTrigger(other.gameObject);
-        }
+        OnLeaveTrigger?.Invoke(other.gameObject);
     }
 
     void OnEnable()
@@ -158,14 +153,6 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
     public static Vector3 eulers = Vector3.zero;
     public static Quaternion rotation = Quaternion.identity;
 
-
-    public string SpawnName
-    {
-        get
-        {
-            return spawnName;
-        }
-    }
 
     public GameObject GameObject
     {

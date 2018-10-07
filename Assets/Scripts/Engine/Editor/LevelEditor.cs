@@ -48,7 +48,7 @@ namespace Engine
 
             EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Custom Level: ");
-                EditorGUILayout.Popup(levelSelected, customLevels);
+                levelSelected = EditorGUILayout.Popup(levelSelected, customLevels);
             EditorGUILayout.EndHorizontal();
 
             if(customLevels!=null&& customLevels.Length > levelSelected)

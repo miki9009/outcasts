@@ -20,3 +20,4 @@ MonoBehaviour:
   - sceneName: Moutain
     levels:
     - 0
+    - 1

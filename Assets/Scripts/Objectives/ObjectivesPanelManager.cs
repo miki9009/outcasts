@@ -13,7 +13,7 @@ public class ObjectivesPanelManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        GameManager.Restart += Restart;
+        GameManager.LevelClear += Restart;
     }
 
     private void Restart()
@@ -40,6 +40,6 @@ public class ObjectivesPanelManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.Restart -= Restart;
+        GameManager.LevelClear -= Restart;
     }
 }

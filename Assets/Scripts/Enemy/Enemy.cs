@@ -5,8 +5,6 @@ using Engine;
 
 public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAnimator, IPoolObject
 {
-    [SpawnsNames]
-    public string spawnName;
     public LayerMask collisionLayer;
     public float offset = 10;
     public bool randomStartRotation;
@@ -32,13 +30,6 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         get;set;
     }
 
-    public string SpawnName
-    {
-        get
-        {
-            return spawnName;
-        }
-    }
 
     public GameObject GameObject
     {

@@ -73,13 +73,11 @@ public static class SpawnManager
         obj.Recycle();
         obj.GameObject.transform.position = Vector3.zero;
         obj.GameObject.SetActive(false);
-        spawns[obj.SpawnName].Push(obj.GameObject);
     }
 }
 
 public interface IPoolObject
 {
-    string SpawnName { get; }
     GameObject GameObject { get; }
     void Recycle();
 }

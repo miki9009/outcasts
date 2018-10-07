@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     public void OnLevelChangedEvent(string levelName)
     {
+        OnLevelClear();
         LevelChanged?.Invoke(LevelName);
     }
 
@@ -120,10 +121,7 @@ public class GameManager : MonoBehaviour
         DataManager.SaveData();
         Debug.Log("Game Saved");
         CollectionManager.Instance.ResetCollections();
-        if (GameFinished != null)
-        {
-            GameFinished();
-        }
+        GameFinished?.Invoke();
     }
 
     public void RestartLevel()
@@ -132,6 +130,9 @@ public class GameManager : MonoBehaviour
         //SceneManager.UnloadSceneAsync(levelName);
         //SceneManager.sceneUnloaded += Restart;
         OnLevelClear();
+        Character character = Character.GetLocalPlayer();
+        if (character != null)
+            Destroy(character.gameObject);
         if (!string.IsNullOrEmpty(LevelManager.Instance.LastCustomLevel))
             Level.LoadWithScene(SceneManager.GetActiveScene().name, LevelManager.Instance.LastCustomLevel);
         if (Instance != null)
