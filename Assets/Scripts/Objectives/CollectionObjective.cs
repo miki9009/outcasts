@@ -63,10 +63,7 @@ namespace Objectives
             {
                 Failed();
             }
-            if(ClockUpdate!= null)
-            {
-                ClockUpdate();
-            }
+            ClockUpdate?.Invoke();
         }
 
 

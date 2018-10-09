@@ -9,15 +9,19 @@ namespace Objectives
     public class ObjectivesManager : LevelElement
     {
         public static List<Objective> Objectives { get; private set; }
-        public List<CollectionObjective> collectionObjectives;
+        public ObjectiveSequence sequence;
+        
         public static bool EndingGame { get; private set; }
 
         private void Start()
         {
             Objectives = new List<Objective>();
-            foreach (var objective in collectionObjectives)
+            foreach (var sequence in sequence.sequences)
             {
-                Objectives.Add(objective);
+                for (int i = 0; i < sequence.objectives.Count; i++)
+                {
+                    Objectives.Add(sequence.objectives[i]);
+                }
             }
             foreach (var objective in Objectives)
             {
@@ -44,12 +48,9 @@ namespace Objectives
 
             if (allObjectivesConpleted)
                 GameManager.State = GameManager.GameState.Completed;
-                //GameManager.Instance.EndGame(GameManager.GameState.Completed);
+            //GameManager.Instance.EndGame(GameManager.GameState.Completed);
 
-            if (ObjectiveEnded != null)
-            {
-                ObjectiveEnded(objective);
-            }
+            ObjectiveEnded?.Invoke(objective);
         }
 
         public override void OnSave()
@@ -57,7 +58,7 @@ namespace Objectives
             base.OnSave();
             if (data != null)
             {
-                data["Objectives"] = collectionObjectives;
+                data["Sequence"] = sequence;
             }
         }
 
@@ -66,9 +67,9 @@ namespace Objectives
             base.OnLoad();
             if(data!=null)
             {
-                if(data.ContainsKey("Objectives"))
+                if(data.ContainsKey("Sequence"))
                 {
-                    collectionObjectives = (List<CollectionObjective>)data["Objectives"];
+                    sequence = (ObjectiveSequence)data["Sequence"];
                 }
             }
         }
