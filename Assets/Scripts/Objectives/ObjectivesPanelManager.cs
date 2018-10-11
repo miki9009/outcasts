@@ -5,20 +5,23 @@ using System.Collections.Generic;
 public class ObjectivesPanelManager : MonoBehaviour
 {
     public GameObject panelPrefab;
-
     static ObjectivesPanelManager instance;
 
     public static List<ObjectivePanel> panels = new List<ObjectivePanel>();
+
+    Vector2 pos;
 
     private void Awake()
     {
         instance = this;
         GameManager.LevelClear += Restart;
+        pos = GetComponent<RectTransform>().anchoredPosition;
     }
 
     private void Restart()
     {
-        foreach(ObjectivePanel panel in panels)
+        GetComponent<RectTransform>().anchoredPosition = pos;
+        foreach (ObjectivePanel panel in panels)
         {
             if (panel.gameObject != null)
                 Destroy(panel.gameObject);

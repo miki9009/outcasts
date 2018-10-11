@@ -12,6 +12,8 @@ namespace Objectives
         int collected;
         public bool isTimer;
         public float time;
+        public bool triggerSequence;
+        public bool triggerObject;
 
         [NonSerialized]
         public float startTimer;

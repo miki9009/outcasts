@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System;
 using System.IO;
+using UnityEditor;
 
 namespace Engine
 {
+    [ExecuteInEditMode]
     public class Level : MonoBehaviour
     {
         static LevelsConfig config;
@@ -21,6 +23,35 @@ namespace Engine
             }
         }
 
+        public static event Action ElementsLoaded;
+
+#if UNITY_EDITOR
+        private void Awake()
+        {
+            Debug.Log("Added");
+            EditorApplication.hierarchyChanged += CheckElements;
+        }
+
+        private void OnDestroy()
+        {
+            Debug.Log("Removed");
+            EditorApplication.hierarchyChanged -= CheckElements;
+        }
+
+        void CheckElements()
+        {
+            Debug.Log("Hierarchy Changed");
+            var levelElements = FindObjectsOfType<LevelElement>();
+            foreach (var levelElement in levelElements)
+            {
+                if (levelElement.elementID == -1)
+                    levelElement.elementID = GetID();
+            }
+        }
+
+#endif
+
+
         public static string LevelElementsPath
         {
             get
@@ -28,12 +59,37 @@ namespace Engine
                 return Config.levelElementsPath;
             }
         }
-
+        public static Dictionary<int, LevelElement> loadedElements = new Dictionary<int, LevelElement>();
         static Dictionary<object, string> levelElements;
         [CustomLevelSelector]
         public string levelName;
 
         public static string sceneName;
+
+        static Dictionary<int, string> levelElementIDs = new Dictionary<int, string>();
+
+        public static int GetID()
+        {
+            bool contains = true;
+            int id = -1;
+            int maxID = 9999999;
+            int i = maxID;
+            while(contains && maxID > 0)
+            {
+                id = UnityEngine.Random.Range(0, maxID);
+                contains = levelElementIDs.ContainsKey(id);
+                maxID--;
+            }
+            if (maxID == 0)
+                Debug.LogError("All ID's used");
+            return id;
+        }
+
+        public static void RemoveID(int id)
+        {
+            if (levelElementIDs.ContainsKey(id))
+                levelElementIDs.Remove(id);
+        }
 
         public static void Save(string levelName)
         {
@@ -75,6 +131,7 @@ namespace Engine
                 if(element!=null && element.gameObject!=null)
                     DestroyImmediate(element.gameObject);
             }
+            ClearIDs();
         }
 
         public void Clear()
@@ -85,6 +142,12 @@ namespace Engine
                 if (element != null && element.gameObject != null)
                     DestroyImmediate(element.gameObject);
             }
+            ClearIDs();
+        }
+
+        static void ClearIDs()
+        {
+            levelElementIDs.Clear();
         }
 
         public static void LoadWithScene(string scene, string levelName)
@@ -111,7 +174,7 @@ namespace Engine
                 }
             }
             string partPath = Config.levelPaths + sceneName;
-
+            ClearIDs(); //CLEAR IDS
             string assetPath = partPath +"/" + levelName;
             TextAsset asset = Resources.Load(assetPath) as TextAsset;
             if(asset == null)
@@ -123,30 +186,40 @@ namespace Engine
             var bytes = asset.bytes;
             var data = Data.DesirializeFile(bytes);
             levelElements = (Dictionary<object, string>)data;
+            loadedElements.Clear();
             foreach (var element in levelElements)
             {
                 string path = Config.levelElementsPath + element.Value;
                 var res = Resources.Load(path) as GameObject;
                 GameObject obj = null;
                 if (Application.isPlaying)
-                    obj = (GameObject)Instantiate(res);
+                    obj = Instantiate(res);
                 else
                 {
 #if UNITY_EDITOR
-                    obj = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(res);
+                    obj = (GameObject)PrefabUtility.InstantiatePrefab(res);
 #endif
                 }
                 if (obj != null)
                 {
                     var levelElement = obj.GetComponent<LevelElement>();
-                    levelElement.data = (Dictionary<string, object>)element.Key;
-                    levelElement.OnLoad();
+                    if(levelElement!=null)
+                    {
+                        levelElement.data = (Dictionary<string, object>)element.Key;
+                        levelElement.OnLoad();
+                        loadedElements.Add(levelElement.elementID, levelElement);
+                    }              
                 }
                 else
                 {
                     Debug.LogError("Object was null, make sure it was in the LevelElements folder set in the config");
                 }
             }
+            foreach (var levelElement in loadedElements.Values)
+            {
+                levelElement.BuildHierarchy();
+            }
+            ElementsLoaded?.Invoke();
         }
     }
 }

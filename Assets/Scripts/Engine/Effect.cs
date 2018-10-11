@@ -8,7 +8,7 @@ public class Effect : MonoBehaviour
     public enum Type { Slide, Scale, Rotation, Alpha }
     public float duration = 1;
     public Animation[] animations;
-
+    public event Action PlayFinished;
 
     float progress = 0;
     public float Progress
@@ -64,6 +64,7 @@ public class Effect : MonoBehaviour
                 }
 
             }
+            PlayFinished?. Invoke();
             yield return null;
         }
         progress = 0;

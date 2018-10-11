@@ -7,9 +7,13 @@ namespace Engine
 {
     public class LevelElement : MonoBehaviour
     {
+        public int elementID = -1;
         public TargetPointerActivator ArrowActivator { get; set; }
         public bool arrowTarget;
         public Dictionary<string, object> data;
+
+        int[] hierarchy;
+
         public string GetName()
         {
 
@@ -19,7 +23,6 @@ namespace Engine
             Debug.LogError("Path not found of Prefab doesn't exist, or Trying to get path during gameplay.");
             return "";
         }
-
 
         public virtual void OnSave()
         {
@@ -31,6 +34,19 @@ namespace Engine
             Vector scale = transform.localScale;
             data.Add("Scale", scale);
             data.Add("ArrowTarget", arrowTarget);
+            data.Add("ID", elementID);
+
+            var childCount = transform.childCount;
+            List<int> children = new List<int>();
+            for (int i = 0; i < childCount; i++)
+            {
+                var e = transform.GetChild(i).GetComponent<LevelElement>();
+                if (e != null)
+                    children.Add(e.elementID);
+            }
+            hierarchy = children.ToArray();
+
+            data.Add("Hierarchy", hierarchy);
         }
 
         public virtual void OnLoad()
@@ -45,8 +61,30 @@ namespace Engine
                 transform.localScale = (Vector)data["Scale"];
             if (data.ContainsKey("ArrowTarget"))
                 arrowTarget = (bool)data["ArrowTarget"];
+            if(data.ContainsKey("ID"))
+            {
+                elementID = (int)data["ID"];
+            }
+            if (data.ContainsKey("Hierarchy"))
+            {
+                hierarchy = (int[])data["Hierarchy"];
+            }
+
+#if UNITY_EDITOR
+            name += " (" + elementID +")";
+#endif
+
 
             Character.CharacterCreated += CheckTargetPointer;
+        }
+
+        public void BuildHierarchy()
+        {
+            for (int i = 0; i < hierarchy.Length; i++)
+            {
+                if (Level.loadedElements.ContainsKey(hierarchy[i]))
+                    Level.loadedElements[hierarchy[i]].transform.SetParent(transform);
+            }
         }
 
         void CheckTargetPointer(Character character)

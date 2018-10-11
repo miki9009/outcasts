@@ -14,7 +14,7 @@ public class CharacterInstantiator : LevelElement
             string path = UnityEditor.AssetDatabase.GetAssetPath(prefab);
             if (!string.IsNullOrEmpty(path))
             {
-                Debug.Log(path.Length);
+                //Debug.Log(path.Length);
                 path = path.Substring(17, path.Length - 24);
                 Debug.Log(path);
                 data.Add("Path", path);

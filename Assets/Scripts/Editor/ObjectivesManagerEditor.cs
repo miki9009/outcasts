@@ -64,7 +64,7 @@ namespace Objectives
                         GUILayout.BeginHorizontal();
                         GUILayout.Label("Title", GUILayout.Width(50));
                         objective.title = GUILayout.TextField(objective.title, GUILayout.Width(250), GUILayout.MinWidth(50));
-                        objective.isTimer = GUILayout.Toggle(objective.isTimer, "Is Timer");
+                        objective.triggerSequence = GUILayout.Toggle(objective.triggerSequence, "Trigger Sequence");
                         objective.optional = GUILayout.Toggle(objective.optional, "Is Optional");
                         if (GUILayout.Button("X", GUILayout.Width(35)))
                         {
@@ -79,6 +79,15 @@ namespace Objectives
                         GUILayout.EndHorizontal();
                         GUILayout.Space(10);
                         GUILayout.EndVertical();
+                        GUILayout.BeginHorizontal();
+                        objective.isTimer = GUILayout.Toggle(objective.isTimer, "Is Timer");
+                        if(objective.isTimer)
+                        {
+                            EditorGUILayout.LabelField("Time: ", GUILayout.Width(100));
+                            objective.time = EditorGUILayout.FloatField(objective.time);
+                        }
+                        GUILayout.EndHorizontal();
+
                     }
                     GUI.backgroundColor = Color.white;
                     EditorGUILayout.BeginHorizontal();

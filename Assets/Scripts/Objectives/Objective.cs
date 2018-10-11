@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 using System;
 using UnityEngine.Events;
-//https://docs.unity3d.com/ScriptReference/EditorGUILayout.html
+
 namespace Objectives
 {
     [Serializable]
     public class Objective
     {
         public string title;
-        public bool startOnAwake;
         public bool optional;
-
         
         public bool IsFinished { get; set; }
         public virtual float Progress { get; private set; }
@@ -26,28 +24,19 @@ namespace Objectives
 
         protected void OnStart()
         {
-            if(Started != null)
-            {
-                Started(this);
-            }
+            Started?.Invoke(this);
         }
 
         protected void OnProgressUpdated()
         {
-            if(ProgressUpdated!= null)
-            {
-                ProgressUpdated(this);
-            }
+            ProgressUpdated?.Invoke(this);
         }
 
         protected virtual void OnFinished()
         {
             IsFinished = true;
             ObjectivesManager.OnObjectiveEnded(this);
-            if(Finished!= null)
-            {
-                Finished(this);
-            }
+            Finished?.Invoke(this);
         }
 
 

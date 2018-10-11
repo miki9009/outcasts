@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Objectives;
 using UnityEngine.UI;
+using System.Collections;
 
 public class ObjectivePanel : MonoBehaviour
 {
@@ -18,12 +19,15 @@ public class ObjectivePanel : MonoBehaviour
     public Color colFailed;
     public Color colCompleted;
 
+    LayoutElement layoutElement;
+
     CollectionObjective timerObjective;
 
     public void Initialize()
     {
         objective.ProgressUpdated += OnUpdate;
         objective.Finished += OnFinished;
+        layoutElement = GetComponent<LayoutElement>();
         if(objective.optional)
         {
             circle.color = colOptional;
@@ -77,6 +81,18 @@ public class ObjectivePanel : MonoBehaviour
             title.color = Color.red;
             failed.SetActive(true);
             failedEffect.Play();
+        }
+        StartCoroutine(MovePanel());
+    }
+
+    IEnumerator MovePanel()
+    {
+        yield return new WaitForSeconds(3);
+
+        while(layoutElement.minHeight > 0)
+        {
+            layoutElement.minHeight -= 2;
+            yield return null;
         }
     }
 }

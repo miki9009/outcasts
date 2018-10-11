@@ -9,12 +9,20 @@ namespace Objectives
     public class ObjectivesManager : LevelElement
     {
         public static List<Objective> Objectives { get; private set; }
+
+        public List<Objective> activeObjectives = new List<Objective>();
         public ObjectiveSequence sequence;
         
         public static bool EndingGame { get; private set; }
 
+        int sequenceIndex = 0;
+
+        static ObjectivesManager instance;
+
         private void Start()
         {
+            instance = this;
+
             Objectives = new List<Objective>();
             foreach (var sequence in sequence.sequences)
             {
@@ -23,14 +31,22 @@ namespace Objectives
                     Objectives.Add(sequence.objectives[i]);
                 }
             }
-            foreach (var objective in Objectives)
+            TriggerSequence();
+        }
+
+        void TriggerSequence()
+        {
+            activeObjectives = new List<Objective>();
+
+            for (int i = 0; i < sequence.sequences[sequenceIndex].objectives.Count; i++)
+                activeObjectives.Add(sequence.sequences[sequenceIndex].objectives[i]);
+
+            foreach (var objective in activeObjectives)
             {
                 ObjectivesPanelManager.AddPanel(objective);
-                if(objective.startOnAwake)
-                {
-                    objective.Start();
-                }
+                objective.Start();
             }
+            sequenceIndex++;
         }
 
         public static event System.Action<Objective> ObjectiveEnded;
@@ -51,6 +67,8 @@ namespace Objectives
             //GameManager.Instance.EndGame(GameManager.GameState.Completed);
 
             ObjectiveEnded?.Invoke(objective);
+                        if (((CollectionObjective)objective).triggerSequence)
+                instance.TriggerSequence();
         }
 
         public override void OnSave()
