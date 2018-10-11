@@ -32,6 +32,11 @@ public class ConfigsManager : MonoBehaviour
 
     public static T GetConfig<T>() where T : Config
     {
+        if (Instance == null)
+        {
+            Debug.LogError("Instance was null");
+            return null;
+        }
         return (T)Instance.configs.SingleOrDefault(x => x.GetType() == typeof(T));
     }
 

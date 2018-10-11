@@ -25,32 +25,6 @@ namespace Engine
 
         public static event Action ElementsLoaded;
 
-#if UNITY_EDITOR
-        private void Awake()
-        {
-            Debug.Log("Added");
-            EditorApplication.hierarchyChanged += CheckElements;
-        }
-
-        private void OnDestroy()
-        {
-            Debug.Log("Removed");
-            EditorApplication.hierarchyChanged -= CheckElements;
-        }
-
-        void CheckElements()
-        {
-            Debug.Log("Hierarchy Changed");
-            var levelElements = FindObjectsOfType<LevelElement>();
-            foreach (var levelElement in levelElements)
-            {
-                if (levelElement.elementID == -1)
-                    levelElement.elementID = GetID();
-            }
-        }
-
-#endif
-
 
         public static string LevelElementsPath
         {
@@ -207,7 +181,10 @@ namespace Engine
                     {
                         levelElement.data = (Dictionary<string, object>)element.Key;
                         levelElement.OnLoad();
-                        loadedElements.Add(levelElement.elementID, levelElement);
+                        if (!loadedElements.ContainsKey(levelElement.elementID))
+                            loadedElements.Add(levelElement.elementID, levelElement);
+                        else
+                            Debug.LogError("EXCEPTION Caught: element with ID: " + levelElement.elementID + " already exists!");
                     }              
                 }
                 else

@@ -12,12 +12,20 @@ namespace Objectives
 
         public List<Objective> activeObjectives = new List<Objective>();
         public ObjectiveSequence sequence;
+        public List<LevelElement> levelElementReferences;
         
         public static bool EndingGame { get; private set; }
 
         int sequenceIndex = 0;
 
         static ObjectivesManager instance;
+
+        int[] references;
+
+#if UNITY_EDITOR
+        public bool catchReferences = true;
+#endif
+
 
         private void Start()
         {
@@ -32,6 +40,7 @@ namespace Objectives
                 }
             }
             TriggerSequence();
+            Level.ElementsLoaded += CatchReferences;
         }
 
         void TriggerSequence()
@@ -74,10 +83,18 @@ namespace Objectives
         public override void OnSave()
         {
             base.OnSave();
+
+            references = new int[levelElementReferences.Count];
+            for (int i = 0; i < levelElementReferences.Count; i++)
+            {
+                references[i] = levelElementReferences[i].elementID;
+            }
             if (data != null)
             {
                 data["Sequence"] = sequence;
+                data["References"] = references;
             }
+
         }
 
         public override void OnLoad()
@@ -89,6 +106,11 @@ namespace Objectives
                 {
                     sequence = (ObjectiveSequence)data["Sequence"];
                 }
+                if (data.ContainsKey("References"))
+                {
+                    references = (int[])data["References"];
+                }
+                catchReferences = true;
             }
         }
 
@@ -99,5 +121,22 @@ namespace Objectives
             GameManager.Instance.EndGame(state);
             EndingGame = false;
         }
+
+        private void OnDestroy()
+        {
+            Level.ElementsLoaded -= CatchReferences;
+        }
+
+        public void CatchReferences()
+        {
+            levelElementReferences = new List<LevelElement>();
+            if (references == null) return;
+            for (int i = 0; i < references.Length; i++)
+            {
+                if (Level.loadedElements.ContainsKey(references[i]))
+                    levelElementReferences.Add(Level.loadedElements[references[i]]);
+            }
+        }
+
     }
 }

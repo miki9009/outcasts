@@ -80,6 +80,7 @@ namespace Engine
 
         public void BuildHierarchy()
         {
+            if (hierarchy == null) return;
             for (int i = 0; i < hierarchy.Length; i++)
             {
                 if (Level.loadedElements.ContainsKey(hierarchy[i]))
@@ -103,5 +104,6 @@ namespace Engine
             GameManager.LevelClear -= OnLevelClear;
             Destroy(gameObject);
         }
+
     }
 }

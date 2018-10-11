@@ -15,7 +15,14 @@ public class MissionsConfig : Config
         get
         {
             if (instance == null)
-                instance = ConfigsManager.GetConfig<MissionsConfig>();
+            {
+#if UNITY_EDITOR
+                if (!Application.isPlaying)
+                    instance = Config.GetConfigEditor<MissionsConfig>(key);
+                else
+#endif
+                    instance = ConfigsManager.GetConfig<MissionsConfig>();
+            }
             return instance;
         }
     }

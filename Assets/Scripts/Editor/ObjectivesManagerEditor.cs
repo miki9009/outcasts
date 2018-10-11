@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Engine;
+using System.Collections.Generic;
 using UnityEditor;
 
 using UnityEngine;
@@ -15,13 +16,17 @@ namespace Objectives
 
         List<bool> foldout;
 
+
         public override void OnInspectorGUI()
         {
             //base.OnInspectorGUI();
+
             objectivesManager = (ObjectivesManager)target;
+            if (objectivesManager.elementID == -1)
+                objectivesManager.elementID = Level.GetID();
             //toggleTxt = GUILayout.Toggle(toggleTxt, "A Toggle text");
 
-            if(foldout == null || foldout.Count != objectivesManager.sequence.sequences.Count)
+            if (foldout == null || foldout.Count != objectivesManager.sequence.sequences.Count)
             {
                 int count = objectivesManager.sequence.sequences.Count;
 
@@ -107,6 +112,24 @@ namespace Objectives
             if (GUILayout.Button("Add Sequence"))
             {
                 objectivesManager.sequence.sequences.Add(new Sequence());
+            }
+
+#if UNITY_EDITOR
+            if(objectivesManager.catchReferences)
+            {
+                objectivesManager.CatchReferences();
+                objectivesManager.catchReferences = false;
+            }
+#endif
+
+            var references = objectivesManager.levelElementReferences;
+            for (int i = 0; i < references.Count; i++)
+            {
+                references[i] = (LevelElement)EditorGUILayout.ObjectField(references[i], typeof(LevelElement), true);
+            }
+            if (GUILayout.Button("Add ObjectField"))
+            {
+                references.Add(null);
             }
 
 
