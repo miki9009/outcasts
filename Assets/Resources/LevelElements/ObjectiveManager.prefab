@@ -51,8 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ca8c87de42fde46bf5e1945c6f6b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectives:
-  - state: 0
-    description: Collect 10 Coins
-    collectionAmount: 10
-    collectionType: 0
+  elementID: 4392846
+  arrowTarget: 0
+  activeAndEnabled: 1
+  activeObjectives: []
+  sequence:
+    sequences: []
+  levelElementReferences: []
+  catchReferences: 0

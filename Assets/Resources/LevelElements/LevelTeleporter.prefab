@@ -96,9 +96,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c22c39cc91bc10408bd7d1b3b81c104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementID: 7432727
   arrowTarget: 0
-  levelName: Moutain
-  customLevel: Level0
+  activeAndEnabled: 1
+  customLevel: Village:0
 --- !u!135 &135955122946787822
 SphereCollider:
   m_ObjectHideFlags: 1

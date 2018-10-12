@@ -15,7 +15,8 @@ namespace Objectives
         bool toggleTxt = false;
 
         List<bool> foldout;
-
+        string[] referencesPopup;
+        int[] referenceLength;
 
         public override void OnInspectorGUI()
         {
@@ -44,6 +45,14 @@ namespace Objectives
 
             Color defaultColor = GUI.backgroundColor;
 
+            referencesPopup = new string[objectivesManager.levelElementReferences.Count];
+            for (int i = 0; i < referencesPopup.Length; i++)
+            {
+                if(objectivesManager.levelElementReferences[i]!=null)
+                    referencesPopup[i] = objectivesManager.levelElementReferences[i].elementID.ToString();
+            }
+
+            referenceLength = new int[objectivesManager.levelElementReferences.Count];
 
             //GUI.contentColor = Color.red;
             //GUI.color = Color.gray;
@@ -92,7 +101,32 @@ namespace Objectives
                             objective.time = EditorGUILayout.FloatField(objective.time);
                         }
                         GUILayout.EndHorizontal();
+                        GUILayout.BeginHorizontal();
+                        objective.triggerObject = GUILayout.Toggle(objective.triggerObject, "Trigger object:", GUILayout.Width(100));
+                        int referenceIndex = 0;
+                        if(objective.triggerObject)
+                        {
+                            if(objective.references!=-1)
+                            {
+                                bool found = false;
+                                for (int k = 0; k < referencesPopup.Length; k++)
+                                {
+                                    if (objective.references.ToString() == referencesPopup[k])
+                                    {
+                                        found = true;
+                                        referenceIndex = k;
+                                        break;
+                                    }
+                                }
+                                if (!found) objective.references = -1;
+                            }
+                            EditorGUILayout.LabelField("Reference Object: ", GUILayout.Width(150));
+                            referenceIndex = EditorGUILayout.Popup(referenceIndex, referencesPopup, EditorStyles.popup);
+                            if(referenceIndex < referencesPopup.Length && referencesPopup[referenceIndex] != null)
+                                objective.references = int.Parse(referencesPopup[referenceIndex]);
+                        }
 
+                        GUILayout.EndHorizontal();
                     }
                     GUI.backgroundColor = Color.white;
                     EditorGUILayout.BeginHorizontal();

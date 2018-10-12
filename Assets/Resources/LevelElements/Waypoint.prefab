@@ -125,6 +125,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecda6e3de2422f3409fcc1532caef90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementID: 2426591
+  arrowTarget: 0
+  activeAndEnabled: 1
   index: 0
   height: 1
   fadeDuration: 1

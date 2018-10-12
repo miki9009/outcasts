@@ -13,12 +13,13 @@ namespace Objectives
         public List<Objective> activeObjectives = new List<Objective>();
         public ObjectiveSequence sequence;
         public List<LevelElement> levelElementReferences;
+
+        public static ObjectivesManager Instance { get; private set; }
         
         public static bool EndingGame { get; private set; }
 
         int sequenceIndex = 0;
 
-        static ObjectivesManager instance;
 
         int[] references;
 
@@ -26,10 +27,14 @@ namespace Objectives
         public bool catchReferences = true;
 #endif
 
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void Start()
         {
-            instance = this;
+
 
             Objectives = new List<Objective>();
             foreach (var sequence in sequence.sequences)
@@ -77,7 +82,7 @@ namespace Objectives
 
             ObjectiveEnded?.Invoke(objective);
                         if (((CollectionObjective)objective).triggerSequence)
-                instance.TriggerSequence();
+                Instance.TriggerSequence();
         }
 
         public override void OnSave()
@@ -110,7 +115,9 @@ namespace Objectives
                 {
                     references = (int[])data["References"];
                 }
+#if UNITY_EDITOR
                 catchReferences = true;
+#endif
             }
         }
 

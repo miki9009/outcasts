@@ -10,6 +10,7 @@ namespace Engine
         public int elementID = -1;
         public TargetPointerActivator ArrowActivator { get; set; }
         public bool arrowTarget;
+        public bool activeAndEnabled = true;
         public Dictionary<string, object> data;
 
         int[] hierarchy;
@@ -35,6 +36,7 @@ namespace Engine
             data.Add("Scale", scale);
             data.Add("ArrowTarget", arrowTarget);
             data.Add("ID", elementID);
+            data.Add("ActiveAndEnabled", activeAndEnabled);
 
             var childCount = transform.childCount;
             List<int> children = new List<int>();
@@ -53,29 +55,31 @@ namespace Engine
         {
             GameManager.LevelClear += OnLevelClear;
 
-            if (data.ContainsKey("Position"))
-                transform.position = (Vector)data["Position"];
-            if (data.ContainsKey("Rotation"))
-                transform.rotation = (Float4)data["Rotation"];
-            if (data.ContainsKey("Scale"))
-                transform.localScale = (Vector)data["Scale"];
-            if (data.ContainsKey("ArrowTarget"))
-                arrowTarget = (bool)data["ArrowTarget"];
-            if(data.ContainsKey("ID"))
+            transform.position = (Vector)data["Position"];
+            transform.rotation = (Float4)data["Rotation"];
+            transform.localScale = (Vector)data["Scale"];
+            arrowTarget = (bool)data["ArrowTarget"];
+            elementID = (int)data["ID"];
+            hierarchy = (int[])data["Hierarchy"];
+            if (data.ContainsKey("ActiveAndEnabled"))
             {
-                elementID = (int)data["ID"];
-            }
-            if (data.ContainsKey("Hierarchy"))
-            {
-                hierarchy = (int[])data["Hierarchy"];
+                activeAndEnabled = (bool)data["ActiveAndEnabled"];
             }
 
 #if UNITY_EDITOR
-            name += " (" + elementID +")";
+            name += " (" + elementID + ")";
 #endif
 
 
             Character.CharacterCreated += CheckTargetPointer;
+            Character.CharacterCreated += CheckIfActive;
+        }
+
+        void CheckIfActive(Character character)
+        {
+            if (Application.isPlaying)
+                gameObject.SetActive(activeAndEnabled);
+            Character.CharacterCreated -= CheckIfActive;
         }
 
         public void BuildHierarchy()
@@ -105,5 +109,34 @@ namespace Engine
             Destroy(gameObject);
         }
 
+
+#if UNITY_EDITOR
+        Bounds bounds;
+        bool boundsSearched;
+        private void OnDrawGizmos()
+        {
+            if(!activeAndEnabled)
+            {
+                if(!boundsSearched)
+                {
+                    var collid = GetComponent<Collider>();
+                    if (collid != null)
+                        bounds = collid.bounds;
+                    else
+                        collid = GetComponentInChildren<Collider>();
+                    {
+                        if (collid != null)
+                            bounds = collid.bounds;
+                    }
+                    boundsSearched = true;
+                }
+                var col = Color.gray;
+                col.a = 0.6f;
+                Gizmos.color = col;
+                Gizmos.DrawSphere(transform.position, bounds.extents.x + 1f);
+            }
+
+        }
+#endif
     }
 }

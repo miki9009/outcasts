@@ -692,7 +692,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ae96484e0b0e5e45b2b610561fcfae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnName: Native
   collisionLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -759,6 +758,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccfcd443f202b4248ae50f4a20544e3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementID: 8832023
+  arrowTarget: 0
+  activeAndEnabled: 1
 --- !u!114 &114278771453095976
 MonoBehaviour:
   m_ObjectHideFlags: 1

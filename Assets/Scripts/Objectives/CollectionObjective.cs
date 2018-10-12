@@ -14,6 +14,7 @@ namespace Objectives
         public float time;
         public bool triggerSequence;
         public bool triggerObject;
+        public int references = -1;
 
         [NonSerialized]
         public float startTimer;
@@ -78,6 +79,11 @@ namespace Objectives
             {
                 GameTime.Instance.TimeElapsed += Timer;
                 startTimer = time;
+            }
+            if(triggerObject && references != -1)
+            {
+                if (Engine.Level.loadedElements.ContainsKey(references))
+                    Engine.Level.loadedElements[references].gameObject.SetActive(true);
             }
         }
 
