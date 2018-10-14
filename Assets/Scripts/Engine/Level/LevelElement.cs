@@ -8,7 +8,20 @@ namespace Engine
     public class LevelElement : MonoBehaviour
     {
         public int elementID = -1;
-        public TargetPointerActivator ArrowActivator { get; set; }
+        TargetPointerActivator _arrowActivator;
+        public TargetPointerActivator ArrowActivator
+        {
+            get
+            {
+                if (_arrowActivator == null)
+                    _arrowActivator = GetComponent<TargetPointerActivator>();
+                return _arrowActivator;
+            }
+            set
+            {
+                _arrowActivator = value;
+            }
+        }
         public bool arrowTarget;
         public bool activeAndEnabled = true;
         public Dictionary<string, object> data;
@@ -54,7 +67,6 @@ namespace Engine
         public virtual void OnLoad()
         {
             GameManager.LevelClear += OnLevelClear;
-
             transform.position = (Vector)data["Position"];
             transform.rotation = (Float4)data["Rotation"];
             transform.localScale = (Vector)data["Scale"];
@@ -96,8 +108,10 @@ namespace Engine
         {
             if (arrowTarget)
             {
-                if (character != null)
+                if (character != null && ArrowActivator == null)
+                {
                     TargetPointerManager.PrepareArrow(character.transform, transform);
+                }
             }
         }
 
@@ -107,6 +121,11 @@ namespace Engine
             Character.CharacterCreated -= CheckTargetPointer;
             GameManager.LevelClear -= OnLevelClear;
             Destroy(gameObject);
+        }
+
+        public virtual void ElementStart()
+        {
+            if (this == null) return;
         }
 
 

@@ -31,7 +31,7 @@ namespace Objectives
 
         void UpdateProgress(int id, CollectionType collection, int val)
         {
-            if (collection == collectionType)
+            if (collection == collectionType && id == Character.GetLocalPlayer().ID)
             {
                 collected += val;
                 OnProgressUpdated();
@@ -71,7 +71,7 @@ namespace Objectives
 
 
 
-        public override void Start()
+        public override void ObjectiveStart()
         {
             state = State.InProgress;
             CollectionManager.Instance.Collected += UpdateProgress;

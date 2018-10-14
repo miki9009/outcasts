@@ -115,6 +115,7 @@ public class GameCamera : MonoBehaviour
         this.target = target;
         enabled = true;
         gameObject.SetActive(true);
+        transform.position = target.position + target.forward * -10;
     }
 
     /// <summary>

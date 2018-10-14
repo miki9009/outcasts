@@ -58,7 +58,7 @@ namespace Objectives
             foreach (var objective in activeObjectives)
             {
                 ObjectivesPanelManager.AddPanel(objective);
-                objective.Start();
+                objective.ObjectiveStart();
             }
             sequenceIndex++;
         }

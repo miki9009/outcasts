@@ -111,6 +111,7 @@ namespace AI
 
         void WaypointVisited(CharacterMovement characterMovement)
         {
+            if (characterMovement.GetType() != typeof(CharacterMovementAI)) return;
             var characterMovementAi = (CharacterMovementAI)characterMovement;
             if(characterMovementAi.aIBehaviour == Behaviour)
             {

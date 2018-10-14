@@ -11,11 +11,12 @@ public class CharacterHealth : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.LevelLoaded += AssignHealth;
+        Character.CharacterCreated += AssignHealth;
     }
 
-    void AssignHealth()
+    void AssignHealth(Character character)
     {
+        if (Character.GetLocalPlayer() != character) return;
         Debug.Log("Controller: " + Controller.Instance);
         try
         {
@@ -50,6 +51,9 @@ public class CharacterHealth : MonoBehaviour
         Effects.ScalePulseVanish(hearts[newHealth].transform, 2, 2, () => hearts[newHealth].SetActive(false));
     }
 
-
+    private void OnDestroy()
+    {
+        Character.CharacterCreated -= AssignHealth;
+    }
 
 }

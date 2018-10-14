@@ -18,7 +18,7 @@ namespace Objectives
         public event Action<Objective> ProgressUpdated;
         public event Action<Objective> Finished;
 
-        public virtual void Start()
+        public virtual void ObjectiveStart()
         {
         }
 

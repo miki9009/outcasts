@@ -11,8 +11,7 @@ public class LevelElementZEditor : Editor
         var instance = (LevelElement)target;
         if(instance.elementID == -1)
         {
-            instance.elementID = Level.GetID();
-            Debug.Log("ID assigned");
+            instance.elementID =Level.GetID();
         }
     }
 }

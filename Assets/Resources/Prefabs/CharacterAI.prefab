@@ -491,7 +491,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1335830023826230}
   m_LocalRotation: {x: 0, y: 0.26749068, z: 0, w: 0.96356046}
-  m_LocalPosition: {x: 45.99, y: 30.562, z: 69.91}
+  m_LocalPosition: {x: -0.39027607, y: -0.7163526, z: 41.44713}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4138495251763430}
@@ -725,8 +725,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 39168
   pathMovement: {fileID: 114829963162330416}
+  path: []
   aIBehaviour:
-    characterMovementAi: {fileID: 0}
+    characterMovementAi: {fileID: 114510872129861826}
   aiState: 1
   gizmoColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!114 &114541360564010702
@@ -740,6 +741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e4b9bb05897683489fe9403008a844b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networking: {fileID: 0}
   stats:
     runSpeed: 8
     health: 1
@@ -747,6 +749,7 @@ MonoBehaviour:
     turningSpeed: 5
     damage: 10
     attackForce: 25
+    armorType: Normal
   anim: {fileID: 0}
   rb: {fileID: 54489254521060200}
   movement: {fileID: 0}
@@ -754,6 +757,7 @@ MonoBehaviour:
   leftLowerArm: {fileID: 4768038745215090}
   rightUpperArm: {fileID: 4047872618267324}
   rightLowerArm: {fileID: 4474710329462810}
+  bodyMeshRenderer: {fileID: 137714194360969048}
 --- !u!114 &114829963162330416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -848,7 +852,7 @@ SkinnedMeshRenderer:
   m_Quality: 1
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300000, guid: fb31433985699c24989f3d578625414a, type: 3}
+  m_Mesh: {fileID: 4300002, guid: fb31433985699c24989f3d578625414a, type: 3}
   m_Bones:
   - {fileID: 4355187472477262}
   - {fileID: 4225077219622450}

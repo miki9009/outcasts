@@ -196,6 +196,10 @@ namespace Engine
             {
                 levelElement.BuildHierarchy();
             }
+            foreach (var levelElement in loadedElements.Values)
+            {
+                levelElement.ElementStart();
+            }
             ElementsLoaded?.Invoke();
         }
     }

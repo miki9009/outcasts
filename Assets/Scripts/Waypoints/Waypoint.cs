@@ -2,6 +2,7 @@
 using UnityEngine;
 using Engine;
 using System.Collections.Generic;
+using System;
 
 public class Waypoint : LevelElement
 {
@@ -18,17 +19,26 @@ public class Waypoint : LevelElement
         startScale = transform.localScale;
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         meshRenderer.enabled = false;
+        Character.CharacterCreated += CheckActive;
+    }
+
+    private void CheckActive(Character character)
+    {
+        if (ArrowActivator == null)
+            TargetPointerManager.PrepareArrow(character.transform, transform);
+        Character.CharacterCreated -= CheckActive;
+        if (arrowTarget && !active && ArrowActivator != null)
+        {
+            ArrowActivator.Enable(false);
+        }
     }
 
     public event System.Action<CharacterMovement> Visited;
 
-    private void Start()
+    public override void ElementStart()
     {
+        base.ElementStart();
         transform.localScale = new Vector3(startScale.x, 0.1f, startScale.z);
-        if (arrowTarget)
-        {
-            ArrowActivator.Enable(false);
-        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -37,7 +47,6 @@ public class Waypoint : LevelElement
         Visited?.Invoke(character.movement);
         if (active && WaypointManager.Instance.currentWaypoint == this)
         {
-
             if(character.movement.IsLocalPlayer)
                 StartCoroutine(Shrink());
 
@@ -47,6 +56,7 @@ public class Waypoint : LevelElement
 
     private void Initialize()
     {
+        if (WaypointManager.Instance.waypoints.ContainsKey(index)) return;
         WaypointManager.Instance.waypoints.Add(index, this);
         transform.SetParent(WaypointManager.Instance.transform);
         if (index == 0)
@@ -61,6 +71,10 @@ public class Waypoint : LevelElement
     {
         if (!Application.isPlaying) yield break;
         meshRenderer.enabled = true;
+        if (arrowTarget && ArrowActivator!=null)
+        {
+            ArrowActivator.Enable(true);
+        }
         active = true;
         float duration = 0;
         Easer ease = AutoEase.QuadIn;
@@ -69,10 +83,6 @@ public class Waypoint : LevelElement
             duration += Time.deltaTime / fadeDuration;
             transform.localScale = new Vector3(startScale.x, Mathf.Lerp(0,height,ease(duration)), startScale.z);
             yield return null; 
-        }
-        if (arrowTarget)
-        {
-            ArrowActivator.Enable(true);
         }
     }
 
@@ -91,7 +101,11 @@ public class Waypoint : LevelElement
         }
         else
         {
-            Debug.Log("No more wayppoints");
+            if( WaypointManager.Instance.waypoints.TryGetValue(0, out way))
+            {
+                WaypointManager.Instance.currentWaypoint = way;
+                way.StartCoroutine(way.Expand());
+            }
         }
         transform.localScale = new Vector3(startScale.x, 0, startScale.z);
         float duration = 0;

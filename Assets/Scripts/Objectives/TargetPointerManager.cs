@@ -39,6 +39,7 @@ public class TargetPointerManager : MonoBehaviour
         levelElement.ArrowActivator.AssignArrow(targetPointer);
         if (arrow != null)
             arrow.SetActive(true);
+        Debug.Log("Arrow set");
         return targetPointer;
     }
 
@@ -53,6 +54,7 @@ public class TargetPointerManager : MonoBehaviour
 
     public static void PoolArrow(TargetPointer arrow)
     {
+        if (arrow == null || arrow.gameObject == null) return;
         arrow.target = null;
         arrow.gameObject.SetActive(false);
         arrows.Push(arrow.gameObject);

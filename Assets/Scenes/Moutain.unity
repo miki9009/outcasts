@@ -100,9 +100,9 @@ NavMeshSettings:
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
-    agentSlope: 45
-    agentClimb: 0.4
-    ledgeDropHeight: 0
+    agentSlope: 60
+    agentClimb: 0.6
+    ledgeDropHeight: 5
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
@@ -18182,6 +18182,10 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1861908837740360, guid: 6fd807a7f5db6f54a9a80c31fb5edd37, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6fd807a7f5db6f54a9a80c31fb5edd37, type: 2}
   m_IsPrefabParent: 0
@@ -27856,7 +27860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee5b2c245d1500c40b3cee661e7fb38f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: 0
+  levelName: 1
 --- !u!1001 &1579170622
 Prefab:
   m_ObjectHideFlags: 0

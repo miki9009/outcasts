@@ -3,7 +3,7 @@
 public class TargetPointerActivator : MonoBehaviour
 {
     TargetPointer arrow;
-
+    public bool IsEnabled { get; private set; }
     public void AssignArrow(TargetPointer arrow)
     {
         this.arrow = arrow;
@@ -17,6 +17,7 @@ public class TargetPointerActivator : MonoBehaviour
     {
         if(arrow!=null)
             arrow.gameObject.SetActive(val);
+        IsEnabled = val;
     }
 
     private void OnEnable()
