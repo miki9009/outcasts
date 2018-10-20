@@ -9,25 +9,32 @@ public class CharacterPhoton : Photon.MonoBehaviour
     Vector3 photonPos;
     Quaternion photonRot;
     Vector3 velo;
+    bool attack;
 
     private void Awake()
     {
         character = GetComponent<Character>();
         movement = GetComponent<CharacterMovement>();
         rb = GetComponent<Rigidbody>();
+
     }
 
     private void Start()
     {
         if (PhotonManager.IsMultiplayer)
         {
-            if (character != Character.GetLocalPlayer())
-                StartCoroutine(HandlePhotonObject());
+            Initialize();
         }
         else
         {
             enabled = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        PhotonManager.MessageReceived -= AttackEventListner;
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -45,14 +52,24 @@ public class CharacterPhoton : Photon.MonoBehaviour
         movement.OnTriggerStay(other);
     }
 
+    void Initialize()
+    {
+        if (!character.IsLocalPlayer)
+            StartCoroutine(HandlePhotonObject());
+
+        PhotonManager.MessageReceived += AttackEventListner;
+    }
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.isWriting)
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
-            if(rb!=null)
+            if (rb != null)
                 stream.SendNext(rb.velocity);
+            else
+                stream.SendNext(Vector3.zero);
         }
         else
         {
@@ -61,6 +78,19 @@ public class CharacterPhoton : Photon.MonoBehaviour
             velo = (Vector3)stream.ReceiveNext();
         }
     }
+
+    private void AttackEventListner(byte code, int networkingID, object content)
+    {
+        Debug.Log("Raised Attack");
+        if (networkingID == character.networking.viewID)
+        {
+            if(code == PhotonEventCode.ATTACK)
+            {
+                movement.Attack();
+            }
+        }
+    }
+
 
     IEnumerator HandlePhotonObject()
     {

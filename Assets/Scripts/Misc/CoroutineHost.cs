@@ -4,9 +4,9 @@ using UnityEngine;
 public class CoroutineHost : MonoBehaviour
 {
     private static CoroutineHost instance; 
-    public static void Start(IEnumerator coroutine)
+    public static Coroutine Start(IEnumerator coroutine)
     {
-        instance.StartCoroutine(coroutine);
+        return instance.StartCoroutine(coroutine);
     }
 
     public static void Stop(IEnumerator coroutine)

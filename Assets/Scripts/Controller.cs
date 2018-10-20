@@ -98,7 +98,7 @@ public class Controller : MonoBehaviour
         //}
         //catch { }
         startResolution = new Vector2(Screen.width, Screen.height);
-        GameManager.LevelLoaded += DeactivateActionButton;
+        GameManager.GameReady += DeactivateActionButton;
         PlayerDead += DeactivateActionButtonOnPlayerDeath;
         Draw.ResetMedianFps();
     }

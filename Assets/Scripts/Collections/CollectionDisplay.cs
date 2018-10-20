@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Engine;
 
 public class CollectionDisplay : MonoBehaviour
 {
@@ -24,7 +25,17 @@ public class CollectionDisplay : MonoBehaviour
 
     private void Start()
     {
-        GameManager.LevelLoaded += () => ammount = 0;
+        Level.LevelLoaded += Clear;
+    }
+
+    void Clear()
+    {
+        ammount = 0;
+    }
+
+    private void OnDestroy()
+    {
+        Level.LevelLoaded -= Clear;
     }
 
     public void ShowDisplay()

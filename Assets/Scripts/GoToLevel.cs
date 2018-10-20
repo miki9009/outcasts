@@ -13,7 +13,7 @@ public class GoToLevel : LevelElement
         if(other.attachedRigidbody != null)
         {
             var character = other.attachedRigidbody.GetComponentInParent<Character>();
-            if(character!=null && character == Character.GetLocalPlayer())
+            if(character!=null && character.IsLocalPlayer)
                 GoToLevelAdditive();
         }
     }

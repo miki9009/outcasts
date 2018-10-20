@@ -9,11 +9,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static event Action LevelClear;
-    public static event Action LevelLoaded;
+    public static event Action GameReady;
     public static event Action<string> LevelChanged;
     public static event Action GameFinished;
     public static event Action Restart;
-    public static bool IsLevelLoaded { get; private set; }
+    public static bool IsSceneLoaded { get; private set; }
     public static bool isLevel;
     public static string CurrentLevel { get; set; }
     
@@ -32,18 +32,17 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        SceneManager.sceneLoaded += SceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.activeSceneChanged += OnLevelChanged;
     }
 
     private void Start()
     {
-        IsLevelLoaded = true;
+        IsSceneLoaded = true;
     }
 
     public void OnLevelChangedEvent(string levelName)
     {
-        OnLevelClear();
         LevelChanged?.Invoke(LevelName);
     }
 
@@ -54,7 +53,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void SceneLoaded(Scene scene, LoadSceneMode mode)
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("Game Manager: Level Loaded: " + LevelName);
         if(scene.name == CurrentLevel)
@@ -66,9 +65,19 @@ public class GameManager : MonoBehaviour
         Restart?.Invoke();
     }
 
-    static void OnLevelClear()
+    public static void OnLevelClear()
     {
+        Console.WriteLine("On Level Clear", Console.LogColor.Green);
         LevelClear?.Invoke();
+    }
+
+    public static void OnGameReady()
+    {
+        if (GameReady != null)
+        {
+            Debug.Log("Scene Loaded: " + SceneManager.GetActiveScene().name);
+            GameReady();
+        }
     }
 
     IEnumerator LevelLoadedCor()
@@ -77,11 +86,8 @@ public class GameManager : MonoBehaviour
         yield return Engine.Game.WaitForFrames(1);
         State = GameState.Idle;
         Resources.UnloadUnusedAssets();
-        if (LevelLoaded != null)
-        {
-            Debug.Log("Level Loaded: " + SceneManager.GetActiveScene().name);
-            LevelLoaded();
-        }
+        if(!PhotonManager.IsMultiplayer)
+            OnGameReady();
         yield return null;
     }
 
@@ -140,6 +146,7 @@ public class GameManager : MonoBehaviour
             OnRestart();
         }
     }
+
 
 
 }

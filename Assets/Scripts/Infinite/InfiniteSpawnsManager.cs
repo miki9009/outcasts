@@ -11,7 +11,7 @@ public class InfiniteSpawnsManager : MonoBehaviour
         spawnsConfig = Controller.SpawnsConfig;
         SpawnManager.Enable = true;
 
-        GameManager.LevelLoaded += () =>
+        GameManager.GameReady += () =>
         {
             Debug.Log("Active Scene: " + SceneManager.GetActiveScene().name);
             foreach (var spawnsCollection in spawnsConfig.spawnCollections)

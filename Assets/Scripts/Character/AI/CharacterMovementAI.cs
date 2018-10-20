@@ -33,6 +33,7 @@ public class CharacterMovementAI : CharacterMovement
     protected override void Initialize()
     {
         if (initialized) return;
+        GameManager.LevelClear += DestroyMe;
         initialized = true;
         startPos = transform.position;
         Movement = DoMovement;
@@ -88,7 +89,7 @@ public class CharacterMovementAI : CharacterMovement
                     {
                         jumpInput = 1;
                         curentTimeBetweenJumps = 0;
-                        Debug.Log("Jumped");
+                        //Debug.Log("Jumped");
                     }
                     else
                     {
@@ -120,6 +121,11 @@ public class CharacterMovementAI : CharacterMovement
             ChangeState(AIState.Idle);
             forwardPower = 0;
         }
+    }
+
+    void DestroyMe()
+    {
+        Destroy(gameObject);
     }
 
     public void ClearPath()

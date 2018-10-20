@@ -22,12 +22,30 @@ public class Character : MonoBehaviour
     public IEquipment rightArmItem;
     public IEquipment leftArmItem;
     public bool isDead { get; set; }
+    public CharacterPhoton characterPhoton;
+
+    public bool IsLocalPlayer
+    {
+        get
+        {
+            return this == localPlayer;
+        }
+    }
+
+    public bool IsBot
+    {
+        get
+        {
+            return movement.GetType() == typeof(CharacterMovementAI);
+        }
+    }
 
 
     Identification identity;
 
     public static event Action<Character> CharacterCreated;
 
+    public static List<Character> allCharacters = new List<Character>();
 
     public int ID
     {
@@ -96,6 +114,7 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
+        allCharacters.Add(this);
         movement = GetComponent<CharacterMovement>();
         identity = new Identification();
 
@@ -106,21 +125,28 @@ public class Character : MonoBehaviour
 
     void Start()
     {
-        Controller.Instance.characters.Add(this);
         if (movement.GetType() == typeof(CharacterMovementPlayer))
         {
-            if(networking.isMine || !PhotonManager.IsMultiplayer)
+            if(PhotonManager.IsMultiplayer) //MULTIPLAYER
+            {
+                if (networking.isMine)
+                {
+                    CreateLocalPlayer();
+                }
+                else
+                {
+                    DisableOnNotMine();
+                }
+                ID = networking.viewID;
+                PhotonManager.AddPlayer(this);
+            }
+            else //LOCAL PLAYER NO BOTS
             {
                 CreateLocalPlayer();
+                ID = identity.ID;
             }
-            else if(PhotonManager.IsMultiplayer)
-            {
-                DisableOnNotMine();
-            }
-            ID = networking.viewID;
-
         }
-        else
+        else //BOTS
         {
             ID = identity.ID;
         }
@@ -129,7 +155,9 @@ public class Character : MonoBehaviour
 
     private void OnDestroy()
     {
-        Controller.Instance.characters.Remove(this);
+        allCharacters.Remove(this);
+
+        PhotonManager.RemovePlayer(this);
     }
 
     void DisableOnNotMine()
@@ -144,7 +172,16 @@ public class Character : MonoBehaviour
         bodyMeshRenderer.sharedMesh = config.GetMesh(armorID);
     }
 
-
+    public static Character GetCharacter(int id)
+    {
+        for (int i = 0; i < allCharacters.Count; i++)
+        {
+            if (id == allCharacters[i].ID)
+                return allCharacters[i];
+        }
+        Debug.LogError("Player with id: " + id + " not found");
+        return null;
+    }
 
 
 }

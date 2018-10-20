@@ -18,7 +18,7 @@ public class MissionsManager : Module
         missionsConfig.missions.ForEach(x => unlocked.Add(x.unlocked));
         var array = unlocked.ToArray();
         unlockedMissions = DataProperty<bool[]>.Get("UnlockedMissions", array);
-        GameManager.LevelLoaded += InitializeMissions;
+        GameManager.GameReady += InitializeMissions;
         SceneManager.sceneLoaded += ClearMissions;
     }
 

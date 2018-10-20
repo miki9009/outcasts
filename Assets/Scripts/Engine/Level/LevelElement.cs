@@ -117,7 +117,8 @@ namespace Engine
 
         protected virtual void OnLevelClear()
         {
-            if (gameObject == null) return;
+            if (this == null || gameObject == null) return;
+            Character.CharacterCreated -= CheckIfActive;
             Character.CharacterCreated -= CheckTargetPointer;
             GameManager.LevelClear -= OnLevelClear;
             Destroy(gameObject);

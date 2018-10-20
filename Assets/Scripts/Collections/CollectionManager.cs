@@ -30,22 +30,15 @@ public class CollectionManager : MonoBehaviour
     private void OnDestroy()
     {
         instance = null;
-        GameManager.LevelClear -= Clear;
+        Level.LevelLoaded-= Clear;
     }
 
-    CollectionManager()
-    {
-        collections = new Dictionary<int, CollectionSet>();
-        instance = this;
-    }
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        GameManager.LevelClear += Clear;
+        collections = new Dictionary<int, CollectionSet>();
+        instance = this;
+        Level.LevelLoaded += Clear;
     }
 
     Dictionary<int, CollectionSet> collections;
@@ -53,10 +46,7 @@ public class CollectionManager : MonoBehaviour
     public event System.Action<int, CollectionType, int> Collected;
     public void OnCollected(int id, CollectionType collection, int amount)
     {
-        if(Collected != null)
-        {
-            Collected(id, collection, amount);
-        }
+        Collected?.Invoke(id, collection, amount);
     }
 
     void Clear()

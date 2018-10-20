@@ -16,6 +16,7 @@ namespace Objectives
         public bool triggerObject;
         public int references = -1;
 
+
         [NonSerialized]
         public float startTimer;
 

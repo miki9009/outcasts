@@ -39,7 +39,7 @@ public class TargetPointerManager : MonoBehaviour
         levelElement.ArrowActivator.AssignArrow(targetPointer);
         if (arrow != null)
             arrow.SetActive(true);
-        Debug.Log("Arrow set");
+        //Debug.Log("Arrow set");
         return targetPointer;
     }
 

@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections.Generic;
-using System;
 using System.IO;
 using UnityEditor;
+using UnityEngine;
 
 namespace Engine
 {
@@ -23,7 +23,7 @@ namespace Engine
             }
         }
 
-        public static event Action ElementsLoaded;
+        public static event Action LevelLoaded;
 
 
         public static string LevelElementsPath
@@ -200,7 +200,8 @@ namespace Engine
             {
                 levelElement.ElementStart();
             }
-            ElementsLoaded?.Invoke();
+            Console.WriteLine("LevelLoaded", Console.LogColor.Green);
+            LevelLoaded?.Invoke();
         }
     }
 }

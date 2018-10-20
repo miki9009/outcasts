@@ -29,10 +29,7 @@ public class FirePlace : MonoBehaviour
         {
             goToNextScene = false;
             particles.gameObject.SetActive(true);
-            if (OnFirePlacedReached != null)
-            {
-                OnFirePlacedReached();
-            }
+            OnFirePlacedReached?.Invoke();
 
             //Data.Saved += CanGoToNextLevel;
             StartCoroutine(WaitSecond());

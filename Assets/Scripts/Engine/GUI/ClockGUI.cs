@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Engine;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,18 @@ public class ClockGUI : MonoBehaviour
     void Awake()
     {
         text = GetComponentInChildren<Text>();
-        GameManager.LevelLoaded += Prepare;
+        GameManager.GameReady += Prepare;
+    }
+
+    private void OnDestroy()
+    {
+        Level.LevelLoaded -= ResetTimer;
+    }
+
+    void ResetTimer()
+    {
+        if(instance!=null)
+            text.text = string.Format("{0:000}", instance.timeToFinish);
     }
 
     void Prepare()
@@ -27,12 +39,14 @@ public class ClockGUI : MonoBehaviour
         childText.transform.localScale = new Vector3(1f, 1f, 1f);
         childText.enabled = false;
         showTime = 3;
-       // GameManager.OnLevelLoaded -= Prepare;
+        ResetTimer();
+        Level.LevelLoaded += ResetTimer;
+        // GameManager.OnLevelLoaded -= Prepare;
     }
 
     void SetTime()
     {
-        text.text = string.Format("{0:000}", instance.timeToFinish);
+        text.text = string.Format("{0:000}", instance.TimeLeft);
     }
 
     Coroutine coroutine = null;

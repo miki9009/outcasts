@@ -231,7 +231,7 @@ public class CharacterMovementPlayer : CharacterMovement
         {
             pointingDir = Vector.Direction(horTouched, curHorTouched);
             angle = -Vector2.SignedAngle(Vector2.up, pointingDir);
-            forwardPower = Mathf.Clamp(horDistance, 0, 50) / 50;
+            forwardPower = Mathf.Clamp(horDistance, 0, 100) / 100;
             targetEuler = new Vector3(0, Camera.eulerAngles.y + angle, 0);
         }
 

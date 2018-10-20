@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class GameTime : MonoBehaviour
 {
+    public int timeToFinish;
+    public bool timeBased;
+
+    public int TimeLeft { get; private set; }
     float curTime = 0;
     int seconds = 0;
 
@@ -14,7 +18,7 @@ public class GameTime : MonoBehaviour
     private static GameTime instance;
     public static GameTime Instance
     {
-        get    
+        get
         {
             if (instance == null)
             {
@@ -29,7 +33,7 @@ public class GameTime : MonoBehaviour
         }
     }
 
-    public int timeToFinish;
+
 
     private void Awake()
     {
@@ -42,11 +46,43 @@ public class GameTime : MonoBehaviour
             Destroy(gameObject);
             Debug.LogError("Instance of GameTime was already defined");
         }
-        GameManager.LevelLoaded += () => TimerRunning = true;
+        GameManager.GameReady += Restart;
+        GameManager.LevelClear += Restart;
+    }
+
+    private void Start()
+    {
+        if (!timeBased)
+            enabled = false;
+        PhotonManager.GlobalMessageReceived += CheckTimeOnMultiplayer;
+    }
+
+    private void CheckTimeOnMultiplayer(byte code, object time)
+    {
+        if (code == PhotonEventCode.TIME && !PhotonManager.IsMaster)
+        {
+            TimeLeft = (int)time;
+            TimeElapsed?.Invoke();
+        }
+
     }
 
     bool finished;
     private void FixedUpdate()
+    {
+        if (!PhotonManager.IsMultiplayer || PhotonManager.IsMaster)
+            UpdateTimer();
+    }
+
+    void Restart()
+    {
+        TimerRunning = true;
+        TimeLeft = timeToFinish;
+    }
+
+
+
+    void UpdateTimer()
     {
         if (TimerRunning)
         {
@@ -55,33 +91,33 @@ public class GameTime : MonoBehaviour
             {
                 curTime = 0;
                 seconds++;
-                if (timeToFinish > 0)
+                if (TimeLeft > 0)
                 {
-                    timeToFinish--;
+                    TimeLeft--;
                 }
                 else
                 {
                     Debug.Log("TIME ELAPSED");
                     finished = true;
-                    if (EndOfTime != null)
-                    {
-                        EndOfTime();
-                    }
+                    TimerRunning = false;
+                    EndOfTime?.Invoke();
                 }
-                if (TimeElapsed != null)
-                {
-                    TimeElapsed();
-                }
+                TimeElapsed?.Invoke();
             }
         }
     }
 
     public void AddTime(int time)
     {
-        timeToFinish += time;
-        if (TimeAdded != null)
-        {
-            TimeAdded(time);
-        }
+        TimeLeft += time;
+        TimeAdded?.Invoke(time);
+    }
+
+    private void OnDestroy()
+    {
+        PhotonManager.GlobalMessageReceived -= CheckTimeOnMultiplayer;
+        GameManager.LevelClear -= Restart;
+        GameManager.GameReady -= Restart;
     }
 }
+

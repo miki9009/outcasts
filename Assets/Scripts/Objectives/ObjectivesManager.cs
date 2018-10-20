@@ -17,7 +17,7 @@ namespace Objectives
         public static ObjectivesManager Instance { get; private set; }
         
         public static bool EndingGame { get; private set; }
-
+        public bool returnToVillage;
         int sequenceIndex = 0;
 
 
@@ -45,7 +45,7 @@ namespace Objectives
                 }
             }
             TriggerSequence();
-            Level.ElementsLoaded += CatchReferences;
+            Level.LevelLoaded += CatchReferences;
         }
 
         void TriggerSequence()
@@ -77,7 +77,15 @@ namespace Objectives
             }
 
             if (allObjectivesConpleted)
+            {
                 GameManager.State = GameManager.GameState.Completed;
+                if(Instance.returnToVillage)
+                {
+                    LevelManager.ChangeLevel("Village", "0");
+                }
+
+            }
+
             //GameManager.Instance.EndGame(GameManager.GameState.Completed);
 
             ObjectiveEnded?.Invoke(objective);
@@ -98,6 +106,7 @@ namespace Objectives
             {
                 data["Sequence"] = sequence;
                 data["References"] = references;
+                data["ReturnVillage"] = returnToVillage;
             }
 
         }
@@ -107,6 +116,10 @@ namespace Objectives
             base.OnLoad();
             if(data!=null)
             {
+                if(data.ContainsKey("ReturnVillage"))
+                {
+                    returnToVillage = (bool)data["ReturnVillage"];
+                }
                 if(data.ContainsKey("Sequence"))
                 {
                     sequence = (ObjectiveSequence)data["Sequence"];
@@ -131,7 +144,7 @@ namespace Objectives
 
         private void OnDestroy()
         {
-            Level.ElementsLoaded -= CatchReferences;
+            Level.LevelLoaded -= CatchReferences;
         }
 
         public void CatchReferences()

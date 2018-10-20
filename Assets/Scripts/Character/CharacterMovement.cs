@@ -99,9 +99,11 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
         anim = character.anim;
         smokeExplosion = StaticParticles.Instance.smokeExplosion;
         starsExplosion = StaticParticles.Instance.starsExplosion;
-        Initialize();
+
         if (isRemoteControl)
             enabled = false;
+        else
+            Initialize();
     }
 
     public void OnTriggerExit(Collider other)
@@ -272,9 +274,10 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
     }
 
 
-    protected void Attack()
+    public void Attack()
     {
-        if (!enabled || attack) return;
+        Debug.Log("Attack");
+        if (character.isDead || attack) return;
 
             if (Thrown != null)
             {
@@ -296,6 +299,8 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
                 isAttacking = true;
                 attackParticles.Play();
                 MeleeAttack?.Invoke();
+            if (PhotonManager.IsMultiplayer && character.IsLocalPlayer)
+                PhotonManager.SendMessage(PhotonEventCode.ATTACK, character.ID, null);
         }
         //}
     }
@@ -327,8 +332,8 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
         RaycastHit[] hits = Physics.SphereCastAll(curPos, 2, Vector3.down, 10, collisionLayer.value,QueryTriggerInteraction.Ignore);
         for (int i = 0; i < hits.Length; i++)
         {
-            Debug.Log("Hit: " + hits[i].transform.name);
-            Debug.Log(hits[i].collider.GetType());
+            //Debug.Log("Hit: " + hits[i].transform.name);
+            //Debug.Log(hits[i].collider.GetType());
             scripts.Add(hits[i].collider.GetComponentInParent<IDestructible>());
         }
         foreach (var script in scripts)

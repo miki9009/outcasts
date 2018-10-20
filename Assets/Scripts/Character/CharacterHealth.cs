@@ -16,7 +16,7 @@ public class CharacterHealth : MonoBehaviour
 
     void AssignHealth(Character character)
     {
-        if (Character.GetLocalPlayer() != character) return;
+        if (!character.IsLocalPlayer) return;
         Debug.Log("Controller: " + Controller.Instance);
         try
         {

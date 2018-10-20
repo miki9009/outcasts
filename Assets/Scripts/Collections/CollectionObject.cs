@@ -93,9 +93,9 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
     {
         localScale = transform.localScale;
         
-        if (!GameManager.IsLevelLoaded)
+        if (!GameManager.IsSceneLoaded)
         {
-            GameManager.LevelLoaded += AssignDisplayOnLoad;
+            GameManager.GameReady += AssignDisplayOnLoad;
         }
         else
         {

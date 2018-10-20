@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace Objectives
 {
-
     [CustomEditor(typeof(ObjectivesManager))]
     public class ObjectivesManagerEditor : Editor
     {
@@ -20,12 +19,9 @@ namespace Objectives
 
         public override void OnInspectorGUI()
         {
-            //base.OnInspectorGUI();
-
             objectivesManager = (ObjectivesManager)target;
             if (objectivesManager.elementID == -1)
                 objectivesManager.elementID = Level.GetID();
-            //toggleTxt = GUILayout.Toggle(toggleTxt, "A Toggle text");
 
             if (foldout == null || foldout.Count != objectivesManager.sequence.sequences.Count)
             {
@@ -54,8 +50,6 @@ namespace Objectives
 
             referenceLength = new int[objectivesManager.levelElementReferences.Count];
 
-            //GUI.contentColor = Color.red;
-            //GUI.color = Color.gray;
             Color col = new Color(0.5f, 0.7f, 0.8f);
 
             for (int i = 0; i < objectivesManager.sequence.sequences.Count; i++)
@@ -71,7 +65,6 @@ namespace Objectives
                     for (int j = 0; j < sequence.objectives.Count; j++)
                     {
                         EditorGUILayout.LabelField("Objective", EditorStyles.boldLabel);
-                        //GUI.backgroundColor = colors[j % 2];
                         var objective = sequence.objectives[j];
                         GUILayout.BeginVertical(EditorStyles.helpBox);
 
@@ -165,6 +158,7 @@ namespace Objectives
             {
                 references.Add(null);
             }
+            objectivesManager.returnToVillage = GUILayout.Toggle(objectivesManager.returnToVillage, "Return to Village on complete");
 
 
             GUI.backgroundColor = defaultColor;

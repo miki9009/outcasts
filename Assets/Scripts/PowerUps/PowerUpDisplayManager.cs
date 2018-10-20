@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Engine;
 
 public class PowerUpDisplayManager : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class PowerUpDisplayManager : MonoBehaviour
     {
         Instance = this;
         displays = new HashSet<PowerUpDisplay>();
-        GameManager.LevelLoaded += ClearAllPowerUpsAndDisplays;
+        Level.LevelLoaded += ClearAllPowerUpsAndDisplays;
     }
 
     public PowerUpDisplay GetDisplay(CollectionType type)
@@ -55,7 +56,7 @@ public class PowerUpDisplayManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.LevelLoaded -= ClearAllPowerUpsAndDisplays;
+        Level.LevelLoaded -= ClearAllPowerUpsAndDisplays;
     }
 
     public void AddDisplay(PowerUp powerUp)

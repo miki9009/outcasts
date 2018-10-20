@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 135244056597556484}
   - component: {fileID: 114355207015820578}
   - component: {fileID: 114520544086442010}
+  - component: {fileID: 114081366630251382}
   m_Layer: 13
   m_Name: CollectionSword
   m_TagString: Untagged
@@ -53,7 +54,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1239552232526108}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -20.095442, y: 2.311028, z: -2.812994}
+  m_LocalPosition: {x: 0.36513206, y: -0.3941127, z: 46.561165}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4756617487831944}
@@ -115,6 +116,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1097763685534028}
   m_Mesh: {fileID: 4300000, guid: d1b7394658cc4f942a377094da8b6da7, type: 3}
+--- !u!114 &114081366630251382
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1239552232526108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f3bd836cf81b3244adcefaa5a920531, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementID: 9594600
+  arrowTarget: 0
+  activeAndEnabled: 1
+  isSignificant: 0
 --- !u!114 &114355207015820578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -127,7 +143,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 5
-  spawnName: GoldCoin
   val: 1
   emmitParticles: 1
   particlesAmmount: 5

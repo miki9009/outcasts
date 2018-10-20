@@ -11,6 +11,7 @@ using Engine.GUI;
 
 public class LevelManager : MonoBehaviour
 {
+    public static event Action BeforeSceneLoading;
     static LevelManager instance;
     public static event Action LevelSelected;
     public static LevelManager Instance
@@ -61,7 +62,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.LevelLoaded += () =>
+        GameManager.GameReady += () =>
         {
             currentLevel = SceneManager.GetActiveScene().name;
             bool isLevel = levels.Exists(x => x.sceneName == currentLevel);
@@ -81,9 +82,9 @@ public class LevelManager : MonoBehaviour
         };
     }
 
-    public void GoToScene(string sceneName)
+    public void GoToScene(string sceneName, bool showLoadingScreen = true)
     {
-        SceneManager.LoadSceneAsync(sceneName);
+        LoadScene(sceneName, LoadSceneMode.Single, showLoadingScreen);
 
         LevelSelected?.Invoke();
     }
@@ -137,10 +138,17 @@ public class LevelManager : MonoBehaviour
         return scenes.ToArray();
     }
 
-    static void LoadScene(string sceneName, LoadSceneMode mode)
+    static void LoadScene(string sceneName, LoadSceneMode mode, bool showLoadingScreen = true)
     {
-        UIWindow.GetWindow(UIWindow.LOADING_SCREEN).Show();
-        Debug.Log("Show loading screen");
+        OnBeforeSceneLoading();
+        if (showLoadingScreen)
+        {
+            var window = UIWindow.GetWindow(UIWindow.LOADING_SCREEN);
+            if (window != null)
+                window.Show();
+            Debug.Log("Show loading screen");
+        }
+
         SceneManager.LoadSceneAsync(sceneName, mode);
     }
 
@@ -171,6 +179,7 @@ public class LevelManager : MonoBehaviour
 
     public static void ChangeLevel(string sceneName, string customLevel)
     {
+        GameManager.OnLevelClear();
         if(sceneName != GameManager.CurrentLevel)
             SceneManager.UnloadSceneAsync(GameManager.CurrentLevel);
         levelToLoad = sceneName;
@@ -196,8 +205,15 @@ public class LevelManager : MonoBehaviour
         LoadCustomLevel?.Invoke();
     }
 
+    static void OnBeforeSceneLoading()
+    {
+        BeforeSceneLoading?.Invoke();
+    }
+
     public static void ReturnToMenu()
     {
+        OnBeforeSceneLoading();
+        GameManager.OnLevelClear();
         SceneManager.UnloadSceneAsync(instance.gameScene);
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
@@ -224,7 +240,9 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator HideLoadingScreen()
     {
-        UIWindow.GetWindow(UIWindow.LOADING_SCREEN).Hide();
+        var window = UIWindow.GetWindow(UIWindow.LOADING_SCREEN);
+        if (window != null)
+            window.Hide();
         Debug.Log("Screen Hide");
         yield return null;
     }

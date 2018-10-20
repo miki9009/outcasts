@@ -98,7 +98,7 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
 
     private void OnEnable()
     {
-        var characters = Controller.Instance.characters;
+        var characters = Character.allCharacters;
         var dis1 = Mathf.Infinity;
         float dis2;
         foreach (var character in characters)

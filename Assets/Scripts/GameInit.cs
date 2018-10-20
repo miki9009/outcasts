@@ -48,16 +48,16 @@ public class GameInit : MonoBehaviour
                     if (!settings.runBenchmark)
                     {
                         Screen.SetResolution((int)settings.resolution.x, (int)settings.resolution.y, true);
-                        LevelManager.Instance.GoToScene(firstScene);
+                        LevelManager.Instance.GoToScene(firstScene, false);
                     }
                     else
                     {
-                        LevelManager.Instance.GoToScene(benchmarkScene);
+                        LevelManager.Instance.GoToScene(benchmarkScene,false);
                     }
                 }
                 else
                 {
-                    LevelManager.Instance.GoToScene(firstScene);
+                    LevelManager.Instance.GoToScene(firstScene,false);
                 }
 #else
                 if (!settings.runBenchmark)

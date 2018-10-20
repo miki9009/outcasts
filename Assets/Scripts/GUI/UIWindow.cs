@@ -6,6 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Engine.Threads;
 
 namespace Engine.GUI
 {
@@ -148,7 +149,7 @@ namespace Engine.GUI
 
         public void Hide()
         {
-            if (hide != null) return;
+            if (hide != null || !gameObject.activeInHierarchy) return;
             hide = StartCoroutine(HideE());
         }
 

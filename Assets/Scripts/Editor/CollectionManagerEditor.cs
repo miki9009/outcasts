@@ -16,7 +16,7 @@ public class CollectionManagerEditor : Editor
             foreach (var set in collections)
             {
                 //collectionString += collection.Key + ": " + collection.Value.Collection.Values + "\n";
-                collectionString = "ID: " + set.Key;
+                collectionString = "ID: " + set.Key + "\n";
                 foreach (var item in set.Value.Collection)
                 {
                     collectionString += item.Key + ": " + item.Value + "\n";

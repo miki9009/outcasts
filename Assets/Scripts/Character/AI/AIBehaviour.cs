@@ -178,7 +178,7 @@ namespace AI
         void Refresh()
         {
             collection = SignificantCollection.FindNearest(transform.position);
-            Debug.Log("Collection: " + collection.GetInstanceID());
+            //Debug.Log("Collection: " + collection.GetInstanceID());
             if (collection != null)
             {
                 destination = collection.transform.position;

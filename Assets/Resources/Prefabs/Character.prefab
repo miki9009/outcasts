@@ -753,6 +753,7 @@ MonoBehaviour:
   rightUpperArm: {fileID: 4799106042533150}
   rightLowerArm: {fileID: 4574165934073940}
   bodyMeshRenderer: {fileID: 137924348840373068}
+  characterPhoton: {fileID: 114847762505081622}
 --- !u!114 &114668861302155250
 MonoBehaviour:
   m_ObjectHideFlags: 1
