@@ -14124,7 +14124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowPrefab: {fileID: 1231781162793652, guid: 66c2db4b71a7e8546aef9f96269c7205,
     type: 2}
-  spawnsCount: 10
+  spawnsCount: 50
 --- !u!1 &774365826
 GameObject:
   m_ObjectHideFlags: 0
@@ -23632,8 +23632,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58af04290970c3b40aa25e5d63dfd46c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBased: 1
   timeToFinish: 300
+  timeBased: 1
 --- !u!1 &1608952675
 GameObject:
   m_ObjectHideFlags: 0

@@ -1226,6 +1226,11 @@ namespace Engine
         {
             return new Vector3(vec.x, vec.y, vec.z);
         }
+
+        public static implicit operator Float3(Vector3 vec)
+        {
+            return new Float3(vec.x, vec.y, vec.z);
+        }
     }
 
     [Serializable]

@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4271144173291244}
   - component: {fileID: 33287607941125254}
   - component: {fileID: 23135206626604944}
-  - component: {fileID: 95455272645270820}
   - component: {fileID: 64823594275554192}
   m_Layer: 10
   m_Name: Rock_Small1
@@ -99,21 +98,3 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 8c65d23bb72a1c841ac3fcc19c2a1251, type: 3}
---- !u!95 &95455272645270820
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1443360460040142}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 8c65d23bb72a1c841ac3fcc19c2a1251, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0

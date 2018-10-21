@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4648002070264170}
   - component: {fileID: 33825075347697638}
   - component: {fileID: 23038380604472894}
-  - component: {fileID: 95991028548795780}
   - component: {fileID: 64944383257034336}
   m_Layer: 10
   m_Name: Rock_Medium1
@@ -99,21 +98,3 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: dd505c5af3ba409459358c6b9d9b914e, type: 3}
---- !u!95 &95991028548795780
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1945276182029426}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: dd505c5af3ba409459358c6b9d9b914e, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0

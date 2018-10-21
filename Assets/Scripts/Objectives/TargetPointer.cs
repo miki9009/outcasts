@@ -9,7 +9,7 @@ public class TargetPointer : MonoBehaviour
 
     private void Update()
     {
-        if (target == null || origin == null)
+        if (target == null || origin == null || !target.gameObject.activeInHierarchy)
         {
             gameObject.SetActive(false);
             return;

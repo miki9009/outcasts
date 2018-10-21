@@ -136,11 +136,12 @@ public class GameManager : MonoBehaviour
         //SceneManager.UnloadSceneAsync(levelName);
         //SceneManager.sceneUnloaded += Restart;
         OnLevelClear();
-        Character character = Character.GetLocalPlayer();
-        if (character != null)
-            Destroy(character.gameObject);
-        if (!string.IsNullOrEmpty(LevelManager.Instance.LastCustomLevel))
-            Level.LoadWithScene(SceneManager.GetActiveScene().name, LevelManager.Instance.LastCustomLevel);
+        //Character character = Character.GetLocalPlayer();
+        //if (character != null)
+        //    Destroy(character.gameObject);
+        //if (!string.IsNullOrEmpty(LevelManager.Instance.LastCustomLevel))
+        //    Level.LoadWithScene(SceneManager.GetActiveScene().name, LevelManager.Instance.LastCustomLevel);
+        LevelManager.LoadOnlyCusomLevel(LevelManager.Instance.LastCustomLevel);
         if (Instance != null)
         {
             OnRestart();

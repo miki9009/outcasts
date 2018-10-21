@@ -176,18 +176,36 @@ public class LevelManager : MonoBehaviour
     }
 
 
+    public static void LoadOnlyCusomLevel(string customLevel)
+    {
+        Character character = Character.GetLocalPlayer();
+        if (character != null)
+            Destroy(character.gameObject);
+        if (!string.IsNullOrEmpty(LevelManager.Instance.LastCustomLevel))
+        {
+            customLevelToLoad = customLevel;
+            Level.LoadWithScene(SceneManager.GetActiveScene().name, customLevel);
+        }
+
+    }
 
     public static void ChangeLevel(string sceneName, string customLevel)
     {
         GameManager.OnLevelClear();
-        if(sceneName != GameManager.CurrentLevel)
+        if(sceneName == GameManager.CurrentLevel)
+        {
+            LoadOnlyCusomLevel(customLevel);
+        }
+        else
+        {
             SceneManager.UnloadSceneAsync(GameManager.CurrentLevel);
-        levelToLoad = sceneName;
-        customLevelToLoad = customLevel;
-        Debug.Log("Current level set to: " + levelToLoad);
-        GameManager.CurrentLevel = levelToLoad;
-        instance.AddLevelScene(SceneManager.GetSceneByName(sceneName), LoadSceneMode.Additive);
-        LoadCustomLevel += OnLoadCustomLevel;
+            levelToLoad = sceneName;
+            customLevelToLoad = customLevel;
+            Debug.Log("Current level set to: " + levelToLoad);
+            GameManager.CurrentLevel = levelToLoad;
+            instance.AddLevelScene(SceneManager.GetSceneByName(sceneName), LoadSceneMode.Additive);
+            LoadCustomLevel += OnLoadCustomLevel;
+        }
     }
 
     void AddLevelScene(Scene scene, LoadSceneMode mode)

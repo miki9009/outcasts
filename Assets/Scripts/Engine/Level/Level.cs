@@ -67,12 +67,16 @@ namespace Engine
 
         public static void Save(string levelName)
         {
+            var ids = new Dictionary<int, bool>();
             levelElements = new Dictionary<object, string>();
             var elements = GameObject.FindObjectsOfType<LevelElement>();
             try
             {
                 foreach (var element in elements)
                 {
+                    if (ids.ContainsKey(element.elementID))
+                        element.elementID = GetID();
+                    ids.Add(element.elementID, true);
                     element.OnSave();
                     levelElements.Add(element.data, element.GetName());
                 }

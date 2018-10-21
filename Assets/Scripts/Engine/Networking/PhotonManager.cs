@@ -163,7 +163,7 @@ public class PhotonManager : Photon.MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    float secondsToWait = 10;
+    public float secondsToWaitInEditor = 10;
 #endif
 
     IEnumerator UpdateCoroutine()
@@ -174,8 +174,8 @@ public class PhotonManager : Photon.MonoBehaviour
             {
                 UpdateMasterMessages();
 #if UNITY_EDITOR
-                if (secondsToWait > 0)
-                    secondsToWait--;
+                if (secondsToWaitInEditor > 0)
+                    secondsToWaitInEditor--;
                 else if (notStarted)
                 {
                     GameManager.OnGameReady();

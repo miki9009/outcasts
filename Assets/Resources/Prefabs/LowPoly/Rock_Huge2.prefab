@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4333537203818374}
   - component: {fileID: 33831081739907802}
   - component: {fileID: 23016727792383010}
-  - component: {fileID: 95991574539607472}
   - component: {fileID: 64618817167261490}
   m_Layer: 10
   m_Name: Rock_Huge2
@@ -99,21 +98,3 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 8d4bacdea9ac352429147206c40709ca, type: 3}
---- !u!95 &95991574539607472
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1890863477957094}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 8d4bacdea9ac352429147206c40709ca, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0

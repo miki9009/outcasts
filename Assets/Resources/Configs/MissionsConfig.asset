@@ -24,7 +24,7 @@ MonoBehaviour:
     passed: 0
     unlocked: 1
     unlocks: 
-  - level: Moutain:2
+  - level: Moutain:Multiplayer
     passed: 0
     unlocked: 1
     unlocks: 

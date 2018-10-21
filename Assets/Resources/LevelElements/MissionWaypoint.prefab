@@ -125,7 +125,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b4b14bbf30e7944936b4b21d117ba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementID: 592387
   arrowTarget: 0
+  activeAndEnabled: 1
   levelName: Village:0
   height: 1.5
   active: 1

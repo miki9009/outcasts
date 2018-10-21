@@ -51,5 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ecba906d8703148827869d40a4b875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementID: -1
+  arrowTarget: 0
+  activeAndEnabled: 1
   prefab: {fileID: 0}
   color: {r: 0, g: 0, b: 1, a: 0.4392157}
