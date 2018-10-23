@@ -32,7 +32,7 @@ namespace Engine
         {
 
 #if UNITY_EDITOR
-            return PrefabUtility.GetPrefabParent(gameObject).name;
+            return PrefabUtility.GetCorrespondingObjectFromSource(gameObject).name;
 #endif
             Debug.LogError("Path not found of Prefab doesn't exist, or Trying to get path during gameplay.");
             return "";

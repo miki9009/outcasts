@@ -59,6 +59,21 @@ public class GameCamera : MonoBehaviour
     Quaternion slerp;
     float magnitude;
 
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            ResetView();
+        }
+    }
+#endif
+
+    public void ResetView()
+    {
+        transform.position = target.position + target.forward * -10;
+    }
+
     private void FixedUpdate()
     {
         if (target == null) return;

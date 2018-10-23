@@ -97,6 +97,7 @@ public class MovingPlatform : LevelElement
             data["Rotations"] = pointsRot;
             data["Handle1"] = handle1Pos;
             data["Handle2"] = handle2Pos;
+            data["PlatformPos"] = pos;
         }
     }
 
@@ -113,6 +114,8 @@ public class MovingPlatform : LevelElement
                 handle1Pos = (Float3[])data["Handle1"];
             if (data.ContainsKey("Handle2"))
                 handle2Pos = (Float3[])data["Handle2"];
+            if (data.ContainsKey("PlatformPos"))
+                pos = (float)data["PlatformPos"];
             for (int i = 0; i < pointsPos.Length; i++)
             {
                 points[i].transform.localPosition = pointsPos[i];

@@ -22,3 +22,8 @@ MonoBehaviour:
     - 0
     - 1
     - Multiplayer
+  - sceneName: Islands
+    levels:
+    - 0
+    - 1
+    - Multiplayer
