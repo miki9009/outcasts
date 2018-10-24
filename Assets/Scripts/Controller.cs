@@ -9,6 +9,7 @@ using Engine.Config;
 [DefaultExecutionOrder(-100)]
 public class Controller : MonoBehaviour
 {
+    public float downFactor = 100;
     public BloomOptimized bloom;
     public Antialiasing antialiasing;
     public enum GameType { Perspective, Ortographic}
@@ -77,6 +78,7 @@ public class Controller : MonoBehaviour
     private void OnDestroy()
     {
         GameManager.Restart -= OnRestart;
+        ChangeToLowDetailMaterial();
     }
 
     void OnRestart()
@@ -101,6 +103,7 @@ public class Controller : MonoBehaviour
         GameManager.GameReady += DeactivateActionButton;
         PlayerDead += DeactivateActionButtonOnPlayerDeath;
         Draw.ResetMedianFps();
+        ChangeToHighDetailMaterial();
     }
 
     void DeactivateActionButtonOnPlayerDeath(Character character)
@@ -179,6 +182,21 @@ public class Controller : MonoBehaviour
         {
             character.transform.position = character.movement.StartPosition;
         }
+    }
+
+    public Material material;
+    public Shader lowDetailShader;
+    public Shader highDetailShader;
+    
+
+    void ChangeToHighDetailMaterial()
+    {
+        material.shader = highDetailShader;
+    }
+
+    void ChangeToLowDetailMaterial()
+    {
+        material.shader = lowDetailShader;
     }
 
 

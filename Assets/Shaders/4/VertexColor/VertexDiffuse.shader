@@ -1,37 +1,24 @@
 ﻿Shader "VertexColor/Diffuse" {
 Properties {
     _Color ("Main Color", Color) = (1,1,1,1)
-//    _MainTex ("Base (RGB)", 2D) = "white" {}
 }
  
 SubShader {
-    Tags { "RenderType"="Opaque" }
-    LOD 150
- 
+
+LOD 200
+
 CGPROGRAM
-#pragma surface surf Lambert vertex:vert
- 
-//sampler2D _MainTex;
+#pragma surface surf Lambert addshadow
 fixed4 _Color;
  
 struct Input {
-//    float2 uv_MainTex;
-    float3 vertColor;
+    float3 vertColor : COLOR;
 };
  
-void vert (inout appdata_full v, out Input o) {
-//    UNITY_INITIALIZE_OUTPUT(Input, o);
-    o.vertColor = v.color;
-}
- 
+
 void surf (Input IN, inout SurfaceOutput o) {
-//    fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
-//    o.Albedo = c.rgb * IN.vertColor;
     o.Albedo = IN.vertColor*_Color;
-//    o.Alpha = c.a;
 }
 ENDCG
 }
- 
-Fallback "Diffuse"
 }

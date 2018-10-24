@@ -69,10 +69,14 @@ public class GameCamera : MonoBehaviour
     }
 #endif
 
+    bool isResetting;
     public void ResetView()
     {
-        transform.position = target.position + target.forward * -10;
+        transform.position = target.position - target.forward * minDistance + Vector3.up * y;
+        transform.rotation = Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor));
     }
+
+
 
     private void FixedUpdate()
     {

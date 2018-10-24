@@ -431,18 +431,6 @@ public static class Auto
     {
         var range = to - from;
         return ((Time.fixedTime + duration * offsetPercent) * (Mathf.Abs(range) / duration)) % 1;
-        var total = (Time.fixedTime + duration * offsetPercent) * (Mathf.Abs(range) / duration);
-        if (range > 0)
-        {
-            Debug.LogError(Time.fixedTime + "  /  " + (from + Time.fixedTime - (range * Mathf.FloorToInt((Time.fixedTime / range)))));
-            return from + Time.fixedTime - (range * Mathf.FloorToInt((Time.fixedTime / range)));
-        }
-        else
-        {
-            //			return from - (Time.fixedTime - (Mathf.Abs(range) * Mathf.FloorToInt((total / Mathf.Abs(range)))));
-            Debug.LogError((from - (Time.fixedTime - (Mathf.Abs(range) * ((total / Mathf.Abs(range)))))));
-            return from - (Time.fixedTime - (Mathf.Abs(range) * ((total / Mathf.Abs(range)))));
-        }
     }
 
     //	public static float Loop(float duration, float from, float to)

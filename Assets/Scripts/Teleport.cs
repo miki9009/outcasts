@@ -7,7 +7,6 @@ public class Teleport : MonoBehaviour
     public Teleport otherTeleport;
     Transform character;
     public bool canTeleport = true;
-    bool activated;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -42,7 +41,6 @@ public class Teleport : MonoBehaviour
 
     IEnumerator Teleportation()
     {
-        activated = true;
         VignetteAndChromaticAberration visualEffect = Controller.Instance.ChromaticAbberration;
         Vortex vortex = Controller.Instance.Vortex;
         visualEffect.enabled = true;
@@ -81,7 +79,6 @@ public class Teleport : MonoBehaviour
         }
         visualEffect.enabled = false;
         vortex.enabled = false;
-        activated = false;
         yield return null;
     }
 }
