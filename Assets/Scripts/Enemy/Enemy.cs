@@ -154,7 +154,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
             }
             else
             {
-                if (pathIndex + 1 < path.Length)
+                if (path!= null && pathIndex + 1 < path.Length)
                 {
                     pathIndex++;
                 }

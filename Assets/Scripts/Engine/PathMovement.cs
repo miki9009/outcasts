@@ -123,7 +123,12 @@ public class PathMovement : MonoBehaviour
     public Vector3 GetRandomPointOnNavMesh()
     {
         var data = NavMesh.CalculateTriangulation();
-        int index = rndGenerator.Next(0, data.indices.Length - 3);
+        int index = 0;
+        if(data.indices.Length >= 3)
+        {
+            index = rndGenerator.Next(0, data.indices.Length - 3);
+        }
+        
         index = index - (index % 3);
         Vector3 point = Vector3.Lerp(data.vertices[data.indices[index]], data.vertices[data.indices[index + 1]], (float)rndGenerator.NextDouble());
         point = Vector3.Lerp(point, data.vertices[data.indices[index + 2]], (float)rndGenerator.NextDouble());
