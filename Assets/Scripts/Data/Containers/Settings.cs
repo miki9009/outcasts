@@ -54,5 +54,6 @@ public class Settings : DataContainer
         public bool firstStart;
         public bool buttonMovement;
         public bool showFps;
+        public int graphicsLevel;
     }
 }

@@ -68,33 +68,35 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         enemyDeath = GetComponent<EnemyDeath>();
         startPos = transform.position;
         Vector3 destination = startPos;
-        if(pathMovement.RandomPoint(startPos, patrolDistance, out destination))
+        if(pathMovement!=null)
         {
-            path = pathMovement.GetPath(destination);
+            if (pathMovement.RandomPoint(startPos, patrolDistance, out destination))
+            {
+                path = pathMovement.GetPath(destination);
+            }
+            path = pathMovement.GetPath(pathMovement.GetRandomPointOnNavMesh());
+            pathIndex = 0;
         }
-        path = pathMovement.GetPath(pathMovement.GetRandomPointOnNavMesh());
-        pathIndex = 0;
+
  //       Debug.Log("Path points: " + path.Length);
     }
 
-    //protected virtual void OnCollisionEnter(Collision other)
-    //{
-    //    if (other.gameObject.layer == Layers.Character)
-    //    {
-    //transform.rotation = Quaternion.LookRotation(Vector.Direction(transform.position, other.gameObject.transform.position));
-    //        target = other.transform;
-    //        if(canAttack)
-    //            Attack();
-    //    }
-    //}
+    protected virtual void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.layer == Layers.Environment && other.contacts[0].point.y > transform.position.y + 0.1f)
+        {
+            path = pathMovement.GetPath(startPos);
+            pathIndex = 0;
+        }
+    }
 
 
     protected float waitTimeCur;
-    float pathUpdater = 1;
-    float curTimeUpdater = 0;
-    Vector3 prevPos;
-    bool isColliding = true;
-    float collidingTime;
+    protected float pathUpdater = 1;
+    protected float curTimeUpdater = 0;
+    protected Vector3 prevPos;
+    protected bool isColliding = true;
+    protected float collidingTime;
     protected virtual void Update()
     {
         anim.SetFloat("hSpeed", rb.velocity.magnitude);
@@ -117,7 +119,6 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
             }
             else if(dis < attackDistance)
             {
-                rb.velocity = Vector3.zero;
                 transform.rotation = Quaternion.LookRotation(Vector.Direction(transform.position, target.position));
                 if (canAttack)
                 {
@@ -130,10 +131,6 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
             if (target == null && waitTimeCur > 0)
             {
                 waitTimeCur -= Time.deltaTime;
-                if(isColliding)
-                {
-                    rb.velocity = Vector3.zero;
-                }
                 if(collidingTime > 0)
                 {
                     collidingTime -= Time.deltaTime;

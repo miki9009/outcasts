@@ -6,10 +6,13 @@ using System.Linq;
 public class SettingsWindow : UIWindow
 {
     public Text resolutionLabel;
-    public Text movementSelectedLabel;
     public Text showFpsLabel;
+    public Text graphicsLabel;
     int index;
     Vector2 currentRes = new Vector2(1920, 1080);
+
+    public string[] graphicsLevel;
+    int selectedGraphics = 1;
 
 
     bool buttonsMovement;
@@ -35,7 +38,9 @@ public class SettingsWindow : UIWindow
         SetResolutionString(width, height);
         buttonsMovement = DataManager.Settings.buttonMovement;
         showFps = DataManager.Settings.showFps;
-        SetMovementString(buttonsMovement);
+        selectedGraphics = DataManager.Settings.graphicsLevel;
+        graphicsLabel.text = graphicsLevel[selectedGraphics];
+
     }   
 
     static Vector2[] resolutions = new Vector2[]
@@ -56,6 +61,7 @@ public class SettingsWindow : UIWindow
         DataManager.Settings.resolution = currentRes;
         DataManager.Settings.buttonMovement = buttonsMovement;
         DataManager.Settings.showFps = showFps;
+        DataManager.Settings.graphicsLevel = selectedGraphics;
         DataManager.SaveData();
     }
 
@@ -75,10 +81,6 @@ public class SettingsWindow : UIWindow
         resolutionLabel.text = string.Format("{0}x{1}", width, height);
     }
 
-    void SetMovementString(bool movementSelected)
-    {
-        movementSelectedLabel.text = buttonsMovement ? "Buttons" : "Gestures";
-    }
 
     void SetFpsShowString(bool showFps)
     {
@@ -88,13 +90,25 @@ public class SettingsWindow : UIWindow
     public void ChangeMovementType()
     {
         buttonsMovement = !buttonsMovement;
-        SetMovementString(buttonsMovement);
     }
 
     public void ChangeShowFps()
     {
         showFps = !showFps;
         SetFpsShowString(showFps);
+    }
+
+    public void SetGraphicsLevel()
+    {
+        if(selectedGraphics < graphicsLevel.Length-1)
+        {
+            selectedGraphics++;
+        }
+        else
+        {
+            selectedGraphics = 0;
+        }
+        graphicsLabel.text = graphicsLevel[selectedGraphics];
     }
 
 

@@ -93,17 +93,11 @@ public class Controller : MonoBehaviour
         Application.targetFrameRate = 60;
         defaultResolution = new Vector2(Screen.width, Screen.height);
         aspectRatio = (float)Screen.width / (float)Screen.height;
-        //try
-        //{
-        //    //GameGUI.GetButtonByName("ButtonRestart").OnTapPressed.AddListener(Restart);
-        //    //GameGUI.GetButtonByName("ButtonPause").OnTapPressed.AddListener(Restart);
-        //}
-        //catch { }
         startResolution = new Vector2(Screen.width, Screen.height);
         GameManager.GameReady += DeactivateActionButton;
         PlayerDead += DeactivateActionButtonOnPlayerDeath;
         Draw.ResetMedianFps();
-        ChangeToHighDetailMaterial();
+        SetGraphicsLevel();
     }
 
     void DeactivateActionButtonOnPlayerDeath(Character character)
@@ -127,10 +121,7 @@ public class Controller : MonoBehaviour
     {
         float time = character.isDead ? 3 : 0f;
         StartCoroutine(PlayerDeadCoroutine(character, time));
-        if(PlayerDead != null)
-        {
-            PlayerDead(character);
-        }
+        PlayerDead?.Invoke(character);
     }
 
     IEnumerator PlayerDeadCoroutine(Character character, float waitTime)
@@ -199,6 +190,51 @@ public class Controller : MonoBehaviour
         material.shader = lowDetailShader;
     }
 
+    void SetGraphicsLevel()
+    {
+        int graphicsLevel = DataManager.Settings.graphicsLevel;
+        switch (graphicsLevel)
+        {
+            case 0: //Very Low
+                QualitySettings.SetQualityLevel(0);
+                gameCamera.mainCamera.farClipPlane = 60;
+                ChangeToLowDetailMaterial();
+                bloom.enabled = false;
+                antialiasing.enabled = false;
+                break;
+            case 1: //Low
+                QualitySettings.SetQualityLevel(1);
+                gameCamera.mainCamera.farClipPlane = 90;
+                ChangeToLowDetailMaterial();
+                bloom.enabled = false;
+                antialiasing.enabled = false;
+                break;
+            case 2: //Medium
+                QualitySettings.SetQualityLevel(6);
+                gameCamera.mainCamera.farClipPlane = 90;
+                ChangeToLowDetailMaterial();
+                bloom.enabled = false;
+                antialiasing.enabled = false;
+                break;
+            case 3: //High
+                QualitySettings.SetQualityLevel(6);
+                gameCamera.mainCamera.farClipPlane = 90;
+                ChangeToHighDetailMaterial();
+                bloom.enabled = true;
+                antialiasing.enabled = false;
+                break;
+            case 4: //Very High
+                QualitySettings.SetQualityLevel(6);
+                gameCamera.mainCamera.farClipPlane = 90;
+                ChangeToHighDetailMaterial();
+                bloom.enabled = true;
+                antialiasing.enabled = true;
+                break;
+            default:
+                Debug.LogError("Graphics level not set.");
+                break;
+        }
+    }
 
 
     bool rayOn = true;
@@ -211,14 +247,14 @@ public class Controller : MonoBehaviour
             //Draw.DisplayMedianFps(Screen.width / 2 - Screen.width * 0.1f, 70);
         }
 
-        if (UnityEngine.GUI.Button(new Rect(10, 60, 100, 50), "Bloom: " + bloom.enabled))
-        {
-            if (bloom != null) bloom.enabled = !bloom.enabled;
-        }
-        if (UnityEngine.GUI.Button(new Rect(110, 60, 100, 50), "Antialiasing: " + antialiasing.enabled))
-        {
-            if (antialiasing != null) antialiasing.enabled = !antialiasing.enabled;
-        }
+        //if (UnityEngine.GUI.Button(new Rect(10, 60, 100, 50), "Bloom: " + bloom.enabled))
+        //{
+        //    if (bloom != null) bloom.enabled = !bloom.enabled;
+        //}
+        //if (UnityEngine.GUI.Button(new Rect(110, 60, 100, 50), "Antialiasing: " + antialiasing.enabled))
+        //{
+        //    if (antialiasing != null) antialiasing.enabled = !antialiasing.enabled;
+        //}
 
 
 
