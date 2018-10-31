@@ -281,7 +281,9 @@ MonoBehaviour:
   - Coin
   - Coin
   - Coin
-  moving: 0
+  moving: 1
+  cached: 1
+  cachedPoints: 100
   splineFactor: 0.252
 --- !u!114 &114592009374790116
 MonoBehaviour:

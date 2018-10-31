@@ -144,8 +144,11 @@ public class SplineElement : LevelElement
             {
                 for (int i = 0; i < elements.Length; i++)
                 {
-                    pos = GetNextPos(indexes[i]);
-                    elements[i].position = Vector3.Lerp(elements[i].position, pos, Time.deltaTime * speed);
+                    if(Vector3.Distance(elements[i].position, cachedPos[indexes[i]]) < 1)
+                    {
+                        positions[i] = GetNextPos(ref indexes[i]);                       
+                    }
+                    elements[i].position = Vector3.MoveTowards(elements[i].position, positions[i], Time.deltaTime * speed);
                 }
             }
             else
@@ -166,7 +169,7 @@ public class SplineElement : LevelElement
 /// ////////////////////CACHED//////////////////////////////////////
     void InitCache()
     {
-        float factor = 1 / cachedPoints;
+        float factor = 1f / (float)cachedPoints;
         cachedPos = new Vector3[cachedPoints];
         for (int i = 0; i < cachedPoints; i++)
         {
@@ -177,6 +180,7 @@ public class SplineElement : LevelElement
         for (int i = 0; i < elements.Length; i++)
         {
             indexes[i] = GetNearest(elements[i].position);
+            positions[i] = elements[i].position;
         }
 
     }
@@ -198,14 +202,13 @@ public class SplineElement : LevelElement
         return nearest;
     }
 
-    Vector3 GetNextPos(int i)
+    Vector3 GetNextPos(ref int indexValue)
     {
-        if (i < cachedPos.Length - 1)
-            i++;
+        if (indexValue < cachedPos.Length - 1)
+            indexValue++;
         else
-            i = 0;
-
-        return cachedPos[i];
+            indexValue = 0;
+        return cachedPos[indexValue];
     }
 
 /// ////////////////////////////////////////////////////////////////
