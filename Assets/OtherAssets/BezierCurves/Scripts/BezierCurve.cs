@@ -218,11 +218,9 @@ public class BezierCurve : MonoBehaviour {
 	/// </param>
 	public Vector3 GetPointAt(float t)
 	{
-        //if(t <= 0) return points[0].position;
-        //else if (t >= 1) return points[points.Length - 1].position;
-        t = Mathf.Clamp(t, 0.01f, 0.99f);
-		
-		float totalPercent = 0;
+        t = Mathf.Clamp01(t);
+
+        float totalPercent = 0;
 		float curvePercent = 0;
 		
 		BezierPoint p1 = null;
@@ -251,6 +249,48 @@ public class BezierCurve : MonoBehaviour {
 		
 		return GetPoint(p1, p2, t / curvePercent);
 	}
+
+    public Vector3 GetLocalPosition(float t)
+    {
+        //if(t <= 0) return points[0].position;
+        //else if (t >= 1) return points[points.Length - 1].position;
+        //t = Mathf.Clamp(t, 0.0001f, 0.9999f);
+        //if (t >= 1)
+        //    t = 0.999999f;
+        //else if (t < 0)
+        //    t = 0.000001f;
+        t = Mathf.Clamp01(t);
+
+        float totalPercent = 0;
+        float curvePercent = 0;
+
+        BezierPoint p1 = null;
+        BezierPoint p2 = null;
+
+        for (int i = 0; i < points.Length - 1; i++)
+        {
+            curvePercent = ApproximateLength(points[i], points[i + 1], 10) / length;
+            if (totalPercent + curvePercent > t)
+            {
+                p1 = points[i];
+                p2 = points[i + 1];
+                break;
+            }
+
+            else totalPercent += curvePercent;
+        }
+
+        if (close && p1 == null)
+        {
+            p1 = points[points.Length - 1];
+            p2 = points[0];
+        }
+
+        t -= totalPercent;
+
+        Vector3 point = GetPoint(p1, p2, t / curvePercent);
+        return point - transform.position;
+    }
 
     public Vector3 GetDirection(float pos)
     {
@@ -338,7 +378,7 @@ public class BezierCurve : MonoBehaviour {
 	/// </param>
 	public static Vector3 GetPoint(BezierPoint p1, BezierPoint p2, float t)
 	{
-        t = Mathf.Clamp(t, 0.01f, 0.99f);
+        t = Mathf.Clamp01(t);
         if (p1.handle2 != Vector3.zero)
         {
             if (p2.handle1 != Vector3.zero) return GetCubicCurvePoint(p1.position, p1.globalHandle2, p2.globalHandle1, p2.position, t);
@@ -376,7 +416,6 @@ public class BezierCurve : MonoBehaviour {
     public static Vector3 GetCubicCurvePoint(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4, float t)
     {
         t = Mathf.Clamp01(t);
-
         Vector3 part1 = Mathf.Pow(1 - t, 3) * p1;
         Vector3 part2 = 3 * Mathf.Pow(1 - t, 2) * t * p2;
         Vector3 part3 = 3 * (1 - t) * Mathf.Pow(t, 2) * p3;

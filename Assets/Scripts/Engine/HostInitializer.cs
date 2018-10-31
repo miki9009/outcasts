@@ -66,10 +66,7 @@ namespace Engine.Threads
         {
             while (true)
             {
-                if (OnHostWait != null)
-                {
-                    OnHostWait();
-                }
+                OnHostWait?.Invoke();
                 yield return new WaitForEndOfFrame();
             }
         }
@@ -88,10 +85,13 @@ namespace Engine.Threads
 
         public void AddHost(int interval, string _name, bool debug)
         {
-            if (hosts.Any(x => x.name == _name))
+            for (int i = 0; i < hosts.Count; i++)
             {
-                Debug.Log("Host with this name already exist");
-                return;
+                if(hosts[i].name == _name)
+                {
+                    Debug.Log("Host with this name already exist");
+                    return;
+                }
             }
             var host = new Host()
             {
@@ -105,6 +105,7 @@ namespace Engine.Threads
 
         public Host GetHostByName(string name)
         {
+            if (hosts.Count == 0) return null;
             try
             {
                 return hosts.Single(x => x.name == name);

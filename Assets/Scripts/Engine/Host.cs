@@ -109,6 +109,10 @@ namespace Engine.Threads
         }
 
 
+        public void RemoveMethod(HostUpdate method)
+        {
+            hostUpdate -= method;
+        }
 
         private void Run()
         {
@@ -125,16 +129,10 @@ namespace Engine.Threads
                 {
                     isWaiting = true;
                     watch = Stopwatch.StartNew();
-                    if (hostUpdate != null)
-                    {
-                        hostUpdate();
-                    }
+                    hostUpdate?.Invoke();
                     watch.Stop();
                     long elapsedMs = watch.ElapsedMilliseconds;
-                    if (OnFinished != null)
-                    {
-                        OnFinished(this);
-                    }
+                    OnFinished?.Invoke(this);
                     int wait = 0;
                     if (elapsedMs < interval)
                     {

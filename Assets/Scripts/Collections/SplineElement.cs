@@ -6,11 +6,13 @@ public class SplineElement : LevelElement
     public string prefabsPath = "LevelElements/";
     public BezierCurve curve;
     public float speed;
-    public bool rotate;
     public Transform[] points;
     [SpawnsSelector]
     public string[] spawns;
     public bool moving;
+
+    public bool cached;
+    public int cachedPoints;
 
     [Range(0, 0.5f)]
     public float splineFactor;
@@ -23,7 +25,7 @@ public class SplineElement : LevelElement
     float dis;
     Vector3 dir;
     Transform[] elements;
-
+    Engine.Threads.Host host;
     private void Awake()
     {
         curve = GetComponentInChildren<BezierCurve>();
@@ -59,6 +61,9 @@ public class SplineElement : LevelElement
             data["Factor"] = splineFactor;
             data["Spawns"] = spawns;
             data["Moving"] = moving;
+            data["Speed"] = speed;
+            data["Cached"] = cached;
+            data["CachedPoints"] = cachedPoints;
         }
     }
 
@@ -81,6 +86,12 @@ public class SplineElement : LevelElement
                 spawns = (string[])data["Spawns"];
             if (data.ContainsKey("Moving"))
                 moving = (bool)data["Moving"];
+            if (data.ContainsKey("Speed"))
+                speed = (float)data["Speed"];
+            if (data.ContainsKey("Cached"))
+                cached = (bool)data["Cached"];
+            if (data.ContainsKey("CachedPoints"))
+                cachedPoints = (int)data["CachedPoints"];
             for (int i = 0; i < pointsPos.Length; i++)
             {
                 points[i].transform.localPosition = pointsPos[i];
@@ -90,18 +101,116 @@ public class SplineElement : LevelElement
                 handle.handle2 = handle2Pos[i];
             }
 
-            elements = new Transform[spawns.Length];
-            for (int i = 0; i < spawns.Length; i++)
+            if(Application.isPlaying)
             {
-                var spawn = (GameObject)Resources.Load(prefabsPath, typeof(GameObject));
-                elements[i] = Instantiate(spawn, transform).GetComponent<Transform>();
-                elements[i].localPosition = curve.GetPointAt(i * splineFactor);
-            }
+                splineFactors = new float[spawns.Length];
+                elements = new Transform[spawns.Length];
+                positions = new Vector3[spawns.Length];
+                for (int i = 0; i < spawns.Length; i++)
+                {
+                    var spawn = (GameObject)Resources.Load(prefabsPath + spawns[i], typeof(GameObject));
+                    if (spawn != null)
+                    {
+                        elements[i] = Instantiate(spawn, transform).GetComponent<Transform>();
+                        splineFactors[i] = i * splineFactor;
+                        elements[i].transform.position = curve.GetPointAt(splineFactors[i]);
+                    }
+                    else
+                    {
+                        Debug.LogError("Spawn was null: " + spawns[i]);
+                    }
+                }
 
+                if(cached)
+                {
+                    InitCache();
+                }
+            }
+        }
+    }
+    Vector3 pos;
+    Vector3[] cachedPos;
+    float[] splineFactors;
+    float curFactor;
+    float point;
+    Vector3[] positions;
+    int[] indexes;
+
+    private void Update()
+    {
+        if (moving)
+        {
+            if(cached)
+            {
+                for (int i = 0; i < elements.Length; i++)
+                {
+                    pos = GetNextPos(indexes[i]);
+                    elements[i].position = Vector3.Lerp(elements[i].position, pos, Time.deltaTime * speed);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < elements.Length; i++)
+                {
+                    point = (curFactor + splineFactors[i]) % 1;
+                    elements[i].position = curve.GetPointAt(point);
+                }
+                curFactor += speed * Time.deltaTime;
+                if (curFactor >= 1)
+                    curFactor = curFactor % 1;
+            }
         }
     }
 
 
+/// ////////////////////CACHED//////////////////////////////////////
+    void InitCache()
+    {
+        float factor = 1 / cachedPoints;
+        cachedPos = new Vector3[cachedPoints];
+        for (int i = 0; i < cachedPoints; i++)
+        {
+            cachedPos[i] = curve.GetPointAt(factor * i);
+        }
+
+        indexes = new int[spawns.Length];
+        for (int i = 0; i < elements.Length; i++)
+        {
+            indexes[i] = GetNearest(elements[i].position);
+        }
+
+    }
+
+    int GetNearest(Vector3 pos)
+    {
+        var dis = Mathf.Infinity;
+        float dis2;
+        int nearest = 0;
+        for (int i = 0; i < cachedPos.Length; i++)
+        {
+            dis2 = Vector3.Distance(pos, cachedPos[i]);
+            if(dis > dis2)
+            {
+                dis = dis2;
+                nearest = i;
+            }
+        }
+        return nearest;
+    }
+
+    Vector3 GetNextPos(int i)
+    {
+        if (i < cachedPos.Length - 1)
+            i++;
+        else
+            i = 0;
+
+        return cachedPos[i];
+    }
+
+/// ////////////////////////////////////////////////////////////////
+
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (curve == null) return;
@@ -110,6 +219,6 @@ public class SplineElement : LevelElement
             Gizmos.DrawSphere(curve.GetPointAt(splineFactor * i), 1);
         }
     }
-
+#endif
 
 }
