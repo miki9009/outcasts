@@ -2,7 +2,7 @@
 using Engine.GUI;
 using UnityEngine;
 
-public class CharacterMovementPlayer : CharacterMovement
+public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
 {
     int direction2D = 1;
 

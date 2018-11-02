@@ -125,7 +125,7 @@ public class Character : MonoBehaviour
 
     void Start()
     {
-        if (movement.GetType() == typeof(CharacterMovementPlayer))
+        if (movement is ILocalPlayer)
         {
             if(PhotonManager.IsMultiplayer) //MULTIPLAYER
             {
@@ -211,6 +211,11 @@ public interface IEquipment
     void Apply();
     void Remove();
     void BackToCollection();
+}
+
+public interface ILocalPlayer
+{
+
 }
 
 public interface IRightArmItem : IEquipment{ }

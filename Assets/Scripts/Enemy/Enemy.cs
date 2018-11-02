@@ -211,8 +211,8 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         //stars.SetActive(true);
         rb.velocity = Vector3.zero;
         starsExplosion.transform.position = transform.position;
+        starsExplosion.Play();
         CollectionManager.Instance.SetCollection(character.character.ID, CollectionType.KillEnemy, 1);
-        //starsExplosion.Play();
     }
 
     public virtual void Recycle()

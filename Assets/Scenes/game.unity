@@ -18892,9 +18892,9 @@ MonoBehaviour:
   target: {fileID: 0}
   mainCamera: {fileID: 2081299081}
   x: 0
-  y: 5
+  y: 7
   z: -7
-  forwardFactor: 1.5
+  forwardFactor: 2
   rotationSpeed: 5
   upFactor: 2
   speed: 10

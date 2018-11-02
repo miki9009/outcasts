@@ -47,15 +47,9 @@ namespace Objectives
             }
         }
 
-        public void Failed()
-        {
-            state = State.Failed;
-            OnFinished();
-            if (!optional && !ObjectivesManager.EndingGame)
-            {
-                CoroutineHost.Start(ObjectivesManager.EndGame(GameManager.GameState.Failed));
-            }
-        }
+
+
+
 
         void Timer()
         {
@@ -86,6 +80,12 @@ namespace Objectives
                 if (Engine.Level.loadedElements.ContainsKey(references))
                     Engine.Level.loadedElements[references].gameObject.SetActive(true);
             }
+        }
+
+        public override void Cancel()
+        {
+            base.Cancel();
+            CollectionManager.Instance.Collected -= UpdateProgress;
         }
 
         protected override void OnFinished()

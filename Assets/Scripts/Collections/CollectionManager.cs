@@ -51,7 +51,9 @@ public class CollectionManager : MonoBehaviour
 
     void Clear()
     {
+        collections.Clear();
         LevelCollections.Clear();
+        ResetCollections();
     }
 
     public Dictionary<int, CollectionSet> AllCollections()
@@ -67,6 +69,7 @@ public class CollectionManager : MonoBehaviour
             {
                 collections[playerID].Collection[type] += val;
                 OnCollected(playerID, type, val);
+                Debug.Log("Collected: " + type);
             }
             else
             {
@@ -110,7 +113,7 @@ public class CollectionManager : MonoBehaviour
 
     public void EmmitParticles(CollectionType type, Vector3 position, int ammount)
     {
-
+        Debug.Log("Emmit particles");
         int index = (int)type;
         if (particles.Length > index && particles[index] != null)
         {
@@ -118,11 +121,13 @@ public class CollectionManager : MonoBehaviour
             var parts = particles[index];
 
             var emitParams = new ParticleSystem.EmitParams();
-
+            parts.transform.position = position;
             for (int i = 0; i < ammount; i++)
             {
-                emitParams.position = position + new Vector3(Random.Range(-1,1), Random.Range(-1, 1), Random.Range(-1, 1));
+                emitParams.position = new Vector3(Random.Range(-1,1), Random.Range(-1, 1), Random.Range(-1, 1));
+
                 parts.Emit(emitParams, 1);
+                Debug.Log("Did emmit");
                 //parts.Emit(10);
             }
 

@@ -208,7 +208,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
     }
 
     // Update is called once per frame
-    void FixedUpdate ()
+    protected virtual void FixedUpdate ()
     {
         SetAnimationHorizontal(rb.velocity);
         Move();
@@ -217,7 +217,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
             rb.AddForce(Vector3.up * addForce);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         curPos = transform.position;
         Movement();

@@ -34,11 +34,22 @@ public class GameManager : MonoBehaviour
         Instance = this;
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.activeSceneChanged += OnLevelChanged;
+        Level.LevelLoaded += OnLevelLoaded;
+    }
+
+    void OnLevelLoaded()
+    {
+        State = GameState.Idle;
     }
 
     private void Start()
     {
         IsSceneLoaded = true;
+    }
+
+    private void OnDestroy()
+    {
+        Level.LevelLoaded -= OnLevelLoaded;
     }
 
     public void OnLevelChangedEvent(string levelName)
@@ -84,7 +95,7 @@ public class GameManager : MonoBehaviour
     {
         if (Controller.Instance == null) yield break;
         yield return Engine.Game.WaitForFrames(1);
-        State = GameState.Idle;
+
         Resources.UnloadUnusedAssets();
         if(!PhotonManager.IsMultiplayer)
             OnGameReady();
@@ -100,7 +111,7 @@ public class GameManager : MonoBehaviour
 
     public static GameState State
     {
-        get;set;
+        get; private set;
     }
 
     public void EndGame(GameState state)
@@ -111,7 +122,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void OnGameFinished()
+    void OnGameFinished()
     {
         OnLevelClear();
         var data = DataManager.Collections;
@@ -126,7 +137,6 @@ public class GameManager : MonoBehaviour
 
         DataManager.SaveData();
         Debug.Log("Game Saved");
-        CollectionManager.Instance.ResetCollections();
         GameFinished?.Invoke();
     }
 

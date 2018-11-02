@@ -18,6 +18,12 @@ namespace Objectives
         public event Action<Objective> ProgressUpdated;
         public event Action<Objective> Finished;
 
+        public virtual void Cancel()
+        {
+            IsFinished = true;
+            state = State.Failed;
+        }
+
         public virtual void ObjectiveStart()
         {
         }
@@ -39,7 +45,15 @@ namespace Objectives
             Finished?.Invoke(this);
         }
 
-
+        public void Failed()
+        {
+            state = State.Failed;
+            OnFinished();
+            if (!optional && !ObjectivesManager.EndingGame)
+            {
+                ObjectivesManager.EndGame(GameManager.GameState.Failed);
+            }
+        }
 
     }
 

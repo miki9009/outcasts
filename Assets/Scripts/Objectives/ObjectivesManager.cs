@@ -30,12 +30,17 @@ namespace Objectives
         private void Awake()
         {
             Instance = this;
+            Controller.Instance.PlayerDead += CancelObjectives;
+        }
+
+        void CancelObjectives(Character character)
+        {
+            foreach (var objective in Objectives)
+                objective.Cancel();
         }
 
         private void Start()
         {
-
-
             Objectives = new List<Objective>();
             foreach (var sequence in sequence.sequences)
             {
@@ -66,22 +71,22 @@ namespace Objectives
         public static event System.Action<Objective> ObjectiveEnded;
         public static void OnObjectiveEnded(Objective objective)
         {
-            bool allObjectivesConpleted = true;
+            bool allObjectivesCompleted = true;
             foreach (var o in Objectives)
             {
                 if (!o.IsFinished && !o.optional)
                 {
-                    allObjectivesConpleted = false;
+                    allObjectivesCompleted = false;
                     break;
                 }
             }
 
-            if (allObjectivesConpleted)
+            if (allObjectivesCompleted)
             {
-                GameManager.State = GameManager.GameState.Completed;
                 if(Instance.returnToVillage)
                 {
-                    LevelManager.ChangeLevel("Village", "0");
+                    EndGame(GameManager.GameState.Completed);
+                   // LevelManager.ChangeLevel("Village", "0");
                 }
 
             }
@@ -134,8 +139,18 @@ namespace Objectives
             }
         }
 
-        public static IEnumerator EndGame(GameManager.GameState state, float time = 1)
+        public static void EndGame(GameManager.GameState state)
         {
+            if (GameManager.State != GameManager.GameState.Idle)
+            {
+                Debug.Log("End state already called");
+                return;
+            }
+            CoroutineHost.Start(EndGameCor(state));
+        }
+
+        public static IEnumerator EndGameCor(GameManager.GameState state, float time = 1)
+        {           
             EndingGame = true;
             yield return new WaitForSeconds(time);
             GameManager.Instance.EndGame(state);
@@ -145,6 +160,7 @@ namespace Objectives
         private void OnDestroy()
         {
             Level.LevelLoaded -= CatchReferences;
+            Controller.Instance.PlayerDead -= CancelObjectives;
         }
 
         public void CatchReferences()

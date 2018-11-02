@@ -119,9 +119,12 @@ public class Controller : MonoBehaviour
     public event System.Action<Character> PlayerDead;
     public void OnPlayerDead(Character character)
     {
-        float time = character.isDead ? 3 : 0f;
-        StartCoroutine(PlayerDeadCoroutine(character, time));
-        PlayerDead?.Invoke(character);
+        if(character.IsLocalPlayer)
+        {
+            float time = character.isDead ? 3 : 0f;
+            StartCoroutine(PlayerDeadCoroutine(character, time));
+            PlayerDead?.Invoke(character);
+        }
     }
 
     IEnumerator PlayerDeadCoroutine(Character character, float waitTime)
@@ -147,6 +150,7 @@ public class Controller : MonoBehaviour
 
     void RestartCharacter(Character character)
     {
+        if (character == null) return;
         character.movement.enabled = true;
         character.stats.health = 1;
         character.movement.characterHealth.AddHealth(character.stats.health);

@@ -89,7 +89,7 @@ public class GameCamera : MonoBehaviour
         transform.position = pos;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
 
-        CheckFreePosition();
+        //CheckFreePosition();
     }
 
     float freeTime; 
@@ -131,6 +131,15 @@ public class GameCamera : MonoBehaviour
 
     public void SetTarget(Transform target)
     {
+        if (target == null)
+        {
+            enabled = false;
+            this.target = null;
+            return;
+        }
+        else if (!enabled)
+            enabled = true;
+
         this.target = target;
         enabled = true;
         gameObject.SetActive(true);

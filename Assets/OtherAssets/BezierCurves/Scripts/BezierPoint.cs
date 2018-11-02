@@ -48,7 +48,6 @@ public class BezierPoint : MonoBehaviour{
 			if(_curve) _curve.RemovePoint(this);
 			_curve = value;
 			_curve.AddPoint(this);
-            CachedPosition = transform.position;
 		}
 	}
 
@@ -68,11 +67,6 @@ public class BezierPoint : MonoBehaviour{
 		get { return transform.position; }
 		set { transform.position = value; }
 	}
-
-    public Vector3 CachedPosition
-    {
-        get; private set;
-    }
 	
 	/// <summary>
 	/// 	- Shortcut to transform.localPosition

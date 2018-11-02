@@ -212,6 +212,7 @@ public enum CollectionType
     Restart = 11,
     DestroyCrate = 12,
     KillEnemy = 13,
-    WaypointVisited = 14
+    WaypointVisited = 14,
+    FirePlaceReached = 15
 }
 
