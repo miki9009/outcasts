@@ -1,4 +1,5 @@
 ﻿
+using Engine;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,17 @@ public class TrackManager: MonoBehaviour
     bool initialized = false;
     Track startTrack;
 
-    private void Start()
+    private void Awake()
+    {
+        Level.LevelLoaded += Init;
+
+        Track.TrackReached += OnNewTrackReached;
+        Character.CharacterCreated += SetToTrack;
+        GameManager.LevelClear += Restart;
+    }
+
+
+    private void Init()
     {
         spare = new List<Track>();
         queue = new Queue<Track>();
@@ -34,9 +45,9 @@ public class TrackManager: MonoBehaviour
         {
             InitTrack(i);
         }
-        Track.TrackReached += OnNewTrackReached;
+
         initialized = true;
-        Character.CharacterCreated += SetToTrack;
+
     }
 
     void SetToTrack(Character character)
@@ -48,6 +59,7 @@ public class TrackManager: MonoBehaviour
     {
         Track.TrackReached -= OnNewTrackReached;
         Character.CharacterCreated -= SetToTrack;
+        GameManager.LevelClear -= Restart;
     }
 
     void OnNewTrackReached(Track track)
@@ -83,6 +95,22 @@ public class TrackManager: MonoBehaviour
     {
         Debug.Log("Enqueue " + track.name);
         queue.Enqueue(track);
+    }
+
+    void Restart()
+    {
+        initialized = false;
+        foreach (var track in spare)
+        {
+            if (track != null)
+                Destroy(track.gameObject);
+        }
+        foreach (var track in queue)
+        {
+            if (track != null)
+                Destroy(track.gameObject);
+        }
+
     }
 
     Track Dequeue()

@@ -414,6 +414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4369106111879458}
+  - component: {fileID: 54771697173591794}
   - component: {fileID: 114476372306299416}
   - component: {fileID: 114806707751754256}
   - component: {fileID: 114577352068225306}
@@ -586,7 +587,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1994540231165978}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 125.118774, y: -3.1993597, z: -47.076294}
+  m_LocalPosition: {x: 126.247505, y: -2.6814735, z: -47.002293}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4587173785251622}
@@ -930,6 +931,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!54 &54771697173591794
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1994540231165978}
+  serializedVersion: 2
+  m_Mass: 100
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!95 &95735816989830130
 Animator:
   serializedVersion: 3
@@ -970,7 +986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccfcd443f202b4248ae50f4a20544e3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementID: 4959836
+  elementID: 1883421
   arrowTarget: 0
   activeAndEnabled: 1
 --- !u!114 &114500493771273074
@@ -1024,8 +1040,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114847762505081622, guid: b8f40a4a55d33d74b844dff1b9a89653, type: 2}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 1
-  instantiationId: 1
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114806707751754256
@@ -1069,10 +1085,14 @@ MonoBehaviour:
   - {fileID: 4766721884725222}
   neck: {fileID: 4850357999453730}
   chest: {fileID: 4034959750905478}
-  wagonSpeed: 1
+  wagonSpeed: 0.8
   eulerAngle: 0
-  angle: 0
+  wagonAngleZ: 0
   endPointForward: {x: 0, y: 0, z: 0}
+  maxAngle: 30
+  critical: 0
+  maxCritical: 800
+  criticalFactor: 25
 --- !u!135 &135419494526922122
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -11124,7 +11144,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 50
+        scalar: 15
         minScalar: 0
         maxCurve:
           serializedVersion: 2
@@ -15714,7 +15734,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 50
+        scalar: 15
         minScalar: 0
         maxCurve:
           serializedVersion: 2

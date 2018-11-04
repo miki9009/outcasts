@@ -23,7 +23,7 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
     protected Vector3 curHorTouched;
     protected Vector3 pointingDir;
 
-    float angle;
+    protected float angle;
 
     public bool Touched
     {

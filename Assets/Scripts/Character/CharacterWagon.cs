@@ -14,7 +14,8 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
     public Transform neck;
     public Transform chest;
     public float wagonSpeed = 1;
-    
+
+    float speedTimer;
 
     public override bool IsPlayer
     {
@@ -23,6 +24,7 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
             return true;
         }
     }
+    
 
     protected override void Initialize()
     {
@@ -30,7 +32,6 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
         Controller.Instance.gameCamera.ResetView();
         Controller.Instance.gameCamera.regularUpdate = true;
 
-        Controller.Instance.gameCamera.regularUpdate = false;
         try
         {
             btnMovement = GameGUI.GetButtonByName("ButtonMovement");
@@ -100,7 +101,7 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
     //}
 
     public float eulerAngle = 0;
-    public float angle = 0;
+    public float wagonAngleZ = 0;
     public Vector3 endPointForward;
     float lean;
     protected override void Update()
@@ -117,8 +118,11 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
             track = nextTrack;
             nextTrack = null;
             curTrackPos = curTrackPos % 1;
-            sparks[0].Emit(70);
-            sparks[1].Emit(70);
+            //if(Mathf.Abs(finalAngle) > 15)
+            //{
+            //    sparks[0].Emit(70);
+            //    sparks[1].Emit(70);
+            //}
         }
         if (track != null)
         {
@@ -131,7 +135,26 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
         {
             Debug.Log("track was null");
         }
+        WagonMovement();
         WagonRotation(eulerAngle);
+
+        if (finalAngle > 20)
+        {
+            sparks[0].Emit(5);
+        }
+        else if (finalAngle < -20)
+        {
+            sparks[1].Emit(5);
+        }
+        if(speedTimer > 1)
+        {
+            speedTimer = 0;
+            wagonSpeed += Time.deltaTime / 5;
+        }
+        else
+        {
+            speedTimer += Time.deltaTime;
+        }
     }
 
     void WagonMovement()
@@ -164,37 +187,114 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
                     }
                 }
             }
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+            if (Input.GetMouseButton(0))
+            {
+                if (Input.mousePosition.x < Screen.width / 2)
+                {
+                    pressedHorizontalCurrent = true;
+                    if (!horPressed)
+                    {
+                        horPressed = true;
+                        horTouched = btnMovement.transform.position;
+                    }
+                    else
+                    {
+                        curHorTouched = Input.mousePosition;
+                        horDistance = Vector3.Distance(horTouched, curHorTouched);
+                    }
+                }
+            }
+#endif
         }
-        lean = Mathf.Lerp(lean, horDistance, Time.deltaTime);
+        if (horDistance > 1)
+        {
+            angle = -Vector2.SignedAngle(Vector2.up, pointingDir);
+        }
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        if (Input.GetKey(KeyCode.LeftArrow))
+            angle = -90;
+        if (Input.GetKey(KeyCode.RightArrow))
+            angle = 90;
+#endif
+
+        if (!pressedHorizontalCurrent && horPressed)
+        {
+            horPressed = false;
+        }
+
+
+         lean = Mathf.Lerp(lean, angle, Time.deltaTime * 10);
     }
 
+    public float maxAngle = 30;
+    float finalAngle;
+    public float critical = 0;
+    public float maxCritical = 800;
+    public float criticalFactor = 25;
     void WagonRotation(float a)
     {
         if (a > 0)
         {
-            if (angle < 90 && a > angle)
-                angle += wagonSpeed * 4;
+            if (wagonAngleZ < 90 && a > wagonAngleZ)
+                wagonAngleZ += wagonSpeed * 4;
             else
-                angle = Mathf.Lerp(angle, 0, Time.deltaTime * 8);
+                wagonAngleZ = Mathf.Lerp(wagonAngleZ, 0, Time.deltaTime * 8);
         }
         else if(a <= 0)
         {
-            if (angle > -90 && a < angle)
-                angle -= wagonSpeed * 4;
+            if (wagonAngleZ > -90 && a < wagonAngleZ)
+                wagonAngleZ -= wagonSpeed * 4;
             else
-                angle = Mathf.Lerp(angle, 0, Time.deltaTime * 8);
+                wagonAngleZ = Mathf.Lerp(wagonAngleZ, 0, Time.deltaTime * 8);
         }
-
-        var toRot = new Vector3(0, 180, -angle / 3);
+        finalAngle = -wagonAngleZ + lean;
+        var toRot = new Vector3(0, 180, (finalAngle) / 3);
         model.transform.localEulerAngles = toRot;
         var neckRot = neck.transform.localEulerAngles;
-        neckRot.z = angle/3;
+        neckRot.z = (wagonAngleZ + lean) / 3;
         neck.transform.localEulerAngles = neckRot;
         var chestRot = chest.localEulerAngles;
-        chestRot.z = angle / 4;
+        chestRot.z = (wagonAngleZ) / 4;
         chest.localEulerAngles = chestRot;
+        if(CheckCollision())
+        {
+            Controller.Instance.gameCamera.SetTarget(null);
+            rb.useGravity = true;
+            rb.velocity = transform.forward * wagonSpeed * 50;
+            character.isDead = true;
+            enabled = false;
+            Invoke("Restart",1);
+        }
 
     }
 
+    void Restart()
+    {
+        DieNonAnimation();
+    }
 
+    bool CheckCollision()
+    {
+        if (Mathf.Abs(finalAngle) > 30)
+        {
+            if (critical < maxCritical * 2)
+                critical += Mathf.Abs(finalAngle) - Mathf.Abs(lean);
+        }
+        else
+        {
+            if (critical > criticalFactor)
+                critical -= criticalFactor;
+            else
+                critical = 0;
+        }
+        if (critical > maxCritical)
+            return true;
+        return false;
+    }
+
+    void OnGUI()
+    {
+        Draw.TextColor(10, 350, 255, 0, 0, 1, "Speed: " + wagonSpeed);
+    }
 }
