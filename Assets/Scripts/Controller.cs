@@ -166,7 +166,8 @@ public class Controller : MonoBehaviour
             collections.restarts--;
             DataManager.SaveData();
         }
-        character.rb.velocity = Vector3.zero;
+        if(character.rb != null)
+            character.rb.velocity = Vector3.zero;
         //character.rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
         gameCamera.GetComponent<GameCamera>().target = character.transform;
         if (LastCheckpoint != null)

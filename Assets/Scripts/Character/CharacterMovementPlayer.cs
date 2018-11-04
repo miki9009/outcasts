@@ -6,22 +6,22 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
 {
     int direction2D = 1;
 
-    Button btnLeft;
-    Button btnRight;
-    Button btnJump;
-    Button btnAttack;
-    Button btnForward;
-    Button btnMovement;
-    bool buttonsInitialized = true;
-    Vector2 horTouched;
-    Vector2 verTouched;
-    bool horPressed;
-    bool verPressed;
-    float verDistance;
-    float horDistance;
-    Vector3 lastAttackTouchPosition;
-    Vector3 curHorTouched;
-    Vector3 pointingDir;
+    protected Button btnLeft;
+    protected Button btnRight;
+    protected Button btnJump;
+    protected Button btnAttack;
+    protected Button btnForward;
+    protected Button btnMovement;
+    protected bool buttonsInitialized = true;
+    protected Vector2 horTouched;
+    protected Vector2 verTouched;
+    protected bool horPressed;
+    protected bool verPressed;
+    protected float verDistance;
+    protected float horDistance;
+    protected Vector3 lastAttackTouchPosition;
+    protected Vector3 curHorTouched;
+    protected Vector3 pointingDir;
 
     float angle;
 
@@ -55,6 +55,7 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
 
     protected override void Initialize()
     {
+        Controller.Instance.gameCamera.regularUpdate = false;
         try
         {
             btnMovement = GameGUI.GetButtonByName("ButtonMovement");

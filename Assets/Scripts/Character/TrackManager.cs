@@ -7,12 +7,14 @@ public class TrackManager: MonoBehaviour
 
     public int prefabsCount;
     public int prewarmNumber = 5;
+    public int startTrackIndex = 4;
     public GameObject[] prefabs;
 
     Track foreTrack;
     List<Track> spare;
     Queue<Track> queue;
     bool initialized = false;
+    Track startTrack;
 
     private void Start()
     {
@@ -30,7 +32,7 @@ public class TrackManager: MonoBehaviour
         }
         for (int i = 0; i < prewarmNumber; i++)
         {
-            OnNewTrackReached(spare[0]);
+            InitTrack(i);
         }
         Track.TrackReached += OnNewTrackReached;
         initialized = true;
@@ -39,13 +41,7 @@ public class TrackManager: MonoBehaviour
 
     void SetToTrack(Character character)
     {
-        int i = 0;
-        foreach (var track in queue)
-        {
-            if (i == 3)
-                character.transform.position = track.transform.position;
-            i++;
-        }
+        character.transform.position = startTrack.transform.position;
     }
 
     private void OnDestroy()
@@ -56,29 +52,31 @@ public class TrackManager: MonoBehaviour
 
     void OnNewTrackReached(Track track)
     {
-        if (initialized)
-        {
-            var t = Dequeue();
-            spare.Add(t);
-            t.gameObject.SetActive(false);
-        }
-
+        var t = Dequeue();
+        spare.Add(t);
+        t.gameObject.SetActive(false);
         var newLast = spare[Random.Range(0, spare.Count-1)];
         newLast.gameObject.SetActive(true);
-        Transform anchor = null;
-        if(foreTrack == null)
-        {
-            anchor = transform;
-        }
-        else
-        {
-            anchor = foreTrack.endAnchor;
-        }
+        Transform anchor = foreTrack.endAnchor;      
         newLast.transform.position = anchor.position;
         newLast.transform.rotation = anchor.rotation;
         foreTrack = newLast;
         spare.Remove(foreTrack);
         Enqueue(foreTrack);
+    }
+
+    void InitTrack(int i)
+    {
+        var newLast = Instantiate(prefabs[0]).GetComponent<Track>();
+        newLast.gameObject.SetActive(true);
+        Transform anchor = transform;
+        newLast.transform.position = anchor.position;
+        newLast.transform.rotation = anchor.rotation;
+        foreTrack = newLast;
+        spare.Remove(foreTrack);
+        Enqueue(foreTrack);
+        if (i == startTrackIndex)
+            startTrack = foreTrack;
     }
 
     void Enqueue(Track track)

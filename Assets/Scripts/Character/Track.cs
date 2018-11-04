@@ -5,7 +5,13 @@ public class Track : MonoBehaviour
     public BezierCurve curve;
     public Transform startAnchor;
     public Transform endAnchor;
-    public bool raiseEvent;
+    public bool raiseEvent = true;
+    public BoxCollider Trigger { get; set; }
+
+    private void Awake()
+    {
+        Trigger = GetComponent<BoxCollider>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,14 +21,13 @@ public class Track : MonoBehaviour
             if(characterWagon != null && characterWagon.previousTrack!=this)
             {
                 characterWagon.nextTrack = this;
-                if(characterWagon.track == null)
+                characterWagon.endPointForward = endAnchor.forward;
+                if (characterWagon.track == null)
                 {
                     characterWagon.track = this;
                 }
-                OnTrackReached();
-                
+                OnTrackReached();              
             }
-
         }
     }
 

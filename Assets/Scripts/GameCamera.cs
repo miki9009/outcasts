@@ -29,7 +29,7 @@ public class GameCamera : MonoBehaviour
     public float minDistance = 5;
 
     public float UpFactorAtStart { get; private set; }
-
+    public bool regularUpdate;
     Controller.GameType gameType;
     TriggerBroadcast triggerBroadcast;
     Collision lastCollision;
@@ -59,15 +59,19 @@ public class GameCamera : MonoBehaviour
     Quaternion slerp;
     float magnitude;
 
-#if UNITY_EDITOR
+
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.C))
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.C))
         {
             ResetView();
         }
-    }
 #endif
+        if(regularUpdate)
+            MainUpdate();
+    }
+
 
     bool isResetting;
     public void ResetView()
@@ -80,6 +84,13 @@ public class GameCamera : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!regularUpdate)
+            MainUpdate();
+        //CheckFreePosition();
+    }
+
+    void MainUpdate()
+    {
         if (target == null) return;
         Vector3 pos = transform.position;
         pos.y = target.position.y;
@@ -89,7 +100,6 @@ public class GameCamera : MonoBehaviour
         transform.position = pos;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
 
-        //CheckFreePosition();
     }
 
     float freeTime; 
