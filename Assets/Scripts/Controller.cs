@@ -121,7 +121,7 @@ public class Controller : MonoBehaviour
     {
         if(character.IsLocalPlayer)
         {
-            float time = character.isDead ? 3 : 0f;
+            float time = character.IsDead ? 3 : 0f;
             StartCoroutine(PlayerDeadCoroutine(character, time));
             PlayerDead?.Invoke(character);
         }

@@ -21,7 +21,7 @@ public class Character : MonoBehaviour
     
     public IEquipment rightArmItem;
     public IEquipment leftArmItem;
-    public bool isDead { get; set; }
+    public bool IsDead { get; set; }
     public CharacterPhoton characterPhoton;
 
     public bool IsLocalPlayer

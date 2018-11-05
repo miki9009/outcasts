@@ -218,8 +218,9 @@ public class BezierCurve : MonoBehaviour {
 	/// </param>
 	public Vector3 GetPointAt(float t)
 	{
-        if (t <= 0) return points[0].position;
-        else if (t >= 1) return points[points.Length - 1].position;
+        //if (t <= 0) return points[0].position;
+        //else if (t >= 1) return points[points.Length - 1].position;
+        t = t % 1;
 
         float totalPercent = 0;
 		float curvePercent = 0;
@@ -240,7 +241,7 @@ public class BezierCurve : MonoBehaviour {
 			else totalPercent += curvePercent;
 		}
 
-        if (close || p1 == null)
+        if ((close && p1 == null))
         {
             p1 = points[points.Length - 1];
             p2 = points[0];

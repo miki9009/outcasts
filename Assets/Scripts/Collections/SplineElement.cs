@@ -219,7 +219,8 @@ public class SplineElement : LevelElement
         if (curve == null) return;
         for (int i = 0; i < spawns.Length; i++)
         {
-            Gizmos.DrawSphere(curve.GetPointAt(splineFactor * i), 1);
+            float factor = splineFactor * i;
+            Gizmos.DrawSphere(curve.GetPointAt(factor), 1);
         }
     }
 #endif

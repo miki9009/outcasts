@@ -14,6 +14,7 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
     public Transform neck;
     public Transform chest;
     public float wagonSpeed = 1;
+    public float distance;
 
     float speedTimer;
 
@@ -155,6 +156,9 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
         {
             speedTimer += Time.deltaTime;
         }
+
+        if (!character.IsDead)
+            distance += wagonSpeed * Time.deltaTime * 10;
     }
 
     void WagonMovement()
@@ -209,14 +213,15 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
         }
         if (horDistance > 1)
         {
+            pointingDir = Vector.Direction(horTouched, curHorTouched);
             angle = -Vector2.SignedAngle(Vector2.up, pointingDir);
         }
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-        if (Input.GetKey(KeyCode.LeftArrow))
-            angle = -90;
-        if (Input.GetKey(KeyCode.RightArrow))
-            angle = 90;
-#endif
+//#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+//        if (Input.GetKey(KeyCode.LeftArrow))
+//            angle = -90;
+//        if (Input.GetKey(KeyCode.RightArrow))
+//            angle = 90;
+//#endif
 
         if (!pressedHorizontalCurrent && horPressed)
         {
@@ -262,7 +267,7 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
             Controller.Instance.gameCamera.SetTarget(null);
             rb.useGravity = true;
             rb.velocity = transform.forward * wagonSpeed * 50;
-            character.isDead = true;
+            character.IsDead = true;
             enabled = false;
             Invoke("Restart",1);
         }
@@ -274,8 +279,10 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
         DieNonAnimation();
     }
 
+    public int criticalDir;
     bool CheckCollision()
     {
+        criticalDir = finalAngle > 0 ? 1 : -1;
         if (Mathf.Abs(finalAngle) > 30)
         {
             if (critical < maxCritical * 2)
@@ -293,8 +300,5 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
         return false;
     }
 
-    void OnGUI()
-    {
-        Draw.TextColor(10, 350, 255, 0, 0, 1, "Speed: " + wagonSpeed);
-    }
+
 }

@@ -114,7 +114,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
 
     public void Die()
     {
-        character.isDead = true;
+        character.IsDead = true;
         anim.Play("Die");
         DieNonAnimation();
     }
@@ -277,7 +277,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
     public void Attack()
     {
         Debug.Log("Attack");
-        if (character.isDead || attack) return;
+        if (character.IsDead || attack) return;
 
             if (Thrown != null)
             {
