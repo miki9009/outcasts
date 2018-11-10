@@ -25,7 +25,7 @@ public class GameCamera : MonoBehaviour
     public MotionBlur motionBlure;
     public CameraMotionBlur camMotionBlur;
     public bool move = true;
-
+    
     public float minDistance = 5;
 
     public float UpFactorAtStart { get; private set; }
@@ -33,7 +33,7 @@ public class GameCamera : MonoBehaviour
     Controller.GameType gameType;
     TriggerBroadcast triggerBroadcast;
     Collision lastCollision;
-
+    System.Action Body;
     float time = 0;
     public bool collides;
     Collider col;
@@ -54,10 +54,17 @@ public class GameCamera : MonoBehaviour
         triggerBroadcast = GetComponentInChildren<TriggerBroadcast>();
         triggerBroadcast.TriggerEntered += (x) => { collides = true; };
         triggerBroadcast.TriggerExit += (x) => collides = false;
+        Body = MainUpdate;
+        GameManager.LevelClear += ResetCamera;
     }
 
     Quaternion slerp;
     float magnitude;
+
+    private void OnDestroy()
+    {
+        GameManager.LevelClear -= ResetCamera;
+    }
 
 
     private void Update()
@@ -69,7 +76,7 @@ public class GameCamera : MonoBehaviour
         }
 #endif
         if(regularUpdate)
-            MainUpdate();
+            Body();
     }
 
 
@@ -80,12 +87,16 @@ public class GameCamera : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor));
     }
 
+    void ResetCamera()
+    {
+        Body = MainUpdate;
+    }
 
 
     private void FixedUpdate()
     {
         if (!regularUpdate)
-            MainUpdate();
+            Body();
         //CheckFreePosition();
     }
 
@@ -99,7 +110,18 @@ public class GameCamera : MonoBehaviour
         pos.y += y;
         transform.position = pos;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
+    }
 
+    void WagonUpdate()
+    {
+        if (target == null) return;
+        Vector3 pos = transform.position;
+        pos.y = target.position.y;
+        Vector3 dir = Vector.Direction(target.position, pos);
+        pos = target.position + dir * minDistance;
+        pos.y += y;
+        transform.position = target.position - target.forward * minDistance + Vector3.up * y;
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
     }
 
     float freeTime; 
@@ -182,6 +204,11 @@ public class GameCamera : MonoBehaviour
             yield return null;
         }
         shakeCor = null;
+    }
+
+    public void ChangeToWagonCamera()
+    {
+        Body = WagonUpdate;
     }
 
     private void OnDrawGizmos()

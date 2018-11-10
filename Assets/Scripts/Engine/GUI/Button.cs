@@ -17,7 +17,7 @@ namespace Engine.GUI
         public bool isTouched;
         RectTransform rect;
         Image image;
-        Color color;
+        Colour color;
         private bool wasAwaken = false;
         public ButtonShape buttonShape;
 
@@ -160,7 +160,7 @@ namespace Engine.GUI
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = new Color(gizmosColor.r, gizmosColor.g, gizmosColor.b, maskAlpha);
+            Gizmos.color = new Colour(gizmosColor.r, gizmosColor.g, gizmosColor.b, maskAlpha);
             if (buttonShape == ButtonShape.Circle)
             {
                 Gizmos.DrawSphere(transform.position, radius * GameGUI.ScreenScale.x);

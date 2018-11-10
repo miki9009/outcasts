@@ -147,7 +147,8 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
     public float deactivationTime = 0.1f;
     void Deactivate()
     {
-        gameObject.SetActive(false);
+        if(gameObject.activeInHierarchy)
+            gameObject.SetActive(false);
     }
 
     public static Vector3 eulers = Vector3.zero;
@@ -160,22 +161,23 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
     }
 
 
-    public void BackToCollection()
+    public void BackToCollection(bool activate = false)
     {
-        if (character != null)
+        if (character != null && !activate)
         {
             transform.position = character.transform.position;
             int collection = CollectionManager.Instance.GetCollection(character.ID, type);
             CollectionManager.Instance.SetCollection(character.ID, type, collection - val);
         }
-        gameObject.SetActive(true);
+        if(activate)
+            gameObject.SetActive(true);
         if (collectedCoroutine != null)
         {
             StopCoroutine(collectedCoroutine);
         }
-        collected = true;
+        collected = false;
         GetComponent<Collider>().enabled = true;
-        OnLeaveTrigger += SetCollectionObjectActive;
+        //OnLeaveTrigger += SetCollectionObjectActive;
 
         transform.localScale = localScale;
     }

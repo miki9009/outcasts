@@ -76,7 +76,7 @@ public class WagonArrows : MonoBehaviour
             if(frame % 60 == 0)
             {
                 frame = 0;
-                distanceLabel.text = string.Format("{0:00000.00}m", _wagon.distance);
+                distanceLabel.text = string.Format("{0:#.##}m", _wagon.distance);
             }
 
         }

@@ -44,3 +44,27 @@ MonoBehaviour:
     passed: 0
     unlocked: 1
     unlocks: 
+  - level: Mine:0
+    passed: 0
+    unlocked: 1
+    unlocks: 
+  - level: Mine:0
+    passed: 0
+    unlocked: 1
+    unlocks: 
+  - level: Mine:0
+    passed: 0
+    unlocked: 1
+    unlocks: 
+  - level: Voolcano:0
+    passed: 0
+    unlocked: 1
+    unlocks: 
+  - level: Voolcano:0
+    passed: 0
+    unlocked: 1
+    unlocks: 
+  - level: Voolcano:1
+    passed: 0
+    unlocked: 1
+    unlocks: 

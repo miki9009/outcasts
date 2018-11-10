@@ -32,7 +32,7 @@ public class ThrowableObject : MonoBehaviour, IRightArmItem
 
     public void BackToCollection()
     {
-        CollectionObject.BackToCollection();
+        CollectionObject.BackToCollection(true);
     }
 
     public void Initialize(Character character)

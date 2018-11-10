@@ -9,6 +9,7 @@ TagManager:
   - Block
   - EditorRotation
   - SunRay
+  - grass
   layers:
   - Default
   - TransparentFX

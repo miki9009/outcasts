@@ -345,6 +345,11 @@ namespace Engine.GUI
             Application.Quit();
         }
 
+        public void GoToScene(string scene)
+        {
+            SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
+        }
+
     }
 }
 

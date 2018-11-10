@@ -29,7 +29,7 @@ public class Weapon : MonoBehaviour, IRightArmItem
             character.movement.MeleeAttack -= Attack;
          });
         Debug.Log("Remove");
-        collectionObject.BackToCollection();
+        collectionObject.BackToCollection(true);
     }
 
     public void Clear()

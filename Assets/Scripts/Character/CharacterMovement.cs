@@ -29,6 +29,8 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
     [NonSerialized]
     public Animator anim;
 
+    public float airForce = 5;
+
     public bool Invincible { get; set; }
     public ThrowableObject ThrowObject { get; set; }
     public Vector3 StartPosition { get; private set; }
@@ -293,14 +295,22 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
             }
             else
             {
+            //if(!onGround && rb.velocity.y > -2)
+            //{
+            //    rb.AddForce(Vector3.down * airForce, ForceMode.);
+            //}
+            //else
+            //{
                 //Debug.Log("Ground Attack");
                 attack = true;
                 anim.Play("Attack");
                 isAttacking = true;
                 attackParticles.Play();
                 MeleeAttack?.Invoke();
-            if (PhotonManager.IsMultiplayer && character.IsLocalPlayer)
-                PhotonManager.SendMessage(PhotonEventCode.ATTACK, character.ID, null);
+                if (PhotonManager.IsMultiplayer && character.IsLocalPlayer)
+                    PhotonManager.SendMessage(PhotonEventCode.ATTACK, character.ID, null);
+            //}
+
         }
         //}
     }

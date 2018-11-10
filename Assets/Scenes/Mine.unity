@@ -182,14 +182,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabsCount: 5
-  prewarmNumber: 6
-  startTrackIndex: 4
+  prewarmNumber: 9
+  startTrackIndex: 5
   prefabs:
   - {fileID: 1755611574870090, guid: 6ff3e0a04e172094ea3b4e761a973866, type: 2}
   - {fileID: 1719667654198482, guid: bc7eaef3494b25b4aa4daea5d162d249, type: 2}
   - {fileID: 1684047819027918, guid: 3efd99f44c7d71b4b91c709a1bcc9725, type: 2}
   - {fileID: 1873325907655542, guid: 8911e9e9d69074d4fb9b244177d44cb3, type: 2}
   - {fileID: 1129422575211546, guid: fc757439a1049a64da78f1b3bb1e37f1, type: 2}
+  coinPrefab: {fileID: 1730406902580098, guid: 30e4a43308b371e4cac3aea2509e1725, type: 2}
 --- !u!4 &1913697219
 Transform:
   m_ObjectHideFlags: 0

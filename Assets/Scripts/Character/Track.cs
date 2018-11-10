@@ -6,20 +6,18 @@ public class Track : MonoBehaviour
     public Transform startAnchor;
     public Transform endAnchor;
     public bool raiseEvent = true;
-    public BoxCollider Trigger { get; set; }
-
-    private void Awake()
-    {
-        Trigger = GetComponent<BoxCollider>();
-    }
+    public int Index { get; set; }
+    public bool active = true;
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!active) return;
         if (other.transform.parent.gameObject.layer == Layers.Character)
         {
             var characterWagon = other.transform.parent.GetComponent<CharacterWagon>();
             if(characterWagon != null && characterWagon.previousTrack!=this)
             {
+                active = false;
                 characterWagon.nextTrack = this;
                 characterWagon.endPointForward = endAnchor.forward;
                 if (characterWagon.track == null)

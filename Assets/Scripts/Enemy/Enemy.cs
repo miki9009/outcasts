@@ -268,6 +268,11 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     }
 
 #if UNITY_EDITOR
+    void OnGUI()
+    {
+        Draw.TextColor(10, 300, 255, 255, 255, 1, "Velocity: " + rb.velocity);
+    }
+
     public Color gizmoColor = Color.blue;
     private void OnDrawGizmos()
     {

@@ -270,7 +270,7 @@ MonoBehaviour:
   activeAndEnabled: 1
   prefabsPath: LevelElements/
   curve: {fileID: 114286625036865862}
-  speed: 1
+  speed: 4
   points:
   - {fileID: 4753328547247238}
   - {fileID: 4967944873747950}

@@ -7,8 +7,8 @@ public class TrackManager: MonoBehaviour
 {
 
     public int prefabsCount;
-    public int prewarmNumber = 5;
-    public int startTrackIndex = 4;
+    public int prewarmNumber = 8;
+    public int startTrackIndex = 5;
     public GameObject[] prefabs;
 
     Track foreTrack;
@@ -17,6 +17,8 @@ public class TrackManager: MonoBehaviour
     bool initialized = false;
     Track startTrack;
 
+    public GameObject coinPrefab;
+
     private void Awake()
     {
         Level.LevelLoaded += Init;
@@ -24,11 +26,14 @@ public class TrackManager: MonoBehaviour
         Track.TrackReached += OnNewTrackReached;
         Character.CharacterCreated += SetToTrack;
         GameManager.LevelClear += Restart;
+
+
     }
 
 
     private void Init()
     {
+        SpawnManager.AddSpawn("Coin", coinPrefab, 150);
         spare = new List<Track>();
         queue = new Queue<Track>();
         int k = 0;
@@ -60,12 +65,14 @@ public class TrackManager: MonoBehaviour
         Track.TrackReached -= OnNewTrackReached;
         Character.CharacterCreated -= SetToTrack;
         GameManager.LevelClear -= Restart;
+        Level.LevelLoaded -= Init;
     }
 
     void OnNewTrackReached(Track track)
     {
         var t = Dequeue();
         spare.Add(t);
+        t.active = true;
         t.gameObject.SetActive(false);
         var newLast = spare[Random.Range(0, spare.Count-1)];
         newLast.gameObject.SetActive(true);
@@ -75,6 +82,7 @@ public class TrackManager: MonoBehaviour
         foreTrack = newLast;
         spare.Remove(foreTrack);
         Enqueue(foreTrack);
+        PlaceCollection(foreTrack);
     }
 
     void InitTrack(int i)
@@ -93,12 +101,13 @@ public class TrackManager: MonoBehaviour
 
     void Enqueue(Track track)
     {
-        Debug.Log("Enqueue " + track.name);
+        //Debug.Log("Enqueue " + track.name);
         queue.Enqueue(track);
     }
 
     void Restart()
     {
+        SpawnManager.ClearSpawns();
         initialized = false;
         foreach (var track in spare)
         {
@@ -116,7 +125,30 @@ public class TrackManager: MonoBehaviour
     Track Dequeue()
     {
         var t = queue.Dequeue();
-        Debug.Log("Dequeue " + t.name);
         return t;
+    }
+
+    void PlaceCollection(Track track)
+    {
+        int coins = Random.Range(1, 10);
+        float factor = 1f / coins;
+        bool left = Math.Probability(0.5f);
+        for (int i = 1; i < coins; i++)
+        {
+            if(Math.Probability(0.25f))
+            {
+                Vector3 pos = track.GetPosition(factor * i);
+                var rot = track.GetRotation(factor * i);
+                var coin = SpawnManager.GetSpawn("Coin");
+                if (coin != null)
+                {
+                    coin.transform.rotation = rot;                 
+                    coin.transform.position = pos + (left ? -coin.transform.right*2f : coin.transform.right * 2f);
+                    coin.transform.SetParent(track.transform);
+                }
+            }
+
+
+        }
     }
 }

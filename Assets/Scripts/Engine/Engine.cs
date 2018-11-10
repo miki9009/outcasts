@@ -811,14 +811,14 @@ namespace Engine
             Rect rect = new Rect(x, y, w, h * 2 / 100);
             style.alignment = TextAnchor.UpperLeft;
             style.fontSize = h * 2 / 100;
-            style.normal.textColor = new Color(r, g, b, a);
+            style.normal.textColor = new Colour(r, g, b, a);
             float msec = deltaTime * 1000.0f;
             fps = 1.0f / deltaTime;
             string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, fps);
             UnityEngine.GUI.Label(rect, text, style);
         }
         public static float fps;
-        public static void DisplayFps(int x, int y, Color color, int fontSize)
+        public static void DisplayFps(int x, int y, Colour color, int fontSize)
         {
             deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
             int w = Screen.width;
@@ -837,7 +837,7 @@ namespace Engine
         }
         static float medianFps;
         static int frame;
-        public static void DisplayFpsMedian(int x, int y, Color color, int fontSize)
+        public static void DisplayFpsMedian(int x, int y, Colour color, int fontSize)
         {
             deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
             int w = Screen.width;
@@ -870,12 +870,12 @@ namespace Engine
             Rect rect = new Rect(x, y, w, h * 2 / 100);
             style.alignment = TextAnchor.UpperLeft;
             style.fontSize = h * 2 / 100;
-            style.normal.textColor = new Color(r, g, b, a);
+            style.normal.textColor = new Colour(r, g, b, a);
             float msec = deltaTime * 1000.0f;
             float fps = 1.0f / deltaTime;
             if (fps <= 59)
             {
-                style.normal.textColor = new Color(255, 0, 0, a);
+                style.normal.textColor = new Colour(255, 0, 0, a);
                 if (logDropDowns)
                 {
                     Debug.Log("FPS drop to: " + fps);
@@ -931,7 +931,7 @@ namespace Engine
             Rect rect = new Rect(x, y, w, h * 2 / 100);
             style.alignment = TextAnchor.UpperLeft;
             style.fontSize = h * 2 / 100;
-            style.normal.textColor = new Color(0, 0, 0, 1);
+            style.normal.textColor = new Colour(0, 0, 0, 1);
             UnityEngine.GUI.Label(rect, string.Format("{0}", text), style);
         }
 
@@ -951,7 +951,7 @@ namespace Engine
             Rect rect = new Rect(x, y, w, fontSize);
             style.alignment = TextAnchor.UpperLeft;
             style.fontSize = fontSize;
-            style.normal.textColor = new Color(0, 0, 0, 1);
+            style.normal.textColor = new Colour(0, 0, 0, 1);
             UnityEngine.GUI.Label(rect, string.Format("{0}", text), style);
         }
 
@@ -975,11 +975,11 @@ namespace Engine
             Rect rect = new Rect(x, y, w, h * 2 / 100);
             style.alignment = TextAnchor.UpperLeft;
             style.fontSize = h * 2 / 100;
-            style.normal.textColor = new Color(red / 255f, green / 255f, blue / 255f, alpha);
+            style.normal.textColor = new Colour(red / 255f, green / 255f, blue / 255f, alpha);
             UnityEngine.GUI.Label(rect, string.Format("{0}", text), style);
         }
 
-        public static void TextColorUnity(int x, int y, Color color, object text)
+        public static void TextColorUnity(int x, int y, Colour color, object text)
         {
             var w = Screen.width;
             var h = Screen.height;
@@ -1012,7 +1012,7 @@ namespace Engine
             Rect rect = new Rect(x, y, w, fontSize);
             style.alignment = TextAnchor.UpperLeft;
             style.fontSize = fontSize;
-            style.normal.textColor = new Color(red / 255f, green / 255f, blue / 255f, alpha);
+            style.normal.textColor = new Colour(red / 255f, green / 255f, blue / 255f, alpha);
             UnityEngine.GUI.Label(rect, string.Format("{0}", text), style);
         }
 
@@ -1025,7 +1025,7 @@ namespace Engine
             Rect rect = new Rect(x, y, w, fontSize);
             style.alignment = TextAnchor.UpperLeft;
             style.fontSize = fontSize;
-            style.normal.textColor = new Color(red / 255f, green / 255f, blue / 255f, alpha);
+            style.normal.textColor = new Colour(red / 255f, green / 255f, blue / 255f, alpha);
             style.font = font;
             UnityEngine.GUI.Label(rect, string.Format("{0}", text), style);
         }
@@ -1054,7 +1054,7 @@ namespace Engine
 
 
             style.fontSize = fontSize;
-            style.normal.textColor = new Color(red / 255f, green / 255f, blue / 255f, alpha);
+            style.normal.textColor = new Colour(red / 255f, green / 255f, blue / 255f, alpha);
             UnityEngine.GUI.Label(rect, string.Format("{0}", text), style);
         }
     }
@@ -1259,6 +1259,32 @@ namespace Engine
         }
     }
 
+    [Serializable]
+    public struct Colour
+    {
+        public float r;
+        public float g;
+        public float b;
+        public float a;
+
+        public Colour(float r, float g, float b, float a)
+        {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            this.a = a;
+        }
+        public static implicit operator UnityEngine.Color(Engine.Colour col)
+        {
+            return new UnityEngine.Color(col.r,col.g,col.b,col.a);
+        }
+
+        public static implicit operator Engine.Colour(UnityEngine.Color col)
+        {
+            return new Engine.Colour(col.r, col.g, col.b, col.a);
+        }
+    }
+
 
     public static class ExtensionMethods
     {
@@ -1393,10 +1419,7 @@ namespace Engine
         private void Run()
         {
             ThreadFunction();
-            if (OnFinished != null)
-            {
-                OnFinished(this);
-            }
+            OnFinished?.Invoke(this);
             IsDone = true;
         }
     }

@@ -30,3 +30,8 @@ MonoBehaviour:
   - sceneName: Mine
     levels:
     - 0
+  - sceneName: Voolcano
+    levels:
+    - 0
+    - 1
+    - Multiplayer

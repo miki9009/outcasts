@@ -7,7 +7,6 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
     public Track track;
     public Track nextTrack;
     public Track previousTrack;
-    public Transform wagon;
     public float curTrackPos = 0;
     public ParticleSystem[] sparks;
     public Transform[] wheels;
@@ -25,14 +24,16 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
             return true;
         }
     }
-    
 
+    //Transform sensor;
     protected override void Initialize()
     {
-        Controller.Instance.gameCamera.SetTarget(transform);
-        Controller.Instance.gameCamera.ResetView();
-        Controller.Instance.gameCamera.regularUpdate = true;
-
+        var cam = Controller.Instance.gameCamera;
+        cam.SetTarget(transform);
+        cam.ResetView();
+        cam.regularUpdate = true;
+        cam.ChangeToWagonCamera();
+       // sensor = new GameObject("WagonSensor").transform;
         try
         {
             btnMovement = GameGUI.GetButtonByName("ButtonMovement");
@@ -105,6 +106,7 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
     public float wagonAngleZ = 0;
     public Vector3 endPointForward;
     float lean;
+    Vector3 prevPos;
     protected override void Update()
     {
 
@@ -127,10 +129,14 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
         }
         if (track != null)
         {
-            transform.position = track.GetPosition(curTrackPos);
-            var rot = track.GetRotation(curTrackPos);
+            Vector3 pos = track.GetPosition(curTrackPos);
+            //sensor.position = pos;
+            //var rot = track.GetRotation(curTrackPos);
+            
             eulerAngle = Vector3.SignedAngle(transform.forward, endPointForward, Vector3.up);
-            transform.rotation = rot;
+            transform.rotation = Quaternion.LookRotation(Vector.Direction(prevPos, pos));
+            prevPos = transform.position;
+            transform.position = pos;
         }
         else
         {
@@ -216,12 +222,12 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
             pointingDir = Vector.Direction(horTouched, curHorTouched);
             angle = -Vector2.SignedAngle(Vector2.up, pointingDir);
         }
-//#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-//        if (Input.GetKey(KeyCode.LeftArrow))
-//            angle = -90;
-//        if (Input.GetKey(KeyCode.RightArrow))
-//            angle = 90;
-//#endif
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        if (Input.GetKey(KeyCode.LeftArrow))
+            angle = -90;
+        if (Input.GetKey(KeyCode.RightArrow))
+            angle = 90;
+#endif
 
         if (!pressedHorizontalCurrent && horPressed)
         {
