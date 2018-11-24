@@ -1,5 +1,6 @@
 ﻿using Engine;
 using Engine.UI;
+using System;
 using UnityEngine;
 
 public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
@@ -69,10 +70,10 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
             {
                 btnAttack.gameObject.SetActive(true);
 
-                btnLeft = GameGUI.GetButtonByName("ButtonLeft");
-                btnLeft.gameObject.SetActive(true);
-                btnRight = GameGUI.GetButtonByName("ButtonRight");
-                btnRight.gameObject.SetActive(true);
+                //btnLeft = GameGUI.GetButtonByName("ButtonLeft");
+                //btnLeft.gameObject.SetActive(true);
+                //btnRight = GameGUI.GetButtonByName("ButtonRight");
+                //btnRight.gameObject.SetActive(true);
                 btnJump.gameObject.SetActive(true);
                 var rect = GameGUI.GetButtonByName("Action").GetComponent<RectTransform>();
                 rect.anchoredPosition = new Vector2(700, rect.anchoredPosition.y);
@@ -81,15 +82,15 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
             }
             else
             {
-                DeactivateButtons();
+                //DeactivateButtons();
                 Movement = GestureMovement;
             }
             
         }
-        catch
+        catch (Exception ex)
         {
             Movement = ButtonsMovement;
-            Debug.Log("Buttons are not initialized, you can still use keyboard for movement");
+            Debug.Log("Buttons are not initialized, you can still use keyboard for movement. " + ex );
             buttonsInitialized = false;
         }
     }
@@ -152,11 +153,11 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
             direction2D = -1;
     }
 
-    private void DeactivateButtons()
-    {
-        GameGUI.GetButtonByName("ButtonLeft").gameObject.SetActive(false);
-        GameGUI.GetButtonByName("ButtonRight").gameObject.SetActive(false);
-    }
+    //private void DeactivateButtons()
+    //{
+    //    GameGUI.GetButtonByName("ButtonLeft").gameObject.SetActive(false);
+    //    GameGUI.GetButtonByName("ButtonRight").gameObject.SetActive(false);
+    //}
 
 
     void GestureMovement()
@@ -295,5 +296,11 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
         //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(targetEuler), 0.2f);
         sinus = Mathf.Lerp(sinus, angle < 90 && angle > -90 ? angle : angle > 0 ? 180 - angle : -180 - angle, Time.deltaTime * 10);
         model.transform.localEulerAngles = new Vector3(0, 0, Mathf.Clamp(-sinus / 3, -15, 15));
+    }
+
+    void OnGUI()
+    {
+        Draw.TextColor(10, 200, 255, 0, 0, 1, "Material: " + character.bodyMeshRenderer.material.name);
+        Draw.TextColor(10, 250, 255, 0, 0, 1, "Shader: " + character.bodyMeshRenderer.material.shader.name);
     }
 }
