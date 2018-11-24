@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MovementButton : Engine.GUI.Button
+public class MovementButton : Engine.UI.Button
 {
 
 

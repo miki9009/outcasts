@@ -6,7 +6,7 @@ public class Track : MonoBehaviour
     public Transform startAnchor;
     public Transform endAnchor;
     public bool raiseEvent = true;
-    public int Index { get; set; }
+    public int index;
     public bool active = true;
 
     private void OnTriggerEnter(Collider other)
@@ -18,13 +18,19 @@ public class Track : MonoBehaviour
             if(characterWagon != null && characterWagon.previousTrack!=this)
             {
                 active = false;
-                characterWagon.nextTrack = this;
+
                 characterWagon.endPointForward = endAnchor.forward;
                 if (characterWagon.track == null)
                 {
                     characterWagon.track = this;
+                    characterWagon.trackIndex = index;
                 }
-                OnTrackReached();              
+                //Debug.Log("Character index: " + characterWagon.trackIndex + ", track nextIndex: " + (index));
+                if(index == characterWagon.trackIndex+1)
+                {
+                    characterWagon.nextTrack = this;
+                    OnTrackReached();
+                }
             }
         }
     }

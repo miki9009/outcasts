@@ -1,4 +1,4 @@
-﻿using Engine.GUI;
+﻿using Engine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace Engine
     [RequireComponent(typeof(CanvasScaler))]
     public class GameGUI : MonoBehaviour
     {
-        public static List<Engine.GUI.Button> buttons = new List<Engine.GUI.Button>();
+        public static List<Engine.UI.Button> buttons = new List<Engine.UI.Button>();
         public static GameGUI Instance { get; private set; }
 
         public delegate void GUITouch(Vector3 pos);
@@ -123,7 +123,7 @@ namespace Engine
 #endif
         }
 
-        public static Engine.GUI.Button GetButtonByName(string buttonName)
+        public static Engine.UI.Button GetButtonByName(string buttonName)
         {
             try
             {

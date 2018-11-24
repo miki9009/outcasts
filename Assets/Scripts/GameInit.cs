@@ -48,26 +48,28 @@ public class GameInit : MonoBehaviour
                     if (!settings.runBenchmark)
                     {
                         Screen.SetResolution((int)settings.resolution.x, (int)settings.resolution.y, true);
-                        LevelManager.Instance.GoToScene(firstScene, false);
+                        LevelManager.GoToSingleScene(firstScene, false);
                     }
                     else
                     {
-                        LevelManager.Instance.GoToScene(benchmarkScene,false);
+                        LevelManager.GoToSingleScene(benchmarkScene,false);
                     }
                 }
                 else
                 {
-                    LevelManager.Instance.GoToScene(firstScene,false);
+                    LevelManager.GoToSingleScene(firstScene,false);
+                    LevelManager.LoadMenu3D();
                 }
 #else
                 if (!settings.runBenchmark)
                 {
                     Screen.SetResolution((int)settings.resolution.x, (int)settings.resolution.y, true);
-                    LevelManager.Instance.GoToScene(firstScene);
+                    LevelManager.GoToSingleScene(firstScene);
+                    LevelManager.LoadMenu3D();
                 }
                 else
                 {
-                    LevelManager.Instance.GoToScene(benchmarkScene);
+                    LevelManager.GoToSingleScene(benchmarkScene);
                 }
 #endif
             };

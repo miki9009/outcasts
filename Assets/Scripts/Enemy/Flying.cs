@@ -31,7 +31,6 @@ public class Flying : Enemy
     float curSpeed;
     Vector3 destination;
     Vector3 aimedPos;
-    Vector3 prevPos;
     protected override void Update()
     {
 

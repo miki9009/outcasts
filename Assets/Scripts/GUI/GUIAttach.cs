@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Engine.GUI
+namespace Engine.UI
 {
     public class GUIAttach : MonoBehaviour
     {

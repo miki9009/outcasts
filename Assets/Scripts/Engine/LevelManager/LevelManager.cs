@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using Engine;
 using System.IO;
 using System.Collections;
-using Engine.GUI;
+using Engine.UI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -62,6 +62,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        SceneManager.activeSceneChanged += PrintSceneName;
         GameManager.GameReady += () =>
         {
             currentLevel = SceneManager.GetActiveScene().name;
@@ -82,11 +83,43 @@ public class LevelManager : MonoBehaviour
         };
     }
 
-    public void GoToScene(string sceneName, bool showLoadingScreen = true)
+    void PrintSceneName(Scene prevScene, Scene newScene)
+    {
+        Debug.Log("ACTIVE SCENE: " + SceneManager.GetActiveScene().name);
+    }
+
+    public static void LoadMenu3D()
+    {
+        var scene = SceneManager.GetSceneByName("Menu3D");
+        if (!scene.isLoaded)
+            SceneManager.LoadSceneAsync("Menu3D", LoadSceneMode.Additive);
+    }
+
+    public static void UnloadMenu3D()
+    {
+        var scene = SceneManager.GetSceneByName("Menu3D");
+        if (scene.isLoaded)
+            SceneManager.UnloadSceneAsync(scene);
+    }
+
+    public static void GoToSingleScene(string sceneName, bool showLoadingScreen = true)
     {
         LoadScene(sceneName, LoadSceneMode.Single, showLoadingScreen);
-
         LevelSelected?.Invoke();
+    }
+
+    public static void LoadLevelAdditive(string sceneName, bool showLoadingScreen = true)
+    {
+        if(showLoadingScreen)
+        {
+            var window = UIWindow.GetWindow(UIWindow.LOADING_SCREEN);
+            if (window != null)
+                window.Show();
+        }
+        var scene = SceneManager.GetSceneByName("Menu3D");
+        if (scene.isLoaded)
+            SceneManager.UnloadSceneAsync(scene);
+        LoadScene(sceneName, LoadSceneMode.Additive, showLoadingScreen);
     }
 
     public void GetScenes()
@@ -153,40 +186,34 @@ public class LevelManager : MonoBehaviour
     }
 
 
+
+
+
+    //public static void BeginLevelLoadSequence(string levelName)
+    //{
+    //    levelToLoad = levelName;
+    //    Debug.Log("Current level set to: " + levelToLoad);
+    //    GameManager.CurrentLevel = levelToLoad;
+    //    LoadScene(LevelManager.Instance.gameScene, LoadSceneMode.Additive);
+    //    SceneManager.sceneLoaded += instance.AddLevelScene;
+    //}
+
     static string levelToLoad;
     static string customLevelToLoad;
-    public static void BeginLevelLoadSequence(string levelName)
-    {
-        levelToLoad = levelName;
-        Debug.Log("Current level set to: " + levelToLoad);
-        GameManager.CurrentLevel = levelToLoad;
-        LoadScene(LevelManager.Instance.gameScene, LoadSceneMode.Additive);
-        SceneManager.sceneLoaded += instance.AddLevelScene;
-    }
-
     public static void BeginCustomLevelLoadSequenceAdditive(string sceneName, string customLevel)
     {
         levelToLoad = sceneName;
         customLevelToLoad = customLevel;
+
+        var scene = SceneManager.GetSceneByName("Menu3D");
+        if(scene.isLoaded)
+            SceneManager.UnloadSceneAsync(scene);
+
         Debug.Log("Current level set to: " + levelToLoad);
         GameManager.CurrentLevel = levelToLoad;
         LoadScene(LevelManager.Instance.gameScene, LoadSceneMode.Additive);
         SceneManager.sceneLoaded += instance.AddLevelScene;
         LoadCustomLevel += OnLoadCustomLevel;
-    }
-
-
-    public static void LoadOnlyCusomLevel(string customLevel)
-    {
-        Character character = Character.GetLocalPlayer();
-        if (character != null)
-            Destroy(character.gameObject);
-        if (!string.IsNullOrEmpty(LevelManager.Instance.LastCustomLevel))
-        {
-            customLevelToLoad = customLevel;
-            Level.LoadWithScene(SceneManager.GetActiveScene().name, customLevel);
-        }
-
     }
 
     public static void ChangeLevel(string sceneName, string customLevel)
@@ -206,6 +233,28 @@ public class LevelManager : MonoBehaviour
             instance.AddLevelScene(SceneManager.GetSceneByName(sceneName), LoadSceneMode.Additive);
             LoadCustomLevel += OnLoadCustomLevel;
         }
+    }
+
+    public static void LoadOnlyCusomLevel(string customLevel)
+    {
+        Character character = Character.GetLocalPlayer();
+        if (character != null)
+            Destroy(character.gameObject);
+        if (!string.IsNullOrEmpty(LevelManager.Instance.LastCustomLevel))
+        {
+            customLevelToLoad = customLevel;
+            Level.LoadWithScene(SceneManager.GetActiveScene().name, customLevel);
+        }
+    }
+
+    public static void ReturnToMenu(bool loadMenu3D = true)
+    {
+        OnBeforeSceneLoading();
+        GameManager.OnLevelClear();
+        SceneManager.UnloadSceneAsync(instance.gameScene);
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        if(loadMenu3D)
+            LoadMenu3D();
     }
 
     void AddLevelScene(Scene scene, LoadSceneMode mode)
@@ -228,13 +277,7 @@ public class LevelManager : MonoBehaviour
         BeforeSceneLoading?.Invoke();
     }
 
-    public static void ReturnToMenu()
-    {
-        OnBeforeSceneLoading();
-        GameManager.OnLevelClear();
-        SceneManager.UnloadSceneAsync(instance.gameScene);
-        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
-    }
+
 
     static void OnLoadCustomLevel()
     {

@@ -206,9 +206,15 @@ public class GameCamera : MonoBehaviour
         shakeCor = null;
     }
 
-    public void ChangeToWagonCamera()
+    public void ChangeToWagonView()
     {
         Body = WagonUpdate;
+        upFactor = 3;
+    }
+
+    public void ChangeToRegularCharacterView()
+    {
+        upFactor = UpFactorAtStart;
     }
 
     private void OnDrawGizmos()

@@ -16,11 +16,14 @@ public class TrackManager: MonoBehaviour
     Queue<Track> queue;
     bool initialized = false;
     Track startTrack;
-
+    public int index = 0;
     public GameObject coinPrefab;
+
+    public static TrackManager Instance { get; private set; }
 
     private void Awake()
     {
+        Instance = this;
         Level.LevelLoaded += Init;
 
         Track.TrackReached += OnNewTrackReached;
@@ -29,13 +32,17 @@ public class TrackManager: MonoBehaviour
 
 
     }
-
+    public void SetIndex(int index)
+    {
+        this.index = index;
+    }
 
     private void Init()
     {
         SpawnManager.AddSpawn("Coin", coinPrefab, 150);
         spare = new List<Track>();
         queue = new Queue<Track>();
+        index = 0;
         int k = 0;
         for (int i = 0; i < prefabs.Length; i++)
         {
@@ -70,12 +77,14 @@ public class TrackManager: MonoBehaviour
 
     void OnNewTrackReached(Track track)
     {
+        index++;
         var t = Dequeue();
         spare.Add(t);
         t.active = true;
         t.gameObject.SetActive(false);
         var newLast = spare[Random.Range(0, spare.Count-1)];
         newLast.gameObject.SetActive(true);
+        newLast.index = index;
         Transform anchor = foreTrack.endAnchor;      
         newLast.transform.position = anchor.position;
         newLast.transform.rotation = anchor.rotation;
@@ -87,9 +96,23 @@ public class TrackManager: MonoBehaviour
 
     void InitTrack(int i)
     {
+        index++;
+        Transform anchor = null;
+        if (foreTrack == null)
+        {
+            anchor = transform;
+        }
+        else
+        {
+            anchor = foreTrack.endAnchor;
+        }
+
+
         var newLast = Instantiate(prefabs[0]).GetComponent<Track>();
         newLast.gameObject.SetActive(true);
-        Transform anchor = transform;
+        newLast.index = index;
+
+
         newLast.transform.position = anchor.position;
         newLast.transform.rotation = anchor.rotation;
         foreTrack = newLast;
@@ -107,6 +130,7 @@ public class TrackManager: MonoBehaviour
 
     void Restart()
     {
+        foreTrack = null;
         SpawnManager.ClearSpawns();
         initialized = false;
         foreach (var track in spare)

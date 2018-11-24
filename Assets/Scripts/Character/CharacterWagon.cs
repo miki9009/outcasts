@@ -15,6 +15,8 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
     public float wagonSpeed = 1;
     public float distance;
 
+    public int trackIndex;
+
     float speedTimer;
 
     public override bool IsPlayer
@@ -32,7 +34,7 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
         cam.SetTarget(transform);
         cam.ResetView();
         cam.regularUpdate = true;
-        cam.ChangeToWagonCamera();
+        cam.ChangeToWagonView();
        // sensor = new GameObject("WagonSensor").transform;
         try
         {
@@ -118,9 +120,12 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
         if (curTrackPos >= 1 && nextTrack != null)
         {
             previousTrack = track;
+            if(nextTrack != track)
+                trackIndex++;
             track = nextTrack;
-            nextTrack = null;
+            //nextTrack = null;
             curTrackPos = curTrackPos % 1;
+
             //if(Mathf.Abs(finalAngle) > 15)
             //{
             //    sparks[0].Emit(70);
@@ -307,4 +312,32 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
     }
 
 
+    //void OnGUI()
+    //{
+    //    if (track != null)
+    //        Draw.TextColor(10, 200, 255, 0, 0, 1, "NextTrackIndex: " + nextTrack.index);
+
+    //        Draw.TextColor(10, 250, 255, 0, 0, 1, "WagonIndex: " + trackIndex);
+
+    //        Draw.TextColor(10, 300, 255, 0, 0, 1, "ManagerIndex: " + TrackManager.Instance.index);
+    //}
+
+    void OnDrawGizmos()
+    {
+        if(nextTrack!=null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawCube(nextTrack.transform.position, new Vector3(20, 20, 20));
+        }
+        if (track != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawCube(track.transform.position, new Vector3(20, 20, 20));
+        }
+        if (previousTrack != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawCube(previousTrack.transform.position, new Vector3(20, 20, 20));
+        }
+    }
 }

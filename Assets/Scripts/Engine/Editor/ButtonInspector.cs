@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Engine.GUI
+namespace Engine.UI
 {
     [CustomEditor(typeof(Button))]
     public class ButtonInspector : Editor

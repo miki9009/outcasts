@@ -297,12 +297,12 @@ namespace Engine
             }
         }
 
-        public static Vector3 GetMouse(Camera cam)
+        public static Vector3 GetMouse(Camera cam, int layer, QueryTriggerInteraction trigerInteraction)
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit groundHit;
 
-            if (Physics.Raycast(ray, out groundHit, Mathf.Infinity, 1, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(ray, out groundHit, Mathf.Infinity, layer, trigerInteraction))
             {
                 return groundHit.point;
             }

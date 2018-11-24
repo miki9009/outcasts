@@ -49,7 +49,8 @@ public class Benchmark : MonoBehaviour
         data.runBenchmark = false;
         DataManager.SaveData();
         yield return new WaitForEndOfFrame();
-        LevelManager.Instance.GoToScene(nextLevel);
+        LevelManager.GoToSingleScene(nextLevel);
+        LevelManager.LoadMenu3D();
         yield return null;
     }
 

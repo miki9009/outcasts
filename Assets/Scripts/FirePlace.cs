@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using Engine;
-using Engine.GUI;
+using Engine.UI;
 
 public class FirePlace : LevelElement
 {

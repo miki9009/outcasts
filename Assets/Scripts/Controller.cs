@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 using Engine;
-using Engine.GUI;
+using Engine.UI;
 using Engine.Config;
 
 [DefaultExecutionOrder(-100)]

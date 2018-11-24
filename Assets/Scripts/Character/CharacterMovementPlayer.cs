@@ -1,5 +1,5 @@
 ﻿using Engine;
-using Engine.GUI;
+using Engine.UI;
 using UnityEngine;
 
 public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
@@ -56,6 +56,7 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
     protected override void Initialize()
     {
         Controller.Instance.gameCamera.regularUpdate = false;
+        Controller.Instance.gameCamera.ChangeToRegularCharacterView();
         try
         {
             btnMovement = GameGUI.GetButtonByName("ButtonMovement");

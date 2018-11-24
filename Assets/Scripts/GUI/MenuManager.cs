@@ -1,4 +1,4 @@
-﻿using Engine.GUI;
+﻿using Engine.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,19 +15,5 @@ public class MenuManager : MonoBehaviour
         GameManager.GameReady += () => guiWindow.FadeIn();
     }
 
-    //public void ActivateCamera()
-    //{
-    //    if (cam != null)
-    //    {
-    //        cam.SetActive(true);
-    //    }
-    //}
-
-    //public void DeactivateCamera()
-    //{
-    //    if (cam != null)
-    //    {
-    //        cam.SetActive(false);
-    //    }
-    //}
+    
 }

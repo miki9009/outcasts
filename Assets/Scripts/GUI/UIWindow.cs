@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Engine.Threads;
 
-namespace Engine.GUI
+namespace Engine.UI
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class UIWindow : MonoBehaviour
@@ -65,7 +65,19 @@ namespace Engine.GUI
             return window;
         }
 
+        public static T GetWindow<T>() where T : UIWindow
+        {
+            for (int i = 0; i < windows.Count; i++)
+            {
+                if (windows[i].GetType() == typeof(T))
+                    return (T)windows[i];
+            }
+                Debug.LogError("Window of type: " + typeof(T) + " not found.");
+            return null;
+        }
+
         public const string END_SCREEN = "EndGameScreen";
+
 
 
         RectTransform rect;
@@ -76,6 +88,12 @@ namespace Engine.GUI
         private void Awake()
         {
             windows.Add(this);
+            Initialize();
+        }
+
+        private void OnEnable()
+        {
+            rect = GetComponent<RectTransform>();
         }
 
         private void OnDestroy()
@@ -83,10 +101,6 @@ namespace Engine.GUI
             windows.Remove(this);
         }
 
-        private void OnEnable()
-        {
-            rect = GetComponent<RectTransform>();
-        }
 
         private void OnDisable()
         {
@@ -144,7 +158,18 @@ namespace Engine.GUI
         public void Show()
         {
             gameObject.SetActive(true);
+            OnBeforeShow();
             show = StartCoroutine(ShowE());
+        }
+
+        public virtual void OnBeforeShow()
+        {
+
+        }
+
+        public virtual void Initialize()
+        {
+
         }
 
         public void Hide()
@@ -227,10 +252,7 @@ namespace Engine.GUI
             }
             canvasGroup.alpha = 1;
             rect.anchoredPosition = desiredPos;
-            if (Shown != null)
-            {
-                Show();
-            }
+            Shown?.Invoke();
             show = null;
             yield return null;
         }
@@ -349,6 +371,8 @@ namespace Engine.GUI
         {
             SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
         }
+
+
 
     }
 }
