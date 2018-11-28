@@ -28,10 +28,6 @@ public class MovingPlatform : LevelElement
     {
         platformers = new Dictionary<int, Transform>();
         curve = GetComponentInChildren<BezierCurve>();
-        calculatedSpeed = speed * 0.0016f;
-        prevPos = platform.position;
-        calculatedRotationSpeed = rotationSpeed * 0.016f;
-        lastPos = platform.position;
         triggerBroadcast.TriggerEntered += BroadCastTriggerEnter;
         triggerBroadcast.TriggerExit += BroadCastTriggerExit;
     }
@@ -98,6 +94,8 @@ public class MovingPlatform : LevelElement
             data["Handle1"] = handle1Pos;
             data["Handle2"] = handle2Pos;
             data["PlatformPos"] = pos;
+            data["Rotate"] = rotate;
+            data["Speed"] = speed;
         }
     }
 
@@ -116,6 +114,10 @@ public class MovingPlatform : LevelElement
                 handle2Pos = (Float3[])data["Handle2"];
             if (data.ContainsKey("PlatformPos"))
                 pos = (float)data["PlatformPos"];
+            if (data.ContainsKey("Rotate"))
+                rotate = (bool)data["Rotate"];
+            if (data.ContainsKey("Speed"))
+                speed = (float)data["Speed"];
             for (int i = 0; i < pointsPos.Length; i++)
             {
                 points[i].transform.localPosition = pointsPos[i];
@@ -125,6 +127,10 @@ public class MovingPlatform : LevelElement
                 handle.handle2 = handle2Pos[i];
             }
         }
+        calculatedSpeed = speed * 0.0016f;
+        prevPos = platform.position;
+        calculatedRotationSpeed = rotationSpeed * 0.016f;
+        lastPos = platform.position;
     }
 
 }

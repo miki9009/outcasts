@@ -6,6 +6,11 @@ public class Bridge : MonoBehaviour
 
     public Transform[] anchors;
 
+    private void Awake()
+    {
+        lineRenderer.enabled = true;
+    }
+
 
     private void Update()
     {

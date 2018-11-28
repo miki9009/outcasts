@@ -5,6 +5,7 @@ using UnityStandardAssets.ImageEffects;
 using Engine;
 using Engine.UI;
 using Engine.Config;
+using System;
 
 [DefaultExecutionOrder(-100)]
 public class Controller : MonoBehaviour
@@ -68,6 +69,7 @@ public class Controller : MonoBehaviour
         ChromaticAbberration = gameCamera.GetComponent<VignetteAndChromaticAberration>();
         Vortex = gameCamera.GetComponent<Vortex>();
         GameManager.Restart += OnRestart;
+        GameManager.LevelClear += ResetMaterial;
         if (DataManager.Exists())
         {
             ButtonMovement = DataManager.Settings.buttonMovement;
@@ -75,9 +77,16 @@ public class Controller : MonoBehaviour
         }
     }
 
+    private void ResetMaterial()
+    {
+        material.color = Color.white;
+    }
+
     private void OnDestroy()
     {
         GameManager.Restart -= OnRestart;
+        GameManager.LevelClear -= ResetMaterial;
+        material.color = new Color32(248, 230, 195,255);
         ChangeToLowDetailMaterial();
     }
 
@@ -129,7 +138,7 @@ public class Controller : MonoBehaviour
 
     IEnumerator PlayerDeadCoroutine(Character character, float waitTime)
     {
-        if (IsRestarting)
+        if (IsRestarting || character.IsDead)
             yield break;
         IsRestarting = true;
         yield return new WaitForSeconds(waitTime);

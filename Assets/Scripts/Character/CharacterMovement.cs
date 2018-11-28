@@ -56,7 +56,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
 
     ParticleSystem smokeExplosion;
     ParticleSystem starsExplosion;
-    Vector3 curPos;
+    protected Vector3 curPos;
 
     //ANIMATIONS
     int throwAnimationHash;
@@ -116,6 +116,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
 
     public void Die()
     {
+        if (character.IsDead) return;
         character.IsDead = true;
         anim.Play("Die");
         DieNonAnimation();
@@ -123,6 +124,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
 
     public void DieNonAnimation()
     {
+        if (character.IsDead) return;
         enabled = false;
         StopAllCoroutines();
         if(IsLocalPlayer)
@@ -243,7 +245,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
 #endif
     }
 
-    void Jump()
+    protected void Jump()
     {
         if (jumpInput > 0 && onGround && timeLastJump < 0.1f)
         {
@@ -336,7 +338,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
         };
     }
 
-    void AttackCollision()
+    protected void AttackCollision()
     {
         Ray ray = new Ray(curPos, Vector3.down);
         RaycastHit[] hits = Physics.SphereCastAll(curPos, 2, Vector3.down, 10, collisionLayer.value,QueryTriggerInteraction.Ignore);

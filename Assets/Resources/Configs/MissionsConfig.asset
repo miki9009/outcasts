@@ -68,3 +68,7 @@ MonoBehaviour:
     passed: 0
     unlocked: 1
     unlocks: 
+  - level: FirstLevel:0
+    passed: 0
+    unlocked: 1
+    unlocks: 

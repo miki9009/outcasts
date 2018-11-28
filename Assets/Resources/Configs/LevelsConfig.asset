@@ -35,3 +35,6 @@ MonoBehaviour:
     - 0
     - 1
     - Multiplayer
+  - sceneName: FirstLevel
+    levels:
+    - 0

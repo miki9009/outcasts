@@ -137,6 +137,13 @@ namespace Engine
         public static void Load(string levelName)
         {
             var elements = GameObject.FindObjectsOfType<LevelElement>();
+#if UNITY_EDITOR
+            var levelComponent = GameObject.FindObjectOfType<Level>();
+            if (levelComponent != null)
+                levelComponent.gameObject.name = sceneName + ":"+ levelName;
+            else
+                Debug.LogError("No Level Component found");
+#endif
             if (Application.isPlaying)
             {
                 for (int i = 0; i < elements.Length; i++)

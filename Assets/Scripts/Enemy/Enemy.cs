@@ -119,7 +119,9 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
             }
             else if(dis < attackDistance)
             {
-                transform.rotation = Quaternion.LookRotation(Vector.Direction(transform.position, target.position));
+                var dir = Vector.Direction(transform.position, target.position);
+                dir.y = 0;
+                transform.rotation = Quaternion.LookRotation(dir);
                 if (canAttack)
                 {
                     Attack();
@@ -146,7 +148,9 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
             if (path != null && Vector3.Distance(transform.position, path[pathIndex]) > 2)
             {
                 //transform.rotation = Math.RotateTowardsTopDown(transform, path[pathIndex], Time.deltaTime * 5);
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector.Direction(transform.position, path[pathIndex])), 0.25f);
+                var dir = Vector.Direction(transform.position, path[pathIndex]);
+                dir.y = 0;
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 0.25f);
                 float y = rb.velocity.y;
                 Vector3 velo = transform.forward * speed;
                 velo.y = y;

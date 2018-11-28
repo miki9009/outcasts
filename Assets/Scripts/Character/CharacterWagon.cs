@@ -76,34 +76,6 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
 
     }
 
-    protected override void FixedUpdate()
-    {
-
-        //if (track != null)
-        //{
-        //    transform.position = track.GetPosition(curTrackPos);
-        //    transform.rotation = track.GetRotation(curTrackPos);
-        //}
-        //else
-        //{
-        //    Debug.Log("track was null");
-        //}
-
-    }
-
-    //void LateUpdate()
-    //{
-    //    if (track != null)
-    //    {
-    //        transform.position = track.GetPosition(curTrackPos);
-    //        transform.rotation = track.GetRotation(curTrackPos);
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("track was null");
-    //    }
-    //}
-
     public float eulerAngle = 0;
     public float wagonAngleZ = 0;
     public Vector3 endPointForward;
@@ -111,9 +83,6 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
     Vector3 prevPos;
     protected override void Update()
     {
-
-        //model.transform.localEulerAngles = Vector3.Lerp(model.transform.localEulerAngles, new Vector3(0, 180, Random.Range(-1f, 1f)), Time.deltaTime);
-
         wheels[0].Rotate(0, 0, -8 * wagonSpeed);
         wheels[1].Rotate(0, 0, -8 * wagonSpeed);
         curTrackPos += Time.deltaTime * wagonSpeed;
@@ -123,21 +92,11 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
             if(nextTrack != track)
                 trackIndex++;
             track = nextTrack;
-            //nextTrack = null;
             curTrackPos = curTrackPos % 1;
-
-            //if(Mathf.Abs(finalAngle) > 15)
-            //{
-            //    sparks[0].Emit(70);
-            //    sparks[1].Emit(70);
-            //}
         }
         if (track != null)
         {
-            Vector3 pos = track.GetPosition(curTrackPos);
-            //sensor.position = pos;
-            //var rot = track.GetRotation(curTrackPos);
-            
+            Vector3 pos = track.GetPosition(curTrackPos);         
             eulerAngle = Vector3.SignedAngle(transform.forward, endPointForward, Vector3.up);
             transform.rotation = Quaternion.LookRotation(Vector.Direction(prevPos, pos));
             prevPos = transform.position;
@@ -285,6 +244,11 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
 
     }
 
+    protected override void FixedUpdate()
+    {
+        
+    }
+
     void Restart()
     {
         DieNonAnimation();
@@ -310,17 +274,6 @@ public class CharacterWagon : CharacterMovementPlayer, ILocalPlayer
             return true;
         return false;
     }
-
-
-    //void OnGUI()
-    //{
-    //    if (track != null)
-    //        Draw.TextColor(10, 200, 255, 0, 0, 1, "NextTrackIndex: " + nextTrack.index);
-
-    //        Draw.TextColor(10, 250, 255, 0, 0, 1, "WagonIndex: " + trackIndex);
-
-    //        Draw.TextColor(10, 300, 255, 0, 0, 1, "ManagerIndex: " + TrackManager.Instance.index);
-    //}
 
     void OnDrawGizmos()
     {

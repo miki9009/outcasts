@@ -110,47 +110,47 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
 
     protected override void Inputs()
     {
-        if (canMove)
-        {
-            if (buttonsInitialized)
-            {
-                if (verInput < 0)
-                {
-                    verInput = 1;
-                    direction2D = 1;
-                }
-                if (verInput > 0)
-                {
-                    verInput = 1;
-                    direction2D = -1;
-                }
-            }
+//        if (canMove)
+//        {
+//            if (buttonsInitialized)
+//            {
+//                if (verInput < 0)
+//                {
+//                    verInput = 1;
+//                    direction2D = 1;
+//                }
+//                if (verInput > 0)
+//                {
+//                    verInput = 1;
+//                    direction2D = -1;
+//                }
+//            }
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            //verInput = Input.GetAxisRaw("Vertical");
-            if (horInput == 0)
-                horInput = Input.GetAxisRaw("Horizontal");
+//#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+//            //verInput = Input.GetAxisRaw("Vertical");
+//            if (horInput == 0)
+//                horInput = Input.GetAxisRaw("Horizontal");
 
-            if (jumpInput == 0)
-            {
-                if (Input.GetKey(KeyCode.Space))
-                {
-                    jumpInput = 1;
-                }
-            }
+//            if (jumpInput == 0)
+//            {
+//                if (Input.GetKey(KeyCode.Space))
+//                {
+//                    jumpInput = 1;
+//                }
+//            }
 
-            if (Input.GetKeyDown(KeyCode.LeftControl))
-            {
-                //Debug.Log("Attack Invoked");
-                btnAttack.OnTapPressedInvoke();
-            }
-#endif
-        }
-        //anim.SetFloat("vSpeed", velocity.y);
-        if (horInput > 0)
-            direction2D = 1;
-        else if (horInput < 0)
-            direction2D = -1;
+//            if (Input.GetKeyDown(KeyCode.LeftControl))
+//            {
+//                //Debug.Log("Attack Invoked");
+//                btnAttack.OnTapPressedInvoke();
+//            }
+//#endif
+//        }
+//        //anim.SetFloat("vSpeed", velocity.y);
+//        if (horInput > 0)
+//            direction2D = 1;
+//        else if (horInput < 0)
+//            direction2D = -1;
     }
 
     //private void DeactivateButtons()
@@ -292,15 +292,9 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
     {
         var vec = Controller.Instance.gameCamera.transform.forward;
         vec.y = 0;
-        transform.eulerAngles = targetEuler;
-        //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(targetEuler), 0.2f);
+        Quaternion rot = Quaternion.Euler(targetEuler);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, 0.2f);
         sinus = Mathf.Lerp(sinus, angle < 90 && angle > -90 ? angle : angle > 0 ? 180 - angle : -180 - angle, Time.deltaTime * 10);
         model.transform.localEulerAngles = new Vector3(0, 0, Mathf.Clamp(-sinus / 3, -15, 15));
-    }
-
-    void OnGUI()
-    {
-        Draw.TextColor(10, 200, 255, 0, 0, 1, "Material: " + character.bodyMeshRenderer.material.name);
-        Draw.TextColor(10, 250, 255, 0, 0, 1, "Shader: " + character.bodyMeshRenderer.material.shader.name);
     }
 }
