@@ -110,47 +110,35 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
 
     protected override void Inputs()
     {
-//        if (canMove)
-//        {
-//            if (buttonsInitialized)
-//            {
-//                if (verInput < 0)
-//                {
-//                    verInput = 1;
-//                    direction2D = 1;
-//                }
-//                if (verInput > 0)
-//                {
-//                    verInput = 1;
-//                    direction2D = -1;
-//                }
-//            }
+        //        if (canMove)
+        //        {
+        //            if (buttonsInitialized)
+        //            {
+        //                if (verInput < 0)
+        //                {
+        //                    verInput = 1;
+        //                    direction2D = 1;
+        //                }
+        //                if (verInput > 0)
+        //                {
+        //                    verInput = 1;
+        //                    direction2D = -1;
+        //                }
+        //            }
 
-//#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-//            //verInput = Input.GetAxisRaw("Vertical");
-//            if (horInput == 0)
-//                horInput = Input.GetAxisRaw("Horizontal");
+        //#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        //            //verInput = Input.GetAxisRaw("Vertical");
+        //            if (horInput == 0)
+        //                horInput = Input.GetAxisRaw("Horizontal");
 
-//            if (jumpInput == 0)
-//            {
-//                if (Input.GetKey(KeyCode.Space))
-//                {
-//                    jumpInput = 1;
-//                }
-//            }
 
-//            if (Input.GetKeyDown(KeyCode.LeftControl))
-//            {
-//                //Debug.Log("Attack Invoked");
-//                btnAttack.OnTapPressedInvoke();
-//            }
-//#endif
-//        }
-//        //anim.SetFloat("vSpeed", velocity.y);
-//        if (horInput > 0)
-//            direction2D = 1;
-//        else if (horInput < 0)
-//            direction2D = -1;
+        //#endif
+        //        }
+        //        //anim.SetFloat("vSpeed", velocity.y);
+        //        if (horInput > 0)
+        //            direction2D = 1;
+        //        else if (horInput < 0)
+        //            direction2D = -1;
     }
 
     //private void DeactivateButtons()
@@ -158,7 +146,6 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
     //    GameGUI.GetButtonByName("ButtonLeft").gameObject.SetActive(false);
     //    GameGUI.GetButtonByName("ButtonRight").gameObject.SetActive(false);
     //}
-
 
     void GestureMovement()
     {
@@ -237,6 +224,27 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
             forwardPower = Mathf.Clamp(horDistance, 0, 100) / 100;
             targetEuler = new Vector3(0, Camera.eulerAngles.y + angle, 0);
         }
+
+#if UNITY_EDITOR
+        if (hor == 0 && ver == 0 && forwardPower == 0)
+        {
+            forwardPower = 0;
+        }
+
+        if (jumpInput == 0)
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                jumpInput = 1;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            //Debug.Log("Attack Invoked");
+            btnAttack.OnTapPressedInvoke();
+        }
+#endif
 
         if (!pressedHorizontalCurrent && horPressed)
         {

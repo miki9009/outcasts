@@ -29,6 +29,7 @@ public class GameCamera : MonoBehaviour
     public float minDistance = 5;
 
     public float UpFactorAtStart { get; private set; }
+
     public bool regularUpdate;
     Controller.GameType gameType;
     TriggerBroadcast triggerBroadcast;
@@ -109,7 +110,7 @@ public class GameCamera : MonoBehaviour
         pos = target.position + dir * minDistance;
         pos.y += y;
         transform.position = pos;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, Quaternion.LookRotation(Vector.Direction(mainCamera.transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
     }
 
     void WagonUpdate()
@@ -199,10 +200,11 @@ public class GameCamera : MonoBehaviour
             x = Random.Range(-force, force);
             y = Random.Range(-force, force);
             z = Random.Range(-force, force);
-            transform.position = Vector3.Lerp(transform.position, transform.position + new Vector3(x, y, z), amplitude);
+            mainCamera.transform.localPosition = Vector3.Lerp(mainCamera.transform.localPosition, mainCamera.transform.localPosition + new Vector3(x, y, z), amplitude);
             time -= Time.deltaTime;
             yield return null;
         }
+        mainCamera.transform.localPosition = Vector3.zero;
         shakeCor = null;
     }
 

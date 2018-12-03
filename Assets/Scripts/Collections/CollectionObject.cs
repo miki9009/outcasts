@@ -215,6 +215,7 @@ public enum CollectionType
     DestroyCrate = 12,
     KillEnemy = 13,
     WaypointVisited = 14,
-    FirePlaceReached = 15
+    FirePlaceReached = 15,
+    Growth = 16
 }
 

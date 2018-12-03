@@ -29,6 +29,8 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
     [NonSerialized]
     public Animator anim;
 
+    public Transform powerUpAnchor;
+
     public float airForce = 5;
 
     public bool Invincible { get; set; }
@@ -69,7 +71,8 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
     float vspeed;
 
     private BoxCollider jumpCollider;
-    private ParticleSystem smoke;
+    [NonSerialized]
+    public ParticleSystem smoke;
 
     protected Vector3 targetEuler;
     protected bool canMove = true;
@@ -116,10 +119,9 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
 
     public void Die()
     {
-        if (character.IsDead) return;
-        character.IsDead = true;
         anim.Play("Die");
-        DieNonAnimation();
+        enabled = false;
+        Invoke("DieNonAnimation", 3f);
     }
 
     public void DieNonAnimation()
@@ -204,7 +206,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
     {
         if (anim == null) return;
         velocity = velo;
-        hspeed = velocity.magnitude;
+        hspeed = (Mathf.Abs(velocity.x) + Mathf.Abs(velocity.z))/2;
         vspeed = velocity.y; //Mathf.Lerp(vspeed,velocity.y, 0.05f);
         anim.SetFloat("hSpeed", hspeed);
         anim.SetFloat("vSpeed", vspeed);
@@ -232,6 +234,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
             attack = false;
             AttackCollision();
         }
+
     }
 
 
@@ -245,12 +248,11 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
 #endif
     }
 
-    protected void Jump()
+    public void Jump()
     {
         if (jumpInput > 0 && onGround && timeLastJump < 0.1f)
         {
             timeLastJump = 1;
-            anim.Play("Jump");
             rb.AddForce(Vector3.up * stats.jumpForce, ForceMode.VelocityChange);
             jumpInput = 0; 
             onGround = false;

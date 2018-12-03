@@ -25,7 +25,8 @@ public class Saw : LevelElement
         var mov = col.GetComponent<CharacterMovement>();
         if(mov != null)
         {
-            mov.Die();
+            if(!mov.character.IsDead)
+                mov.Die();
         }
 
     }

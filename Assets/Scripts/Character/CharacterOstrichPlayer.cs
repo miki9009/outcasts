@@ -9,6 +9,7 @@ public class CharacterOstrichPlayer : CharacterMovementPlayer, ILocalPlayer
     {
         Controller.Instance.gameCamera.regularUpdate = false;
         Controller.Instance.gameCamera.ChangeToRegularCharacterView();
+        character.stats.runSpeed *= 1.5f;
         try
         {
             btnMovement = GameGUI.GetButtonByName("ButtonMovement");

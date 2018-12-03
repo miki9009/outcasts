@@ -69,7 +69,7 @@ public class Controller : MonoBehaviour
         ChromaticAbberration = gameCamera.GetComponent<VignetteAndChromaticAberration>();
         Vortex = gameCamera.GetComponent<Vortex>();
         GameManager.Restart += OnRestart;
-        GameManager.LevelClear += ResetMaterial;
+        LevelManager.BeforeSceneLoading += ResetMaterial;
         if (DataManager.Exists())
         {
             ButtonMovement = DataManager.Settings.buttonMovement;
@@ -85,7 +85,7 @@ public class Controller : MonoBehaviour
     private void OnDestroy()
     {
         GameManager.Restart -= OnRestart;
-        GameManager.LevelClear -= ResetMaterial;
+        LevelManager.BeforeSceneLoading -= ResetMaterial;
         material.color = new Color32(248, 230, 195,255);
         ChangeToLowDetailMaterial();
     }
