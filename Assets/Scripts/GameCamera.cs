@@ -7,6 +7,7 @@ using UnityStandardAssets.ImageEffects;
 
 public class GameCamera : MonoBehaviour
 {
+    public enum CameraType { Rotation, NonRotation}
     public Transform target;
     public Camera mainCamera;
     public float x;
@@ -55,7 +56,8 @@ public class GameCamera : MonoBehaviour
         triggerBroadcast = GetComponentInChildren<TriggerBroadcast>();
         triggerBroadcast.TriggerEntered += (x) => { collides = true; };
         triggerBroadcast.TriggerExit += (x) => collides = false;
-        Body = MainUpdate;
+        //Body = MainUpdate;
+        Body = NonRotationUpdate;
         GameManager.LevelClear += ResetCamera;
     }
 
@@ -93,6 +95,18 @@ public class GameCamera : MonoBehaviour
         Body = MainUpdate;
     }
 
+    public void SetCamera(CameraType type)
+    {
+        if(type == CameraType.NonRotation)
+        {
+            Body = NonRotationUpdate;
+        }
+        else if(type == CameraType.Rotation)
+        {
+            Body = MainUpdate;
+        }
+    }
+
 
     private void FixedUpdate()
     {
@@ -113,6 +127,12 @@ public class GameCamera : MonoBehaviour
         transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, Quaternion.LookRotation(Vector.Direction(mainCamera.transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
     }
 
+    void NonRotationUpdate()
+    {
+        transform.position = Vector3.Lerp(transform.position, target.position - Vector3.right * x + Vector3.up * y + Vector3.forward * z, Time.deltaTime * speed);
+        transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, Quaternion.LookRotation(Vector.Direction(mainCamera.transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
+    }
+
     void WagonUpdate()
     {
         if (target == null) return;
@@ -122,29 +142,8 @@ public class GameCamera : MonoBehaviour
         pos = target.position + dir * minDistance;
         pos.y += y;
         transform.position = target.position - target.forward * minDistance + Vector3.up * y;
+
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
-    }
-
-    float freeTime; 
-    void CheckFreePosition()
-    {
-        if (collides && Vector3.Distance(mainCamera.transform.position, target.position) > 5)
-        {
-            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, target.position - target.forward * 3 + target.up * 2, Time.deltaTime);
-            mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, target.rotation, Time.deltaTime);
-            freeTime = 0.5f;
-        }
-        else
-        {
-            if (freeTime <= 0)
-            {
-                mainCamera.transform.localPosition = Vector3.Lerp(mainCamera.transform.localPosition, Vector3.zero, Time.deltaTime);
-                mainCamera.transform.localRotation = Quaternion.Lerp(mainCamera.transform.localRotation, Quaternion.identity, Time.deltaTime);
-            }
-            else
-                freeTime -= Time.deltaTime;
-        }
-
     }
 
     public void Stay(bool move)

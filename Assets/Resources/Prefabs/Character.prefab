@@ -774,7 +774,7 @@ MonoBehaviour:
     jumpForce: 15
     turningSpeed: 5
     damage: 10
-    attackForce: 25
+    attackForce: 5
     armorType: Normal
   anim: {fileID: 0}
   rb: {fileID: 54795299618832232}

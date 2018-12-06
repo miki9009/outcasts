@@ -206,7 +206,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
     {
         if (anim == null) return;
         velocity = velo;
-        hspeed = (Mathf.Abs(velocity.x) + Mathf.Abs(velocity.z))/2;
+        hspeed = new Vector2(velo.x, velo.z).magnitude;
         vspeed = velocity.y; //Mathf.Lerp(vspeed,velocity.y, 0.05f);
         anim.SetFloat("hSpeed", hspeed);
         anim.SetFloat("vSpeed", vspeed);
@@ -349,12 +349,16 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
             //Debug.Log("Hit: " + hits[i].transform.name);
             //Debug.Log(hits[i].collider.GetType());
             scripts.Add(hits[i].collider.GetComponentInParent<IDestructible>());
+
         }
         foreach (var script in scripts)
         {
             if (script != null)
             {
                 script.Hit(this);
+                //script.Rigidbody.velocity = Vector3.zero;
+               // script.Rigidbody.AddForce((Vector.Direction(transform.position, script.Transform.position) + Vector3.up * 2) * character.stats.attackForce, ForceMode.VelocityChange);
+                StaticParticles.PlayHitParticles(script.Transform.position + Vector3.up);
                 smokeExplosion.transform.position = script.Transform.position;
                 smokeExplosion.Play();
                 //attack = false;

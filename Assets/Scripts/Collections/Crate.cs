@@ -15,9 +15,19 @@ public class Crate : MonoBehaviour, IDestructible
     Renderer rend;
     BoxCollider boxCol;
     SphereCollider sCol;
+    Rigidbody rb;
+
+    public Rigidbody Rigidbody
+    {
+        get
+        {
+            return rb;
+        }
+    }
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         crateExplosion = StaticParticles.Instance.crateExploded;
         rend = GetComponent<Renderer>();
         boxCol = GetComponent<BoxCollider>();

@@ -30,6 +30,13 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         get;set;
     }
 
+    public Rigidbody Rigidbody
+    {
+        get
+        {
+            return rb;
+        }
+    }
 
     public GameObject GameObject
     {
@@ -50,8 +57,8 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     Vector3 startPosition;
     public bool dead = false;
     protected bool canAttack = false;
-    int pathIndex = 0;
-    Vector3[] path;
+    protected int pathIndex = 0;
+    protected Vector3[] path;
 
     void Awake()
     {
@@ -121,7 +128,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
             {
                 var dir = Vector.Direction(transform.position, target.position);
                 dir.y = 0;
-                transform.rotation = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 0.1f);
                 if (canAttack)
                 {
                     Attack();
@@ -150,7 +157,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
                 //transform.rotation = Math.RotateTowardsTopDown(transform, path[pathIndex], Time.deltaTime * 5);
                 var dir = Vector.Direction(transform.position, path[pathIndex]);
                 dir.y = 0;
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 0.25f);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 0.1f);
                 float y = rb.velocity.y;
                 Vector3 velo = transform.forward * speed;
                 velo.y = y;
@@ -179,7 +186,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
     }
 
 
-    protected void Attack()
+    protected virtual void Attack()
     {
         Debug.Log("Attack");
         canAttack = false;
@@ -188,7 +195,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
         Invoke("CanAttack", attackTime);
     }
 
-    void CanAttack()
+    protected void CanAttack()
     {
         canAttack = true;
         if(!dead)
@@ -246,6 +253,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
 
     public void OnHit()
     {
+        starsExplosion.Play();
         Hit(null);
     }
 

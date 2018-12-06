@@ -6,4 +6,5 @@ public interface IDestructible
 {
     void Hit(CharacterMovement character);
     Transform Transform { get;}
+    Rigidbody Rigidbody { get; }
 }

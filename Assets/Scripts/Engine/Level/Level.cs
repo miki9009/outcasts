@@ -207,10 +207,14 @@ namespace Engine
             {
                 levelElement.BuildHierarchy();
             }
-            foreach (var levelElement in loadedElements.Values)
+            if(Application.isPlaying)
             {
-                levelElement.ElementStart();
+                foreach (var levelElement in loadedElements.Values)
+                {
+                    levelElement.ElementStart();
+                }
             }
+
             Console.WriteLine("LevelLoaded", Console.LogColor.Green);
             LevelLoaded?.Invoke();
         }

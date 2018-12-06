@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -17,7 +17,7 @@ MonoBehaviour:
     jumpForce: 15
     turningSpeed: 5
     damage: 10
-    attackForce: 25
+    attackForce: 5
     armorType: SpanishArmor
   characters:
   - id: Normal

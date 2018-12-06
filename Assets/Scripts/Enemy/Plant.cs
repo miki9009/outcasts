@@ -20,7 +20,7 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
     ParticleSystem starsExplosion;
     public float minAttackTime = 1;
     public float maxAttackTime = 3;
-
+    Rigidbody rb;
     public AnimatorBehaviour AnimatorBehaviour
     {
         get;set;
@@ -29,6 +29,14 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
     public Transform Transform
     {
         get { return transform; }
+    }
+
+    public Rigidbody Rigidbody
+    {
+        get
+        {
+            return rb;
+        }
     }
 
     public void StateAnimatorInitialized()
@@ -56,6 +64,7 @@ public class Plant : MonoBehaviour, Engine.IStateAnimator, IDestructible, IThrow
 
     private void Awake()
     {
+        rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         enemyDeath = GetComponent<EnemyDeath>();
         collisionBroadcast = GetComponentInChildren<CollisionBroadcast>();
