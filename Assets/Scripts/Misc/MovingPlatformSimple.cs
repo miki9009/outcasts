@@ -126,13 +126,15 @@ public class MovingPlatformSimple : LevelElement
     }
 
 #if UNITY_EDITOR
+    public Vector3 gizmoPlatformSize;
     private void OnDrawGizmos()
     {
 
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(startAnchor.position, 1);
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(endAnchor.position, 1);
+        //Gizmos.DrawSphere(endAnchor.position, 1);
+        Gizmos.DrawCube(endAnchor.position, gizmoPlatformSize);
     }
 #endif
 }

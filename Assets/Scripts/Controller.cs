@@ -138,7 +138,7 @@ public class Controller : MonoBehaviour
 
     IEnumerator PlayerDeadCoroutine(Character character, float waitTime)
     {
-        if (IsRestarting || character.IsDead)
+        if (IsRestarting)
             yield break;
         IsRestarting = true;
         yield return new WaitForSeconds(waitTime);

@@ -48,16 +48,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1661140059757168}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d48906e45ed1c69478742383a61c0304, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f43643f54248d849aaf30ef66aa1b74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementID: -1
+  elementID: 7915436
   arrowTarget: 0
   activeAndEnabled: 1
-  x: 8
-  y: 9
-  z: 0
-  forwardFactor: 2
+  x: 0
+  y: 10
+  z: 8
+  forwardFactor: 1.5
   rotationSpeed: 5
-  upFactor: 1
+  upFactor: 3
   speed: 10

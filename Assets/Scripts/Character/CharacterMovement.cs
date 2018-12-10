@@ -11,6 +11,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
     public ParticleSystem smoke2;
     public Transform model;
     public LayerMask enemyLayer;
+    public SphereCollider activationCollider;
     public ParticleSystem attackParticles;
     [NonSerialized]
     public bool movementEnabled = true;
@@ -59,6 +60,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
     ParticleSystem smokeExplosion;
     ParticleSystem starsExplosion;
     protected Vector3 curPos;
+
 
     //ANIMATIONS
     int throwAnimationHash;
@@ -119,14 +121,15 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
 
     public void Die()
     {
+        character.IsDead = true;
+        activationCollider.enabled = false;
         anim.Play("Die");
         enabled = false;
-        Invoke("DieNonAnimation", 3f);
+        Invoke("DieNonAnimation", 2f);
     }
 
     public void DieNonAnimation()
     {
-        if (character.IsDead) return;
         enabled = false;
         StopAllCoroutines();
         if(IsLocalPlayer)

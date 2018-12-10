@@ -10,9 +10,7 @@ public class GameCamera : MonoBehaviour
     public enum CameraType { Rotation, NonRotation}
     public Transform target;
     public Camera mainCamera;
-    public float x;
-    public float y;
-    public float z;
+
     public float forwardFactor = 5;
     public float rotationSpeed;
     public float upFactor;
@@ -30,7 +28,7 @@ public class GameCamera : MonoBehaviour
     public float minDistance = 5;
 
     public float UpFactorAtStart { get; private set; }
-
+    public Vector3 localPosition;
     public bool regularUpdate;
     Controller.GameType gameType;
     TriggerBroadcast triggerBroadcast;
@@ -52,7 +50,7 @@ public class GameCamera : MonoBehaviour
             Debug.Log("GameCamera target is null");
             enabled = false;
         }
-        magnitude = new Vector3(x, y, z).magnitude;
+        magnitude = localPosition.magnitude;
         triggerBroadcast = GetComponentInChildren<TriggerBroadcast>();
         triggerBroadcast.TriggerEntered += (x) => { collides = true; };
         triggerBroadcast.TriggerExit += (x) => collides = false;
@@ -86,7 +84,7 @@ public class GameCamera : MonoBehaviour
     bool isResetting;
     public void ResetView()
     {
-        transform.position = target.position - target.forward * minDistance + Vector3.up * y;
+        transform.position = target.position - target.forward * minDistance + Vector3.up * localPosition.y;
         transform.rotation = Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor));
     }
 
@@ -122,14 +120,14 @@ public class GameCamera : MonoBehaviour
         pos.y = target.position.y;
         Vector3 dir = Vector.Direction(target.position, pos);
         pos = target.position + dir * minDistance;
-        pos.y += y;
+        pos.y += localPosition.y;
         transform.position = pos;
         transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, Quaternion.LookRotation(Vector.Direction(mainCamera.transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
     }
 
     void NonRotationUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, target.position - Vector3.right * x + Vector3.up * y + Vector3.forward * z, Time.deltaTime * speed);
+        transform.position = Vector3.Lerp(transform.position, target.position - Vector3.right * localPosition.x + Vector3.up * localPosition.y + Vector3.forward * localPosition.z, Time.deltaTime * speed);
         transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, Quaternion.LookRotation(Vector.Direction(mainCamera.transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
     }
 
@@ -140,8 +138,8 @@ public class GameCamera : MonoBehaviour
         pos.y = target.position.y;
         Vector3 dir = Vector.Direction(target.position, pos);
         pos = target.position + dir * minDistance;
-        pos.y += y;
-        transform.position = target.position - target.forward * minDistance + Vector3.up * y;
+        pos.y += localPosition.y;
+        transform.position = target.position - target.forward * minDistance + Vector3.up * localPosition.y;
 
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector.Direction(transform.position, target.position + Vector3.up * upFactor)), rotationSpeed * Time.deltaTime);
     }

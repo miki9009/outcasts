@@ -83,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1701909141508066}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 56.8559, y: 2.984173, z: -81.58154}
+  m_LocalPosition: {x: 73.68, y: 7.5725517, z: -57.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4507095021456338}
@@ -112,7 +112,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1925537624482122}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 12.75, z: 0}
+  m_LocalPosition: {x: 0, y: 0.33, z: 0}
   m_LocalScale: {x: 0.9999999, y: 1, z: 0.9999999}
   m_Children: []
   m_Father: {fileID: 4068472015493672}
@@ -207,12 +207,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88f04d61b4bae1b45b2ad35aabc9ec81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementID: 5370033
+  elementID: 2660235
   arrowTarget: 0
   activeAndEnabled: 1
   startAnchor: {fileID: 4507095021456338}
   endAnchor: {fileID: 4127635542316086}
   platform: {fileID: 4089280146577488}
-  speed: 3
-  waitingTime: 0.1
+  speed: 1
+  waitingTime: 1
   triggerBroadcast: {fileID: 114007854822423946}
+  gizmoPlatformSize: {x: 5.26, y: 0.42, z: 4.05}

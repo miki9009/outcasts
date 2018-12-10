@@ -21,9 +21,9 @@ public class GameCameraSettings : LevelElement
     {
         var cam = Controller.Instance.gameCamera.GetComponent<GameCamera>();
         cam.SetCamera(GameCamera.CameraType.NonRotation);
-        cam.x = x;
-        cam.y = y;
-        cam.z = z;
+        cam.localPosition.x = x;
+        cam.localPosition.y = y;
+        cam.localPosition.z = z;
         cam.forwardFactor = forwardFactor;
         cam.rotationSpeed = rotationSpeed;
         cam.upFactor = upFactor;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -18886,26 +18886,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1208659930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bf3308cbbd8c6646a15de811d044b15, type: 3}
+  m_Script: {fileID: 11500000, guid: c53bbf84b6b3a8849b2e22decb25885b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   mainCamera: {fileID: 2081299081}
-  x: 0
-  y: 7
-  z: -7
-  forwardFactor: 2
-  rotationSpeed: 5
-  upFactor: 2
-  speed: 10
+  forwardFactor: 5
+  rotationSpeed: 10
+  upFactor: 0
+  speed: 5
   rotateAround: 0
   camAnchors: []
   maxDistance: 20
-  vignatteAberration: {fileID: 2081299069}
+  vignatteAberration: {fileID: 2081299082}
   motionBlure: {fileID: 2081299068}
   camMotionBlur: {fileID: 2081299067}
   move: 1
-  minDistance: 6
+  minDistance: 20
+  localPosition: {x: 8, y: 10, z: 0}
   regularUpdate: 0
   collides: 0
   lastCollideObject: {fileID: 0}

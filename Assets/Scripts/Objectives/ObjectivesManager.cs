@@ -57,6 +57,11 @@ namespace Objectives
         {
             activeObjectives = new List<Objective>();
 
+            if(sequenceIndex >= sequence.sequences.Count)
+            {
+                Debug.LogError("Sequence index grater than sequences count. Add sequence this is an error");
+                return;
+            }
             for (int i = 0; i < sequence.sequences[sequenceIndex].objectives.Count; i++)
                 activeObjectives.Add(sequence.sequences[sequenceIndex].objectives[i]);
 
