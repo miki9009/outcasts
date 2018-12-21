@@ -4,8 +4,9 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: WaterBasicNighttime
   m_Shader: {fileID: 4800000, guid: 9dccc8e8f0da4494991c26ef59019551, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
@@ -56,7 +57,7 @@ Material:
     - _BumpStrength: 0.1
     - _Highlight: 33.207546
     - _Shininess: 1
-    - _WaveScale: 0.07028302
+    - _WaveScale: 0.0456
     - _bScale: 0.062924534
     - _bTwirl: 0.05
     - _distort: 0.1

@@ -4,12 +4,12 @@
 		_Glossiness("Smoothness", Range(0,1)) = 0.5
 	}
 		SubShader{
-		Tags{ "RenderType" = "Opaque" }
+		Tags{ "RenderType" = "Opaque"  "Queue" = "Geometry+1" }
 		LOD 200
 
 		CGPROGRAM
 
-#pragma surface surf Standard fullforwardshadows
+#pragma surface surf Standard addshadow
 
 		struct Input {
 		float3 color : COLOR;
@@ -25,5 +25,4 @@
 	}
 	ENDCG
 	}
-		FallBack "VertexLit"
 }

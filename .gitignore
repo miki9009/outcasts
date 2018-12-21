@@ -40,3 +40,6 @@ Library/
 .vs/outcasts/v15/Browse.VC.db
 .vs/outcasts/v15/Browse.VC.opendb
 .vs/slnx.sqlite
+*.terrainlayer
+*.lock
+*.properties
