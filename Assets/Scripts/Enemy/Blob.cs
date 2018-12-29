@@ -33,7 +33,8 @@ public class Blob : Enemy
             waitTimeCur -= Time.deltaTime;
             var dir = Vector.Direction(transform.position, path[pathIndex]);
             dir.y = 0;
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 0.1f);
+            if(dir != Vector3.zero)
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 0.1f);
             return;
         }
         if (isAttacking)
@@ -126,7 +127,7 @@ public class Blob : Enemy
                         Vector3 destination;
                         if (pathMovement.RandomPoint(startPos, patrolDistance, out destination))
                         {
-                            Debug.Log("Next path");
+                            //Debug.Log("Next path");
                             rb.velocity = Vector3.zero;
                             path = pathMovement.GetPath(destination);
                             waitTimeCur = waitTime;

@@ -59,8 +59,10 @@ public class CameraTrigger : LevelElement
         {
             if(data.ContainsKey("LocalPosition"))
                 localPosition = (Float3)data["LocalPosition"];
+            camDummy.localPosition = localPosition;
             if (data.ContainsKey("Speed"))
                 speed = (float)data["Speed"];
+
             if (data.ContainsKey("BoxSize"))
                 boxCollider.size = (Float3)data["BoxSize"];
         }

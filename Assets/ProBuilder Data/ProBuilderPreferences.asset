@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Bool_keys:
   - pbGenerateUV2PerObject
+  - pbIconGUI
   m_Int_keys:
   - pbDefaultEditLevel
   - pbDefaultSelectionMode
@@ -26,12 +27,12 @@ MonoBehaviour:
   - pbCurrentMaterialPalette
   m_Color_keys: []
   m_Material_keys: []
-  m_Bool_values: 00
+  m_Bool_values: 0001
   m_Int_values: 01000000020000000100000000000000
   m_Float_values:
   - 0
   - 0
   m_String_values:
-  - Assets/ProBuilder Data//Default Material Palette.asset
+  - Assets/ProBuilder Data/Default Material Palette.asset
   m_Color_values: []
   m_Material_values: []

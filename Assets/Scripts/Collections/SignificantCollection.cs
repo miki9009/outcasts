@@ -35,8 +35,6 @@ public class SignificantCollection : LevelElement
 
     }
 
-
-
     public bool isSignificant;
     public override void OnSave()
     {        

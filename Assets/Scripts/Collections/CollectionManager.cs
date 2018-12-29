@@ -69,7 +69,7 @@ public class CollectionManager : MonoBehaviour
             {
                 collections[playerID].Collection[type] += val;
                 OnCollected(playerID, type, val);
-                Debug.Log("Collected: " + type);
+                //Debug.Log("Collected: " + type);
             }
             else
             {
@@ -113,7 +113,7 @@ public class CollectionManager : MonoBehaviour
 
     public void EmmitParticles(CollectionType type, Vector3 position, int ammount)
     {
-        Debug.Log("Emmit particles");
+        //Debug.Log("Emmit particles");
         int index = (int)type;
         if (particles.Length > index && particles[index] != null)
         {
@@ -127,7 +127,7 @@ public class CollectionManager : MonoBehaviour
                 emitParams.position = new Vector3(Random.Range(-1,1), Random.Range(-1, 1), Random.Range(-1, 1));
 
                 parts.Emit(emitParams, 1);
-                Debug.Log("Did emmit");
+                //Debug.Log("Did emmit");
                 //parts.Emit(10);
             }
 

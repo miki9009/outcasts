@@ -157,7 +157,8 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
                 //transform.rotation = Math.RotateTowardsTopDown(transform, path[pathIndex], Time.deltaTime * 5);
                 var dir = Vector.Direction(transform.position, path[pathIndex]);
                 dir.y = 0;
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 0.1f);
+                if(dir != Vector3.zero)
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 0.1f);
                 float y = rb.velocity.y;
                 Vector3 velo = transform.forward * speed;
                 velo.y = y;
@@ -174,7 +175,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
                     Vector3 destination;
                     if (pathMovement.RandomPoint(startPos, patrolDistance, out destination))
                     {
-                        Debug.Log("Next path");
+                        //Debug.Log("Next path");
                         rb.velocity = Vector3.zero;
                         path = pathMovement.GetPath(destination);
                         waitTimeCur = waitTime;
@@ -188,7 +189,7 @@ public class Enemy : MonoBehaviour, IDestructible, IThrowableAffected, IStateAni
 
     protected virtual void Attack()
     {
-        Debug.Log("Attack");
+        //Debug.Log("Attack");
         canAttack = false;
         if (target == null || dead) return;
         anim.Play("Attack");

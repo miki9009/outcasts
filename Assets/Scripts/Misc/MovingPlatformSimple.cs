@@ -22,8 +22,12 @@ public class MovingPlatformSimple : LevelElement
 
     private void Awake()
     {
-        triggerBroadcast.TriggerEntered += BroadCastTriggerEnter;
-        triggerBroadcast.TriggerExit += BroadCastTriggerExit;
+        if(triggerBroadcast)
+        {
+            triggerBroadcast.TriggerEntered += BroadCastTriggerEnter;
+            triggerBroadcast.TriggerExit += BroadCastTriggerExit;
+        }
+
         platformers = new Dictionary<int, Transform>();
     }
 

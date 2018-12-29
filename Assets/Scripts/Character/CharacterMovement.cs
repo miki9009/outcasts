@@ -285,7 +285,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
 
     public void Attack()
     {
-        Debug.Log("Attack");
+        //Debug.Log("Attack");
         if (character.IsDead || attack) return;
 
             if (Thrown != null)
