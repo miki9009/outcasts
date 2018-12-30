@@ -96,7 +96,7 @@ namespace Engine
 
         public void BuildHierarchy()
         {
-            if (hierarchy == null) return;
+            if (hierarchy == null || hierarchy.Length == 0) return;
             for (int i = 0; i < hierarchy.Length; i++)
             {
                 if (Level.loadedElements.ContainsKey(hierarchy[i]))
