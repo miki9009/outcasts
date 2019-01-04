@@ -138,6 +138,7 @@ public class MovingPlatformSimple : LevelElement
         Gizmos.DrawSphere(startAnchor.position, 1);
         Gizmos.color = Color.red;
         //Gizmos.DrawSphere(endAnchor.position, 1);
+        Gizmos.DrawLine(startAnchor.position, endAnchor.position);
         Gizmos.DrawCube(endAnchor.position, gizmoPlatformSize);
     }
 #endif

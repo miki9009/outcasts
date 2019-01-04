@@ -136,12 +136,18 @@ public class RealtimeAppearance : LevelElement
         }
         yield return null;
     }
+#if UNITY_EDITOR
+    public bool drawGizmo;
     Color col = new Color(0, 0, 1, 0.5f);
     private void OnDrawGizmos()
     {
-        Gizmos.color = col; 
-        Gizmos.DrawCube(transform.localPosition + trigger.center, trigger.size);
+        if(drawGizmo)
+        {
+            Gizmos.color = col;
+            Gizmos.DrawCube(transform.localPosition + trigger.center, trigger.size);
+        }
+
     }
 
-
+#endif
 }
