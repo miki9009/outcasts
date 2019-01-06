@@ -3,7 +3,7 @@ using Engine;
 
 public class SplineElement : LevelElement
 {
-    public string prefabsPath = "LevelElements/";
+    
     public BezierCurve curve;
     public float speed;
     public Transform[] points;
@@ -13,9 +13,6 @@ public class SplineElement : LevelElement
 
     public bool cached;
     public int cachedPoints;
-
-    [Range(0, 0.5f)]
-    public float splineFactor;
 
 
     Vector3 prevPos;
@@ -58,7 +55,6 @@ public class SplineElement : LevelElement
             data["Rotations"] = pointsRot;
             data["Handle1"] = handle1Pos;
             data["Handle2"] = handle2Pos;
-            data["Factor"] = splineFactor;
             data["Spawns"] = spawns;
             data["Moving"] = moving;
             data["Speed"] = speed;
@@ -80,8 +76,6 @@ public class SplineElement : LevelElement
                 handle1Pos = (Float3[])data["Handle1"];
             if (data.ContainsKey("Handle2"))
                 handle2Pos = (Float3[])data["Handle2"];
-            if (data.ContainsKey("Factor"))
-                splineFactor = (float)data["Factor"];
             if (data.ContainsKey("Spawns"))
                 spawns = (string[])data["Spawns"];
             if (data.ContainsKey("Moving"))
@@ -106,9 +100,10 @@ public class SplineElement : LevelElement
                 splineFactors = new float[spawns.Length];
                 elements = new Transform[spawns.Length];
                 positions = new Vector3[spawns.Length];
+                float splineFactor = 1f / spawns.Length;
                 for (int i = 0; i < spawns.Length; i++)
                 {
-                    var spawn = (GameObject)Resources.Load(prefabsPath + spawns[i], typeof(GameObject));
+                    var spawn = (GameObject)Resources.Load(PrefabsPath + spawns[i], typeof(GameObject));
                     if (spawn != null)
                     {
                         elements[i] = Instantiate(spawn, transform).GetComponent<Transform>();
@@ -219,8 +214,8 @@ public class SplineElement : LevelElement
         if (curve == null) return;
         for (int i = 0; i < spawns.Length; i++)
         {
-            float factor = splineFactor * i;
-            Gizmos.DrawSphere(curve.GetPointAt(factor), 1);
+            float factor = 1f / spawns.Length;
+            Gizmos.DrawSphere(curve.GetPointAt(factor * i), 1);
         }
     }
 #endif

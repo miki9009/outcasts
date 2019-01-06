@@ -7,6 +7,14 @@ namespace Engine
 {
     public class LevelElement : MonoBehaviour
     {
+        public static string PrefabsPath
+        {
+            get
+            {
+                return "LevelElements/";
+            }
+        }
+
         public int elementID = -1;
         TargetPointerActivator _arrowActivator;
         public TargetPointerActivator ArrowActivator

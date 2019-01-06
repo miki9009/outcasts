@@ -62,22 +62,22 @@ Properties {
 	[Toggle] _ZWrite("Write to Depth Buffer", Float) = 0
 
 	// Hidden
-	[HideInInspector] _TransformScale_ ("_TransformScale_", Float) = 1
-	[HideInInspector] _Scale_ ("_Scale_", Float) = 1
-	[HideInInspector] _BumpScale_ ("_BumpScale_", Float) = 1
-	[HideInInspector] _Cull_ ("_Cull_", Float) = 2
-	[HideInInspector] _Direction_ ("_Direction_", Vector) = (0,0,0,0)
-	[HideInInspector] _RHeight_ ("_RHeight_", Float) = 0.2
-	[HideInInspector] _RSpeed_ ("_RSpeed_", Float) = 0.2
-	[HideInInspector] _TexSize_("_TexSize_", Float) = 64
-	[HideInInspector] _Speed_("_Speed_", Float) = 0
-	[HideInInspector] _Height_("_Height_", Float) = 0
-	[HideInInspector] _ReflectionTex("_ReflectionTex", 2D) = "" {}
-	[HideInInspector] _RefractionTex("_RefractionTex", 2D) = "" {}
-	[HideInInspector] _Time_("_Time_", float) = 0
-	[HideInInspector] _EnableShadows("_EnableShadows", float) = 0
-	[HideInInspector] _Sun("_Sun", Vector) = (0,0,0,0)
-	[HideInInspector] _SunColor("_SunColor", Color) = (1,1,1,1)
+	_TransformScale_ ("_TransformScale_", Float) = 1
+	 _Scale_ ("_Scale_", Float) = 1
+	 _BumpScale_ ("_BumpScale_", Float) = 1
+	 _Cull_ ("_Cull_", Float) = 2
+	 _Direction_ ("_Direction_", Vector) = (0,0,0,0)
+	 _RHeight_ ("_RHeight_", Float) = 0.2
+	 _RSpeed_ ("_RSpeed_", Float) = 0.2
+	 _TexSize_("_TexSize_", Float) = 64
+	 _Speed_("_Speed_", Float) = 0
+	 _Height_("_Height_", Float) = 0
+	 _ReflectionTex("_ReflectionTex", 2D) = "" {}
+	 _RefractionTex("_RefractionTex", 2D) = "" {}
+	 _Time_("_Time_", float) = 0
+	 _EnableShadows("_EnableShadows", float) = 0
+	 _Sun("_Sun", Vector) = (0,0,0,0)
+	 _SunColor("_SunColor", Color) = (1,1,1,1)
 }
 
 SubShader {

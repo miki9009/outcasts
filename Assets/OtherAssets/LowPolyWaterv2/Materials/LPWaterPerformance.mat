@@ -10,7 +10,7 @@ Material:
   m_Name: LPWaterPerformance
   m_Shader: {fileID: 4800000, guid: 8165be4dd0b12774d80426d906df9c38, type: 3}
   m_ShaderKeywords: LPW_FOAM WATER_REFLECTIVE WATER_REFRACTIVE _DISTORT_ON _EDGEBLEND_ON
-    _EMISSION _SHADING_VERTEXLIT _WAVES_OFF
+    _EMISSION _SHADING_FLAT _WAVES_OFF _ZWRITE_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -59,26 +59,26 @@ Material:
     - _FoamSpread: 1
     - _FresPower: 2
     - _HQFoam: 0
-    - _Height: 0.4
-    - _Height_: 0.8
+    - _Height: 0.2
+    - _Height_: 0.4
     - _Length: 4
     - _LightAbs: 0
     - _NormalOffset: 1.68
-    - _Opacity: 0.284
+    - _Opacity: 0
     - _PointLights: 0
     - _RHeight: 0.2
     - _RHeight_: 0.4
     - _RSpeed: 0.8
     - _RSpeed_: 1.6
-    - _Reflection: 1
+    - _Reflection: 0.49
     - _Refraction: 2
     - _Scale: 2
     - _Scale_: 2
-    - _Shading: 1
+    - _Shading: 0
     - _Shadow: 0.6
     - _ShoreDistance: 1
     - _ShoreIntensity: 1
-    - _Specular: 149
+    - _Specular: 125
     - _Speed: 0.5
     - _Speed_: 1
     - _Steepness: 0.15
@@ -94,6 +94,6 @@ Material:
     - _Direction_: {r: -1, g: -0.00000008742278, b: -1.2, a: -0.000000104907336}
     - _FresColor: {r: 0.26194853, g: 0.38009632, b: 0.41911763, a: 1}
     - _ShoreColor: {r: 0.7688679, g: 1, b: 0.97835994, a: 1}
-    - _SpecColor: {r: 1, g: 0.96491146, b: 0.6179246, a: 1}
+    - _SpecColor: {r: 0.9811321, g: 0.895517, b: 0.5784977, a: 1}
     - _Sun: {r: 0.1530461, g: 0.7071067, b: -0.6903455, a: 0}
     - _SunColor: {r: 1, g: 0.8869475, b: 0.48627448, a: 1}
