@@ -59,6 +59,7 @@ public abstract class CollectionObject : MonoBehaviour, IPoolObject
         AddToLevelCollection();
     }
 
+
     private void OnDisable()
     {
         if(collected && collectedCoroutine != null)

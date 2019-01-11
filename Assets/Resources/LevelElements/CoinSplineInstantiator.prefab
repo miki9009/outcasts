@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1940076735074910817}
-  m_LocalRotation: {x: -0, y: -0.92698747, z: -0, w: 0.3750922}
+  m_LocalRotation: {x: -0, y: -0.9269875, z: -0, w: 0.37509224}
   m_LocalPosition: {x: 14.57, y: 0, z: -14.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -71,7 +71,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4082002074155860762}
-  m_LocalRotation: {x: -0, y: -0.92698747, z: -0, w: 0.3750922}
+  m_LocalRotation: {x: -0, y: -0.9269875, z: -0, w: 0.37509224}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -118,8 +118,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5152630923836680362}
-  m_LocalRotation: {x: -0, y: -0.92698747, z: -0, w: 0.3750922}
-  m_LocalPosition: {x: 11.14, y: -0.09, z: -10.78}
+  m_LocalRotation: {x: -0, y: -0.9269875, z: -0, w: 0.37509224}
+  m_LocalPosition: {x: 11.16, y: -0.09, z: -10.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3207476095053705244}
@@ -166,7 +166,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7884496804978233357}
   m_LocalRotation: {x: -0, y: -0.48740235, z: -0, w: -0.8731776}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7892151956149774895}
@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 9000035735013664904}
   - component: {fileID: 9010468207418919094}
   - component: {fileID: 8851118282135474343}
-  m_Layer: 13
+  m_Layer: 12
   m_Name: CoinSplineInstantiator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,6 +336,7 @@ MonoBehaviour:
   arrowTarget: 0
   activeAndEnabled: 1
   curve: {fileID: 38273166772305755}
+  mainCoin: {fileID: 9001610527241073834}
   points:
   - {fileID: 7892151956149774895}
   - {fileID: 6442245002365470531}
@@ -343,6 +344,68 @@ MonoBehaviour:
   - {fileID: 3814010809962342000}
   amount: 8
   spawnName: Coin
+  animationSpeed: 1
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -1.0344849
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.29675916
+      value: 1.4842877
+      inSlope: 0.057578415
+      outSlope: 0.057578415
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.49678096
+      outWeight: 0.124813266
+    - serializedVersion: 3
+      time: 0.53509235
+      value: -0.00079870224
+      inSlope: 0.019267375
+      outSlope: 0.019267375
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.47516283
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.66453445
+      value: 0.08577267
+      inSlope: 0.0043610316
+      outSlope: 0.0043610316
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7893507
+      value: -0.052337278
+      inSlope: -0.015131771
+      outSlope: -0.015131771
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  yFactor: 2
 --- !u!1 &9208967646628379084
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,8 +430,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9208967646628379084}
-  m_LocalRotation: {x: -0, y: -0.92698747, z: -0, w: 0.3750922}
-  m_LocalPosition: {x: 6.34, y: -0.04, z: -6.13}
+  m_LocalRotation: {x: -0, y: -0.9269875, z: -0, w: 0.37509224}
+  m_LocalPosition: {x: 6.37, y: -0.04, z: -6.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3207476095053705244}

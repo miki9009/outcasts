@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8585143036202057438}
   - component: {fileID: 1952481035939277037}
   - component: {fileID: 207139822039575833}
+  - component: {fileID: 4257140320291998608}
   m_Layer: 10
   m_Name: BricksWallblend
   m_TagString: Untagged
@@ -91,3 +92,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.293423, y: 2.1036963, z: 1.2767893}
   m_Center: {x: -0.0193595, y: -0.00069397705, z: 0.6438697}
+--- !u!208 &4257140320291998608
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9098516142431287882}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.147, y: 1.052, z: 0.638}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.019000001, y: -0.001, z: 0.64400005}
+  m_TimeToStationary: 0.5

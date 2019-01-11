@@ -42,3 +42,6 @@ MonoBehaviour:
   - sceneName: SecondLevel
     levels:
     - 0
+  - sceneName: ThirdScene
+    levels:
+    - 0

@@ -21,7 +21,31 @@ public class Character : MonoBehaviour
     
     public IEquipment rightArmItem;
     public IEquipment leftArmItem;
-    public bool IsDead { get; set; }
+
+    bool _isDead;
+    public bool IsDead
+    {
+        get
+        {
+            return _isDead;
+        }
+
+        set
+        {
+            if(_isDead != value)
+            {
+                if(value)
+                {
+                    allCharacters.Remove(this);
+                }
+                else
+                {
+                    allCharacters.Add(this);
+                }
+            }
+            _isDead = value;
+        }
+    }
     public CharacterPhoton characterPhoton;
 
     public bool IsLocalPlayer
@@ -155,8 +179,6 @@ public class Character : MonoBehaviour
 
     private void OnDestroy()
     {
-        allCharacters.Remove(this);
-
         PhotonManager.RemovePlayer(this);
     }
 

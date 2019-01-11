@@ -69,11 +69,6 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
             if (ButtonsInput)
             {
                 btnAttack.gameObject.SetActive(true);
-
-                //btnLeft = GameGUI.GetButtonByName("ButtonLeft");
-                //btnLeft.gameObject.SetActive(true);
-                //btnRight = GameGUI.GetButtonByName("ButtonRight");
-                //btnRight.gameObject.SetActive(true);
                 btnJump.gameObject.SetActive(true);
                 var rect = GameGUI.GetButtonByName("Action").GetComponent<RectTransform>();
                 rect.anchoredPosition = new Vector2(700, rect.anchoredPosition.y);
@@ -82,7 +77,6 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
             }
             else
             {
-                //DeactivateButtons();
                 Movement = GestureMovement;
             }
             
@@ -110,42 +104,8 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
 
     protected override void Inputs()
     {
-        //        if (canMove)
-        //        {
-        //            if (buttonsInitialized)
-        //            {
-        //                if (verInput < 0)
-        //                {
-        //                    verInput = 1;
-        //                    direction2D = 1;
-        //                }
-        //                if (verInput > 0)
-        //                {
-        //                    verInput = 1;
-        //                    direction2D = -1;
-        //                }
-        //            }
 
-        //#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-        //            //verInput = Input.GetAxisRaw("Vertical");
-        //            if (horInput == 0)
-        //                horInput = Input.GetAxisRaw("Horizontal");
-
-
-        //#endif
-        //        }
-        //        //anim.SetFloat("vSpeed", velocity.y);
-        //        if (horInput > 0)
-        //            direction2D = 1;
-        //        else if (horInput < 0)
-        //            direction2D = -1;
     }
-
-    //private void DeactivateButtons()
-    //{
-    //    GameGUI.GetButtonByName("ButtonLeft").gameObject.SetActive(false);
-    //    GameGUI.GetButtonByName("ButtonRight").gameObject.SetActive(false);
-    //}
 
     void GestureMovement()
     {
@@ -202,6 +162,10 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
         float hor = Input.GetAxisRaw("Horizontal");
         float ver = Input.GetAxisRaw("Vertical");
+        if(hor != 0 || ver != 0)
+        {
+
+
         if (hor < 0) angle = 270;
         if (hor > 0) angle = 90;
         if (ver > 0) angle = 0;
@@ -212,9 +176,14 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
         if (ver < 0 && hor < 0) angle = 225;
         if (hor != 0 || ver != 0)
         {
-            forwardPower = 1;
+            forwardPower = Mathf.Lerp(forwardPower,1,Time.deltaTime * 50);
         }
+        else
+            {
+                forwardPower = Mathf.Lerp(forwardPower, 0, Time.deltaTime * 10);
+            }
         targetEuler = new Vector3(0, Camera.eulerAngles.y + angle, 0);
+        }
 #endif
 
         if (horDistance > 1)
@@ -226,10 +195,6 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
         }
 
 #if UNITY_EDITOR
-        if (hor == 0 && ver == 0 && forwardPower == 0)
-        {
-            forwardPower = 0;
-        }
 
         if (jumpInput == 0)
         {
@@ -305,4 +270,5 @@ public class CharacterMovementPlayer : CharacterMovement, ILocalPlayer
         sinus = Mathf.Lerp(sinus, angle < 90 && angle > -90 ? angle : angle > 0 ? 180 - angle : -180 - angle, Time.deltaTime * 10);
         model.transform.localEulerAngles = new Vector3(0, 0, Mathf.Clamp(-sinus / 3, -15, 15));
     }
+
 }
