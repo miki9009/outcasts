@@ -209,13 +209,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 472461117}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.06, y: 0.055282436, z: -2.65}
   m_LocalScale: {x: 1, y: 1, z: 1.3381441}
   m_Children: []
   m_Father: {fileID: 3804374791047809055}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: 0}
 --- !u!33 &3501710263553686622
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -323,14 +323,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c285647a82c571c4d87bde3026ecb950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementID: 2535087
+  elementID: 5996217
   arrowTarget: 0
   activeAndEnabled: 1
   padlock: {fileID: 8942916686128242847}
   door1: {fileID: 4100983810339300350}
   door2: {fileID: 6050365536713707048}
-  door1EndRotation: {x: -90, y: 100, z: 0}
-  door2EndRotation: {x: 90, y: -280, z: 0}
+  door1EndRotation: {x: -90, y: -96, z: 0}
+  door2EndRotation: {x: 90, y: -72, z: 0}
   animationSpeed: 1
   padlokShakeSpeed: 20
   numerOfShakes: 6

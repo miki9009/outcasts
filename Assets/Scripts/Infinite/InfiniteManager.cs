@@ -87,10 +87,7 @@ public class InfiniteManager : MonoBehaviour
         aheadChunk = firstChunk;
         firstChunk = GetChunk();
         firstChunk.PlaceNextTo(aheadChunk);
-        if(ChunkPlaced != null)
-        {
-            ChunkPlaced(firstChunk);
-        }
+        ChunkPlaced?.Invoke(firstChunk);
     }
 
     Chunk GetChunk()

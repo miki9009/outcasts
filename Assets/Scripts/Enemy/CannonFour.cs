@@ -13,10 +13,10 @@ public class CannonFour : Cannon
     bool canShoot;
     float[] rotations = new float[]
     {
-        0,
-        90,
         180,
-        270
+        270,
+        0,
+        90
     };
 
     protected override void Update()
@@ -32,7 +32,7 @@ public class CannonFour : Cannon
                 {
 
                     rotationTime += Time.deltaTime;
-                    cannon.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, rotations[rot], 0), rotationTime);
+                    cannon.localRotation = Quaternion.Lerp(cannon.localRotation, Quaternion.Euler(0, rotations[rot], 0), rotationTime);
                 }
                 else
                 {
