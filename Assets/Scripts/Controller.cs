@@ -6,6 +6,7 @@ using Engine;
 using Engine.UI;
 using Engine.Config;
 using System;
+using UnityEngine.Experimental.Rendering;
 
 [DefaultExecutionOrder(-100)]
 public class Controller : MonoBehaviour
@@ -261,10 +262,10 @@ public class Controller : MonoBehaviour
             //Draw.DisplayMedianFps(Screen.width / 2 - Screen.width * 0.1f, 70);
         }
 
-        if (UnityEngine.GUI.Button(new Rect(10, 60, 100, 50), "Bloom: " + bloom.enabled))
-        {
-            if (bloom != null) bloom.enabled = !bloom.enabled;
-        }
+        //if (UnityEngine.GUI.Button(new Rect(10, 60, 100, 50), "Bloom: " + bloom.enabled))
+        //{
+        //    if (bloom != null) bloom.enabled = !bloom.enabled;
+        //}
         //if (UnityEngine.GUI.Button(new Rect(110, 60, 100, 50), "Antialiasing: " + antialiasing.enabled))
         //{
         //    if (antialiasing != null) antialiasing.enabled = !antialiasing.enabled;

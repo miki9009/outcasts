@@ -19,7 +19,7 @@ public class DeathTrigger : MonoBehaviour
 
     void InvokeMe()
     {
-        if (character != null || character.IsDead) return;
+        if (character != null && Controller.Instance.IsRestarting) return;
         character.movement.DieNonAnimation();
         character.movement.characterHealth.RemoveHealth(character.stats.health);
     }

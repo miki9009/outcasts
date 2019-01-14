@@ -10,12 +10,15 @@ public class Crate : MonoBehaviour, IDestructible
     public GameObject collection;
     public int collectionAmmount;
     public LayerMask layer;
+    //public TriggerBroadcast broadcast;
 
     ParticleSystem crateExplosion;
     Renderer rend;
     BoxCollider boxCol;
     SphereCollider sCol;
     Rigidbody rb;
+    bool destructed = false;
+    public float upForce = 10;
 
     public Rigidbody Rigidbody
     {
@@ -32,11 +35,30 @@ public class Crate : MonoBehaviour, IDestructible
         rend = GetComponent<Renderer>();
         boxCol = GetComponent<BoxCollider>();
         sCol = GetComponent<SphereCollider>();
+        //broadcast.TriggerEntered += OnTriggerBroadcast;
         for (int i = 0; i < collectionAmmount; i++)
         {
             PoolingObject.AddSpawn(collection.name, Instantiate(collection));
         }
     }
+
+    //void OnTriggerBroadcast(Collider col)
+    //{
+    //    Debug.Log("Hit");
+    //    if(!destructed)
+    //    {
+    //        var character = col.GetComponentInParent<CharacterMovement>();
+    //        float angle = Vector3.Dot(character.rb.rotation.Vector(), Vector3.down);
+    //        Debug.Log(character.rb.velocity.y);
+    //        if(character!=null && character.rb.velocity.y < -5)
+    //        {
+    //            Hit(character);
+    //            character.rb.velocity = new Vector3(character.rb.velocity.x,15, character.rb.velocity.z);
+    //            character.onGround = false;
+    //            //character.rb.AddForce(Vector3.up * upForce, ForceMode.VelocityChange);
+    //        }
+    //    }
+    //}
 
     //void OnTriggerEnter(Collider other)
     //{
@@ -96,6 +118,8 @@ public class Crate : MonoBehaviour, IDestructible
 
     public void Hit(CharacterMovement character)
     {
+        if (destructed) return;
+        destructed = true;
         CollectionManager.Instance.SetCollection(character.character.ID, CollectionType.DestroyCrate, 1);
         crateExplosion.transform.position = transform.position;
         crateExplosion.Play();

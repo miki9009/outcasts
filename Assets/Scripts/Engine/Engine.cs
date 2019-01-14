@@ -1328,6 +1328,11 @@ namespace Engine
             }
         }
 
+        public static Vector3 Vector(this Quaternion q)
+        {
+            return q * Vector3.forward;
+        }
+
         //public static Vector ToVector(this Vector3 vector)
         //{
         //    return new Vector(vector.x, vector.y, vector.z);

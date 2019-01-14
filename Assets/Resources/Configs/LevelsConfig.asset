@@ -15,27 +15,9 @@ MonoBehaviour:
   levelPaths: Levels/
   levelElementsPath: LevelElements/
   levels:
-  - sceneName: Village
-    levels:
-    - 0
-  - sceneName: Moutain
-    levels:
-    - 0
-    - 1
-    - Multiplayer
-  - sceneName: Islands
-    levels:
-    - 0
-    - 1
-    - Multiplayer
   - sceneName: Mine
     levels:
     - 0
-  - sceneName: Voolcano
-    levels:
-    - 0
-    - 1
-    - Multiplayer
   - sceneName: FirstLevel
     levels:
     - 0
@@ -43,5 +25,8 @@ MonoBehaviour:
     levels:
     - 0
   - sceneName: ThirdScene
+    levels:
+    - 0
+  - sceneName: Caves
     levels:
     - 0

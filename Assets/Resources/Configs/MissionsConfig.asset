@@ -13,59 +13,7 @@ MonoBehaviour:
   m_Name: MissionsConfig
   m_EditorClassIdentifier: 
   missions:
-  - level: Village:0
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Moutain:0
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Moutain:1
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Moutain:Multiplayer
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Islands:0
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Islands:1
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Islands:Multiplayer
-    passed: 0
-    unlocked: 1
-    unlocks: 
   - level: Mine:0
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Mine:0
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Mine:0
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Mine:0
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Voolcano:0
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Voolcano:0
-    passed: 0
-    unlocked: 1
-    unlocks: 
-  - level: Voolcano:1
     passed: 0
     unlocked: 1
     unlocks: 
@@ -78,6 +26,10 @@ MonoBehaviour:
     unlocked: 1
     unlocks: 
   - level: ThirdScene:0
+    passed: 0
+    unlocked: 1
+    unlocks: 
+  - level: Caves:0
     passed: 0
     unlocked: 1
     unlocks: 

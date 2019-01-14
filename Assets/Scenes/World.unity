@@ -564,6 +564,7 @@ Transform:
   - {fileID: 74735597}
   - {fileID: 470672567}
   - {fileID: 881124013}
+  - {fileID: 1622868121}
   m_Father: {fileID: 2028971826}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2876,6 +2877,62 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 0de4aee8ed9b77b4db644bb19470eb39,
     type: 3}
   m_PrefabInstance: {fileID: 1680791027}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1622868120
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 286174487}
+    m_Modifications:
+    - target: {fileID: 1635893183204414, guid: 8070f4442d84add499c2371d0fe92a16, type: 3}
+      propertyPath: m_Name
+      value: Cave
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073628731171966, guid: 8070f4442d84add499c2371d0fe92a16, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 25.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073628731171966, guid: 8070f4442d84add499c2371d0fe92a16, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 16.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073628731171966, guid: 8070f4442d84add499c2371d0fe92a16, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -37
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073628731171966, guid: 8070f4442d84add499c2371d0fe92a16, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073628731171966, guid: 8070f4442d84add499c2371d0fe92a16, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073628731171966, guid: 8070f4442d84add499c2371d0fe92a16, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073628731171966, guid: 8070f4442d84add499c2371d0fe92a16, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073628731171966, guid: 8070f4442d84add499c2371d0fe92a16, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114705158869395394, guid: 8070f4442d84add499c2371d0fe92a16,
+        type: 3}
+      propertyPath: customLevel
+      value: Caves:0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8070f4442d84add499c2371d0fe92a16, type: 3}
+--- !u!4 &1622868121 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4073628731171966, guid: 8070f4442d84add499c2371d0fe92a16,
+    type: 3}
+  m_PrefabInstance: {fileID: 1622868120}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1629637404
 GameObject:

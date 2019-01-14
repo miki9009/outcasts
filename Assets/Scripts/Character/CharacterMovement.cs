@@ -130,6 +130,7 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
 
     public void DieNonAnimation()
     {
+        if (this == null) return;
         enabled = false;
         StopAllCoroutines();
         if(IsLocalPlayer)
@@ -385,11 +386,6 @@ public abstract class CharacterMovement : MonoBehaviour, IThrowable, IStateAnima
     {
         anim.SetTrigger(triggerName);
     }
-
-    //void OnGUI()
-    //{
-    //    Draw.TextColor(10,200, 255, 0, 0, 1, sinus);
-    //}
 
     //void OnDrawGizmos()
     //{
