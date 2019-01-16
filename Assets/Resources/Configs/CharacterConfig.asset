@@ -24,3 +24,4 @@ MonoBehaviour:
     mesh: {fileID: 4300002, guid: fb31433985699c24989f3d578625414a, type: 3}
   - id: SpanishArmor
     mesh: {fileID: 4300008, guid: fb31433985699c24989f3d578625414a, type: 3}
+
